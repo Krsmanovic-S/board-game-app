@@ -7,34 +7,43 @@ import 'package:board_game_app/app/layout.dart';
 
 abstract class AppColors {
   // Backgrounds
-  static const Color scaffoldBg = Color(0xFF171717);
   static const LinearGradient scaffoldGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: [Color(0xFF1C1C1C), Color(0xFF111111)],
+    colors: [
+      Color.fromARGB(255, 244, 239, 230), // #F4EFE6 linen
+      Color.fromARGB(255, 232, 224, 210), // slightly deeper linen
+    ],
   );
-  static const Color surface = Color(0xFF242424);
-  static const Color surfaceElevated = Color(0xFF303030);
-  static const Color inputFill = Color(0xFF2A2A2A);
+  static const Color surface = Color(0xFFFFFFFF);
+  static const Color surfaceElevated = Color(0xFFF0EAE0);
+  static const Color inputFill = Color(0xFFF7F3ED);
 
-  // Primary accent
-  static Color primary = Color.fromARGB(255, 224, 141, 32);
-  static Color primaryDim = Color.fromARGB(255, 50, 37, 17);
+  // Primary
+  static Color primary = Color.fromARGB(255, 46, 125, 107); // muted teal
+  static Color primaryDim = Color.fromARGB(255, 28, 75, 64); // darkened teal
+
+  static Color secondary = Color.fromARGB(255, 192, 122, 47); // warm copper
+  static Color secondaryDim = Color.fromARGB(
+    255,
+    115,
+    73,
+    28,
+  ); // darkened copper
 
   // Status
   static const Color error = Color.fromARGB(255, 211, 54, 54);
-  static const Color errorContainer = Color(0xFF3A1414);
+  static const Color errorContainer = Color(0xFFFFDAD6);
 
   // Text hierarchy
-  static const Color textPrimary = Color(0xFFFFFFFF);
-  static const Color textSecondary = Color(0xFFDCDCDC);
-  static const Color textMuted = Color.fromARGB(255, 146, 146, 146);
-  static const Color textDisabled = Color.fromARGB(255, 93, 93, 93);
+  static const Color textPrimary = Color(0xFF1A1A1A);
+  static const Color textSecondary = Color(0xFF3D3D3D);
+  static const Color textMuted = Color(0xFF7A7A7A);
+  static const Color textDisabled = Color(0xFFB0B0B0);
 
-  // Borders, Divider and Padding
-  static double appBarTopPadding = Layout.v(4);
-  static const Color border = Color(0xFF505050);
-  static const Color divider = Color(0xFF3A3A3A);
+  // Borders and Divider
+  static const Color border = Color(0xFFD8CFBF);
+  static const Color divider = Color(0xFFE5DDD0);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -66,7 +75,7 @@ abstract class AppButtonStyles {
   // Major CTAs / Primary Buttons
   static ButtonStyle get primaryFilled => ElevatedButton.styleFrom(
     backgroundColor: AppColors.primary,
-    foregroundColor: Colors.black,
+    foregroundColor: Colors.white,
     textStyle: AppTextStyles.font18.copyWith(
       fontWeight: FontWeight.w700,
       letterSpacing: 1.2,
@@ -128,7 +137,7 @@ abstract class AppButtonStyles {
   /// Modal Save (Bottom Sheets)
   static ButtonStyle get modalSave => ElevatedButton.styleFrom(
     backgroundColor: AppColors.primary,
-    foregroundColor: Colors.black,
+    foregroundColor: Colors.white,
     textStyle: AppTextStyles.font16.copyWith(fontWeight: FontWeight.w600),
     padding: Layout.symmetric(vertical: 14),
     shape: const RoundedRectangleBorder(
@@ -154,32 +163,31 @@ abstract class AppButtonStyles {
 // ─────────────────────────────────────────────────────────────────────────────
 
 ThemeData buildAppTheme() => ThemeData(
-  brightness: Brightness.dark,
-  colorScheme: ColorScheme.dark(
+  brightness: Brightness.light,
+  colorScheme: ColorScheme.light(
     primary: AppColors.primary,
-    onPrimary: Colors.black,
+    onPrimary: Colors.white,
     secondary: AppColors.primary,
-    onSecondary: Colors.black,
+    onSecondary: Colors.white,
     surface: AppColors.surface,
     onSurface: AppColors.textPrimary,
     error: AppColors.error,
     onError: Colors.white,
     primaryContainer: AppColors.primaryDim,
-    onPrimaryContainer: AppColors.primary,
+    onPrimaryContainer: Colors.white,
   ),
-  scaffoldBackgroundColor: AppColors.scaffoldBg,
 
   // ── AppBar ────────────────────────────────────────────────────────────────
   appBarTheme: AppBarTheme(
     backgroundColor: AppColors.surface,
     foregroundColor: AppColors.textPrimary,
     elevation: 0,
-    toolbarHeight: Layout.v(56) + AppColors.appBarTopPadding,
+    toolbarHeight: Layout.v(60),
     titleTextStyle: AppTextStyles.font22.copyWith(
       fontWeight: FontWeight.w700,
       color: AppColors.textPrimary,
     ),
-    iconTheme: const IconThemeData(color: AppColors.textPrimary, size: 24),
+    iconTheme: IconThemeData(color: AppColors.textPrimary, size: Layout.v(22)),
   ),
 
   // ── Buttons ───────────────────────────────────────────────────────────────
