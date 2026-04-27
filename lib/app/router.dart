@@ -50,7 +50,7 @@ final appRouter = GoRouter(
       builder: (context, state, child) => _AppShell(child: child),
       routes: [
         GoRoute(
-          path: '',
+          path: '/auth',
           pageBuilder: (context, state) => _fadePage(
             state,
             RootPagePopHandler(

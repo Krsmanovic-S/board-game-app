@@ -23,6 +23,31 @@ Wrap the widget tree with scopes in `main.dart`, access via `context.findAncesto
 ### Routing
 `go_router` is configured in `lib/app/router.dart`. It should be used to navigate to different screens.
 
+### Navigation & Screen Architecture
+
+Bottom navigation bar with 3 tabs:
+- **Browse** - paginated list of all games, filter chips (in stock, price range), sort options
+- **Watchlist** - games the user is watching with current prices and stock status
+- **Profile** - user info, username, avatar placeholder
+
+Each tab is a top-level destination. Nested navigation within tabs uses go_router.
+
+#### Screens
+- `AuthScreen` - login/register with Google, Apple, email+password
+- `ForgotPasswordScreen` - separate screen, not a dialog
+- `UsernamePickerScreen` - shown once after register before entering the app
+- `BrowseScreen` - main game listing, infinite scroll
+- `SearchScreen` - opens from search bar on BrowseScreen, queries Firestore as user types
+- `ProductScreen` - game details, per-store price breakdown, price history chart, watch/unwatch button, per-game notification toggles if watched
+- `WatchlistScreen` - watched games list
+- `ProfileScreen` - username, email, avatar placeholder
+- `SettingsScreen` - accessible via gear icon from ProfileScreen, contains theme picker, global notification toggles, sound toggle, tip jar
+
+#### Layout
+Screens that are children of a tab (SearchScreen, ProductScreen, SettingsScreen) are pushed on top of the tab stack, not as new bottom nav destinations.
+
+Never hardcode sized box widgets, instead use the `lib/app/layout.dart` class to create dynamic widgets. Never use hardcoded values for pixels, height, width, padding - use the Layout class for everything.
+
 ### Widgets
 All widgets are located in the `lib/screens/` (holds entire screen widgets) and `lib/widgets/` (individual components) folders. The folder `lib/utils/` contains helper classes for handling specific part of the application.
 
