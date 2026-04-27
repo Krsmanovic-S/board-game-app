@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:board_game_app/app/theme.dart';
 import 'package:board_game_app/app/layout.dart';
 import 'package:board_game_app/localization/localization.dart';
+import 'package:board_game_app/widgets/bottom_nav_bar.dart';
 
 // Effect for Transitioning
 CustomTransitionPage<void> _fadePage(GoRouterState state, Widget child) =>
@@ -44,7 +45,7 @@ class RootPagePopHandler extends StatelessWidget {
 
 final appRouter = GoRouter(
   // Populate Initial Location
-  initialLocation: '',
+  initialLocation: '/auth',
   routes: [
     ShellRoute(
       builder: (context, state, child) => _AppShell(child: child),
@@ -61,7 +62,29 @@ final appRouter = GoRouter(
           ),
         ),
         GoRoute(
-          path: '',
+          path: '/browse',
+          pageBuilder: (context, state) => _fadePage(
+            state,
+            RootPagePopHandler(
+              onBackInvoked: () => _handleRootBack(context),
+              // Populate this screen
+              child: Text('Placeholder'),
+            ),
+          ),
+        ),
+        GoRoute(
+          path: '/watchlist',
+          pageBuilder: (context, state) => _fadePage(
+            state,
+            RootPagePopHandler(
+              onBackInvoked: () => _handleRootBack(context),
+              // Populate this screen
+              child: Text('Placeholder'),
+            ),
+          ),
+        ),
+        GoRoute(
+          path: '/profile',
           pageBuilder: (context, state) => _fadePage(
             state,
             RootPagePopHandler(
@@ -92,12 +115,7 @@ class _AppShell extends StatefulWidget {
 
 class _AppShellState extends State<_AppShell> with WidgetsBindingObserver {
   // Drag swiping for navigation - remove if not needed
-  double? _dragStartY;
-  double _dragDelta = 0;
   DateTime? _lastBackPress;
-
-  // Insert Routes Here
-  static const _routes = [];
 
   @override
   void initState() {
@@ -125,13 +143,6 @@ class _AppShellState extends State<_AppShell> with WidgetsBindingObserver {
       _onBackPressed(); // Show your "Press again to exit" snackbar
       return true; // "true" prevents the app from closing immediately
     }
-  }
-
-  // Populate real routes here - must be the same as the ones in GoRouter
-  int _locationToIndex(String location) {
-    if (location.startsWith('')) return 0;
-    if (location.startsWith('')) return 1;
-    return 0;
   }
 
   // Press Back to Exit
@@ -176,46 +187,7 @@ class _AppShellState extends State<_AppShell> with WidgetsBindingObserver {
           _onBackPressed();
         }
       },
-      child: Scaffold(
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            final swipeThresholdY = constraints.maxHeight * 0.80;
-            return GestureDetector(
-              behavior: HitTestBehavior.translucent,
-
-              // Swipe Navigation Logic 1
-              onHorizontalDragStart: (details) {
-                if (details.localPosition.dy >= swipeThresholdY) {
-                  _dragStartY = details.localPosition.dy;
-                  _dragDelta = 0;
-                } else {
-                  _dragStartY = null;
-                }
-              },
-              onHorizontalDragUpdate: (details) {
-                if (_dragStartY != null) {
-                  _dragDelta += details.delta.dx;
-                }
-              },
-              // Swipe Navigation Logic 2
-              onHorizontalDragEnd: (details) {
-                if (_dragStartY != null && _dragDelta.abs() > 60) {
-                  final location = GoRouterState.of(context).uri.toString();
-                  final currentIndex = _locationToIndex(location);
-                  final nextIndex = _dragDelta < 0
-                      ? (currentIndex + 1).clamp(0, 2)
-                      : (currentIndex - 1).clamp(0, 2);
-                  if (nextIndex != currentIndex) {
-                    context.go(_routes[nextIndex]);
-                  }
-                }
-                _dragStartY = null;
-              },
-              child: widget.child,
-            );
-          },
-        ),
-      ),
+      child: Scaffold(body: widget.child, bottomNavigationBar: BottomNavBar()),
     );
   }
 }

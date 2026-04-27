@@ -1,4 +1,9 @@
 const Map<String, String> serbianLocalization = {
+  // ── Nav Bar ────────────────────────────────────────────────────────
+  'browseLabel': 'Pretraga',
+  'watchlistLabel': 'Moja Lista',
+  'profileLabel': 'Profil',
+
   // ── Common Actions ────────────────────────────────────────────────────
   'add': 'Dodaj',
   'all': 'Sve',

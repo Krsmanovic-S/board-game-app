@@ -25,7 +25,6 @@ void main() async {
 
   await _settingsController.load();
 
-  // Default language should be connected to a settings controller
   AppLocalization.setLanguage('sr');
 
   runApp(const MyApp());

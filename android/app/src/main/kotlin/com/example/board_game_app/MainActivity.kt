@@ -1,4 +1,4 @@
-package com.example.board_game_app
+package com.krsmanovic.kockica
 
 import io.flutter.embedding.android.FlutterActivity
 

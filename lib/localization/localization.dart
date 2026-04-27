@@ -11,6 +11,11 @@ class AppLocalization {
   static Map<String, String> get _strings =>
       _languages[_code] ?? _languages['en']!;
 
+  // ── Nav Bar ────────────────────────────────────────────────────────
+  static String get browseLabel => _strings['browseLabel']!;
+  static String get watchlistLabel => _strings['watchlistLabel']!;
+  static String get profileLabel => _strings['profileLabel']!;
+
   // ── Common Actions ────────────────────────────────────────────────────────
   static String get add => _strings['add']!;
   static String get all => _strings['all']!;
