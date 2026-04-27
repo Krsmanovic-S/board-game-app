@@ -1,0 +1,94 @@
+import 'package:board_game_app/localization/lang/english_localization.dart';
+import 'package:board_game_app/localization/lang/serbian_localization.dart';
+
+class AppLocalization {
+  static String _code = 'en';
+
+  static void setLanguage(String code) {
+    _code = code;
+  }
+
+  static Map<String, String> get _strings =>
+      _languages[_code] ?? _languages['en']!;
+
+  // ── Common Actions ────────────────────────────────────────────────────────
+  static String get add => _strings['add']!;
+  static String get all => _strings['all']!;
+  static String get cancel => _strings['cancel']!;
+  static String get confirm => _strings['confirm']!;
+  static String get continueLabel => _strings['continue']!;
+  static String get delete => _strings['delete']!;
+  static String get edit => _strings['edit']!;
+  static String get goBack => _strings['goBack']!;
+  static String get keep => _strings['keep']!;
+  static String get ok => _strings['ok']!;
+  static String get on => _strings['on']!;
+  static String get off => _strings['off']!;
+  static String get save => _strings['save']!;
+  static String get start => _strings['start']!;
+  static String get yes => _strings['yes']!;
+  static String get yesCancel => _strings['yesCancel']!;
+  static String get pressBackToExit => _strings['pressBackToExit']!;
+
+  // ── Time Units ────────────────────────────────────────────────────────────
+  static String get hours => _strings['hours']!;
+  static String get minutes => _strings['minutes']!;
+  static String get name => _strings['name']!;
+  static String get seconds => _strings['seconds']!;
+
+  // ── Month Names ───────────────────────────────────────────────────────────
+  static String get january => _strings['january']!;
+  static String get february => _strings['february']!;
+  static String get march => _strings['march']!;
+  static String get april => _strings['april']!;
+  static String get may => _strings['may']!;
+  static String get june => _strings['june']!;
+  static String get july => _strings['july']!;
+  static String get august => _strings['august']!;
+  static String get september => _strings['september']!;
+  static String get october => _strings['october']!;
+  static String get november => _strings['november']!;
+  static String get december => _strings['december']!;
+
+  // ── Colors ───────────────────────────────────────────────────────────
+  static String get orange => _strings['orange']!;
+
+  // ── Parameterized Methods ─────────────────────────────────────────────────
+
+  /// 'Are you sure you want to delete "{name}"?'
+  static String areYouSureDelete(String name) =>
+      _strings['areYouSureDelete']!.replaceAll('{name}', name);
+
+  /// '"{name}" created successfully'
+  static String createdSuccessfully(String name) =>
+      _strings['createdSuccessfully']!.replaceAll('{name}', name);
+
+  /// '"{name}" updated successfully'
+  static String updatedSuccessfully(String name) =>
+      _strings['updatedSuccessfully']!.replaceAll('{name}', name);
+
+  // ── Month name by 0-based index (0 = January) ─────────────────────────────────────────────────
+  static String monthByIndex(int index) {
+    const keys = [
+      'january',
+      'february',
+      'march',
+      'april',
+      'may',
+      'june',
+      'july',
+      'august',
+      'september',
+      'october',
+      'november',
+      'december',
+    ];
+    return _strings[keys[index]]!;
+  }
+
+  // ── Language Map ──────────────────────────────────────────────────────────
+  static const Map<String, Map<String, String>> _languages = {
+    'en': englishLocalization,
+    'sr': serbianLocalization,
+  };
+}
