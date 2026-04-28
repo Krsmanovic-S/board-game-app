@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1007917954503",
+    "project_id": "board-game-tracker-f20b0",
+    "storage_bucket": "board-game-tracker-f20b0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007917954503:android:4a21cd73c6d3157b7595e2",
+        "android_client_info": {
+          "package_name": "com.krsmanovic.boardGameTracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFR89AFTxB7Xp-QoTj_aXdOSABh57dymQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007917954503:android:314998e1c68ff04b7595e2",
+        "android_client_info": {
+          "package_name": "com.krsmanovic.boardgametracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFR89AFTxB7Xp-QoTj_aXdOSABh57dymQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007917954503:android:ff073cbfe0c1d0327595e2",
+        "android_client_info": {
+          "package_name": "com.krsmanovic.kockica"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFR89AFTxB7Xp-QoTj_aXdOSABh57dymQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
