@@ -43,6 +43,17 @@ const Map<String, String> serbianLocalization = {
   'november': 'Novembar',
   'december': 'Decembar',
 
+  // ── Auth ──────────────────────────────────────────────────────────────────
+  'loginTitle': 'Prijava',
+  'registerTitle': 'Registracija',
+  'username': 'Korisničko ime',
+  'password': 'Lozinka',
+  'email': 'Email',
+  'continueWithGoogle': 'Nastavi uz Google ',
+  'continueWithApple': 'Nastavi uz Apple ',
+  'noAccount': 'Nemate nalog? Registrujte se ovde',
+  'haveAccount': 'Imate nalog? Ulogujte se ovde',
+
   // ── Navigation Tabs ────────────────────────────────────────────────────
 
   // ── Languages ──────────────────────────────────────────────────

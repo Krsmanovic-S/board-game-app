@@ -11,6 +11,17 @@ class AppLocalization {
   static Map<String, String> get _strings =>
       _languages[_code] ?? _languages['en']!;
 
+  // ── Auth ────────────────────────────────────────────────────────────────────
+  static String get loginTitle => _strings['loginTitle']!;
+  static String get registerTitle => _strings['registerTitle']!;
+  static String get username => _strings['username']!;
+  static String get password => _strings['password']!;
+  static String get email => _strings['email']!;
+  static String get continueWithGoogle => _strings['continueWithGoogle']!;
+  static String get continueWithApple => _strings['continueWithApple']!;
+  static String get noAccount => _strings['noAccount']!;
+  static String get haveAccount => _strings['haveAccount']!;
+
   // ── Nav Bar ────────────────────────────────────────────────────────
   static String get browseLabel => _strings['browseLabel']!;
   static String get watchlistLabel => _strings['watchlistLabel']!;

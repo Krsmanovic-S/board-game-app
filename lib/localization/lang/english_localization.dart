@@ -38,6 +38,17 @@ const Map<String, String> englishLocalization = {
   'november': 'November',
   'december': 'December',
 
+  // ── Auth ──────────────────────────────────────────────────────────────────
+  'loginTitle': 'Login',
+  'registerTitle': 'Register',
+  'username': 'Username',
+  'password': 'Password',
+  'email': 'Email',
+  'continueWithGoogle': 'Continue with Google',
+  'continueWithApple': 'Continue with Apple',
+  'noAccount': "Don't have an account? Register here",
+  'haveAccount': 'Already have an account? Login here',
+
   // ── Navigation Tabs ────────────────────────────────────────────────────
 
   // ── Languages ──────────────────────────────────────────────────

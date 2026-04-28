@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:board_game_app/app/theme.dart';
-import 'package:board_game_app/app/layout.dart';
 import 'package:board_game_app/localization/localization.dart';
 import 'package:board_game_app/widgets/bottom_nav_bar.dart';
+import 'package:board_game_app/screens/auth_screen.dart';
 
 // Effect for Transitioning
 CustomTransitionPage<void> _fadePage(GoRouterState state, Widget child) =>
@@ -47,20 +46,13 @@ final appRouter = GoRouter(
   // Populate Initial Location
   initialLocation: '/auth',
   routes: [
+    GoRoute(
+      path: '/auth',
+      pageBuilder: (context, state) => _fadePage(state, const AuthScreen()),
+    ),
     ShellRoute(
       builder: (context, state, child) => _AppShell(child: child),
       routes: [
-        GoRoute(
-          path: '/auth',
-          pageBuilder: (context, state) => _fadePage(
-            state,
-            RootPagePopHandler(
-              onBackInvoked: () => _handleRootBack(context),
-              // Populate this screen
-              child: Text('Placeholder'),
-            ),
-          ),
-        ),
         GoRoute(
           path: '/browse',
           pageBuilder: (context, state) => _fadePage(
