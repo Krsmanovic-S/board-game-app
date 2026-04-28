@@ -43,7 +43,7 @@ abstract class AppColors {
 
   // Borders and Divider
   static const Color border = Color(0xFFD8CFBF);
-  static const Color divider = Color(0xFFE5DDD0);
+  static const Color divider = Color.fromARGB(255, 212, 205, 193);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -74,88 +74,88 @@ abstract class AppTextStyles {
 abstract class AppButtonStyles {
   // Major CTAs / Primary Buttons
   static ButtonStyle get primaryFilled => ElevatedButton.styleFrom(
-    backgroundColor: AppColors.primary,
-    foregroundColor: Colors.white,
-    textStyle: AppTextStyles.font18.copyWith(
-      fontWeight: FontWeight.w700,
-      letterSpacing: 1.2,
-    ),
-    padding: EdgeInsets.symmetric(vertical: Layout.v(12)),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(Layout.v(8))),
-    ),
-    elevation: 10,
-  );
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        textStyle: AppTextStyles.font18.copyWith(
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.2,
+        ),
+        padding: EdgeInsets.symmetric(vertical: Layout.v(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(Layout.v(8))),
+        ),
+        elevation: 10,
+      );
 
   /// Ghost / Text Button
   static ButtonStyle get ghostPrimary => TextButton.styleFrom(
-    foregroundColor: AppColors.primary,
-    backgroundColor: AppColors.surfaceElevated,
-    textStyle: AppTextStyles.font18.copyWith(fontWeight: FontWeight.w600),
-    padding: Layout.symmetric(vertical: 12),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(Layout.v(8))),
-    ),
-  );
+        foregroundColor: AppColors.primary,
+        backgroundColor: AppColors.surfaceElevated,
+        textStyle: AppTextStyles.font18.copyWith(fontWeight: FontWeight.w600),
+        padding: Layout.symmetric(vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(Layout.v(8))),
+        ),
+      );
 
   // Outlined Primary
   static ButtonStyle get primaryOutlined => OutlinedButton.styleFrom(
-    foregroundColor: AppColors.primary,
-    side: BorderSide(color: AppColors.primary, width: 1.5),
-    textStyle: AppTextStyles.font18.copyWith(fontWeight: FontWeight.w600),
-    padding: EdgeInsets.symmetric(
-      vertical: Layout.v(8),
-      horizontal: Layout.v(16),
-    ),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(Layout.v(8))),
-    ),
-  );
+        foregroundColor: AppColors.primary,
+        side: BorderSide(color: AppColors.primary, width: 1.5),
+        textStyle: AppTextStyles.font18.copyWith(fontWeight: FontWeight.w600),
+        padding: EdgeInsets.symmetric(
+          vertical: Layout.v(8),
+          horizontal: Layout.v(16),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(Layout.v(8))),
+        ),
+      );
 
   /// Outlined Grey
   static ButtonStyle get outlinedGrey => OutlinedButton.styleFrom(
-    foregroundColor: AppColors.textMuted,
-    side: const BorderSide(color: AppColors.border),
-    textStyle: AppTextStyles.font18.copyWith(fontWeight: FontWeight.w600),
-    padding: EdgeInsets.symmetric(vertical: Layout.v(10), horizontal: 12),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(Layout.v(8))),
-    ),
-  );
+        foregroundColor: AppColors.textMuted,
+        side: const BorderSide(color: AppColors.border),
+        textStyle: AppTextStyles.font18.copyWith(fontWeight: FontWeight.w600),
+        padding: EdgeInsets.symmetric(vertical: Layout.v(10), horizontal: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(Layout.v(8))),
+        ),
+      );
 
   /// Outlined Destructive - 'Cancel', 'Error' etc..
   static ButtonStyle get outlinedDestructive => OutlinedButton.styleFrom(
-    foregroundColor: AppColors.error,
-    side: const BorderSide(color: AppColors.error, width: 1.5),
-    textStyle: AppTextStyles.font18.copyWith(fontWeight: FontWeight.w600),
-    padding: EdgeInsets.symmetric(vertical: Layout.v(12)),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(Layout.v(8))),
-    ),
-  );
+        foregroundColor: AppColors.error,
+        side: const BorderSide(color: AppColors.error, width: 1.5),
+        textStyle: AppTextStyles.font18.copyWith(fontWeight: FontWeight.w600),
+        padding: EdgeInsets.symmetric(vertical: Layout.v(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(Layout.v(8))),
+        ),
+      );
 
   /// Modal Save (Bottom Sheets)
   static ButtonStyle get modalSave => ElevatedButton.styleFrom(
-    backgroundColor: AppColors.primary,
-    foregroundColor: Colors.white,
-    textStyle: AppTextStyles.font16.copyWith(fontWeight: FontWeight.w600),
-    padding: Layout.symmetric(vertical: 14),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
-    ),
-    elevation: 0,
-  );
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+        textStyle: AppTextStyles.font16.copyWith(fontWeight: FontWeight.w600),
+        padding: Layout.symmetric(vertical: 14),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+        elevation: 0,
+      );
 
   /// Modal Cancel (Bottom Sheets)
   static ButtonStyle get modalCancel => OutlinedButton.styleFrom(
-    foregroundColor: AppColors.textMuted,
-    side: const BorderSide(color: AppColors.border),
-    textStyle: AppTextStyles.font16.copyWith(fontWeight: FontWeight.w600),
-    padding: Layout.symmetric(vertical: 14),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(8)),
-    ),
-  );
+        foregroundColor: AppColors.textMuted,
+        side: const BorderSide(color: AppColors.border),
+        textStyle: AppTextStyles.font16.copyWith(fontWeight: FontWeight.w600),
+        padding: Layout.symmetric(vertical: 14),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+      );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -163,116 +163,117 @@ abstract class AppButtonStyles {
 // ─────────────────────────────────────────────────────────────────────────────
 
 ThemeData buildAppTheme() => ThemeData(
-  brightness: Brightness.light,
-  colorScheme: ColorScheme.light(
-    primary: AppColors.primary,
-    onPrimary: Colors.white,
-    secondary: AppColors.primary,
-    onSecondary: Colors.white,
-    surface: AppColors.surface,
-    onSurface: AppColors.textPrimary,
-    error: AppColors.error,
-    onError: Colors.white,
-    primaryContainer: AppColors.primaryDim,
-    onPrimaryContainer: Colors.white,
-  ),
+      brightness: Brightness.light,
+      colorScheme: ColorScheme.light(
+        primary: AppColors.primary,
+        onPrimary: Colors.white,
+        secondary: AppColors.primary,
+        onSecondary: Colors.white,
+        surface: AppColors.surface,
+        onSurface: AppColors.textPrimary,
+        error: AppColors.error,
+        onError: Colors.white,
+        primaryContainer: AppColors.primaryDim,
+        onPrimaryContainer: Colors.white,
+      ),
 
-  // ── AppBar ────────────────────────────────────────────────────────────────
-  appBarTheme: AppBarTheme(
-    backgroundColor: AppColors.surface,
-    foregroundColor: AppColors.textPrimary,
-    elevation: 0,
-    toolbarHeight: Layout.v(60),
-    titleTextStyle: AppTextStyles.font22.copyWith(
-      fontWeight: FontWeight.w700,
-      color: AppColors.textPrimary,
-    ),
-    iconTheme: IconThemeData(color: AppColors.textPrimary, size: Layout.v(22)),
-  ),
+      // ── AppBar ────────────────────────────────────────────────────────────────
+      appBarTheme: AppBarTheme(
+        backgroundColor: AppColors.surface,
+        foregroundColor: AppColors.textPrimary,
+        elevation: 0,
+        toolbarHeight: Layout.v(60),
+        titleTextStyle: AppTextStyles.font22.copyWith(
+          fontWeight: FontWeight.w700,
+          color: AppColors.textPrimary,
+        ),
+        iconTheme:
+            IconThemeData(color: AppColors.textPrimary, size: Layout.v(22)),
+      ),
 
-  // ── Buttons ───────────────────────────────────────────────────────────────
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: AppButtonStyles.primaryFilled,
-  ),
-  outlinedButtonTheme: OutlinedButtonThemeData(
-    style: AppButtonStyles.outlinedGrey,
-  ),
-  textButtonTheme: TextButtonThemeData(
-    style: TextButton.styleFrom(
-      foregroundColor: AppColors.primary,
-      textStyle: AppTextStyles.font18.copyWith(fontWeight: FontWeight.w600),
-    ),
-  ),
+      // ── Buttons ───────────────────────────────────────────────────────────────
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: AppButtonStyles.primaryFilled,
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: AppButtonStyles.outlinedGrey,
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          textStyle: AppTextStyles.font18.copyWith(fontWeight: FontWeight.w600),
+        ),
+      ),
 
-  // ── Input fields ──────────────────────────────────────────────────────────
-  inputDecorationTheme: InputDecorationTheme(
-    filled: true,
-    fillColor: AppColors.inputFill,
-    hintStyle: const TextStyle(color: AppColors.textDisabled),
-    contentPadding: Layout.symmetric(horizontal: 12, vertical: 12),
-    isDense: true,
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: AppColors.border),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: AppColors.border),
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: AppColors.primary, width: 1.5),
-    ),
-  ),
+      // ── Input fields ──────────────────────────────────────────────────────────
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.inputFill,
+        hintStyle: const TextStyle(color: AppColors.textDisabled),
+        contentPadding: Layout.symmetric(horizontal: 12, vertical: 12),
+        isDense: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: AppColors.border),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: AppColors.border),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+        ),
+      ),
 
-  // ── Cards ─────────────────────────────────────────────────────────────────
-  cardTheme: const CardThemeData(
-    color: AppColors.surface,
-    elevation: 0,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(12)),
-    ),
-  ),
+      // ── Cards ─────────────────────────────────────────────────────────────────
+      cardTheme: const CardThemeData(
+        color: AppColors.surface,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+      ),
 
-  // ── Dialogs ───────────────────────────────────────────────────────────────
-  dialogTheme: DialogThemeData(
-    backgroundColor: AppColors.surface,
-    titleTextStyle: AppTextStyles.font22.copyWith(
-      fontWeight: FontWeight.w700,
-      color: AppColors.textPrimary,
-    ),
-    contentTextStyle: AppTextStyles.font16.copyWith(
-      color: AppColors.textSecondary,
-    ),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(12)),
-    ),
-  ),
+      // ── Dialogs ───────────────────────────────────────────────────────────────
+      dialogTheme: DialogThemeData(
+        backgroundColor: AppColors.surface,
+        titleTextStyle: AppTextStyles.font22.copyWith(
+          fontWeight: FontWeight.w700,
+          color: AppColors.textPrimary,
+        ),
+        contentTextStyle: AppTextStyles.font16.copyWith(
+          color: AppColors.textSecondary,
+        ),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+      ),
 
-  // ── Floating Action Button ───────────────────────────────────────────────────────────────────
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: AppColors.primary,
-    foregroundColor: Colors.black,
-  ),
+      // ── Floating Action Button ───────────────────────────────────────────────────────────────────
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: AppColors.primary,
+        foregroundColor: Colors.white,
+      ),
 
-  // ── Divider ───────────────────────────────────────────────────────────────
-  dividerTheme: const DividerThemeData(
-    color: AppColors.divider,
-    thickness: 1,
-    space: 1,
-  ),
+      // ── Divider ───────────────────────────────────────────────────────────────
+      dividerTheme: const DividerThemeData(
+        color: AppColors.divider,
+        thickness: 1,
+        space: 1,
+      ),
 
-  // ── Switch ────────────────────────────────────────────────────────────────
-  switchTheme: SwitchThemeData(
-    thumbColor: WidgetStateProperty.resolveWith(
-      (s) => s.contains(WidgetState.selected)
-          ? AppColors.primary
-          : AppColors.textMuted,
-    ),
-    trackColor: WidgetStateProperty.resolveWith(
-      (s) => s.contains(WidgetState.selected)
-          ? AppColors.primary.withValues(alpha: 0.4)
-          : AppColors.border,
-    ),
-  ),
-);
+      // ── Switch ────────────────────────────────────────────────────────────────
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith(
+          (s) => s.contains(WidgetState.selected)
+              ? AppColors.primary
+              : AppColors.textMuted,
+        ),
+        trackColor: WidgetStateProperty.resolveWith(
+          (s) => s.contains(WidgetState.selected)
+              ? AppColors.primary.withValues(alpha: 0.4)
+              : AppColors.border,
+        ),
+      ),
+    );

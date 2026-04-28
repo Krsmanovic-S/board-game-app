@@ -21,44 +21,42 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     SettingsScope.of(context); // subscribe to theme changes
     final location = GoRouterState.of(context).uri.toString();
+    print('Loc: $location');
     final currentIndex = _locationToIndex(location);
 
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1A1A),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: Layout.size16,
-            offset: const Offset(0, -4),
+        border: Border(
+          top: BorderSide(
+            color: AppColors.divider.withValues(alpha: 0.5),
+            width: 1,
           ),
-        ],
+        ),
       ),
       child: SafeArea(
         top: false,
         left: false,
         right: false,
         child: Padding(
-          padding: Layout.symmetric(vertical: 4),
+          padding: Layout.symmetric(vertical: 12),
           child: Row(
             children: [
               _NavItem(
-                icon: Icons.history_rounded,
+                icon: Icons.explore,
                 label: AppLocalization.browseLabel,
                 isActive: currentIndex == 1,
                 onTap: () => context.go('/browse'),
               ),
               _NavDivider(),
               _NavItem(
-                icon: Icons.fitness_center_rounded,
+                icon: Icons.remove_red_eye_rounded,
                 label: AppLocalization.watchlistLabel,
                 isActive: currentIndex == 2,
                 onTap: () => context.go('/watchlist'),
-                isCenter: true,
               ),
               _NavDivider(),
               _NavItem(
-                icon: Icons.accessibility_new_rounded,
+                icon: Icons.person,
                 label: AppLocalization.profileLabel,
                 isActive: currentIndex == 3,
                 onTap: () => context.go('/profile'),
@@ -76,8 +74,8 @@ class _NavDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 2,
-      height: 36,
-      color: Colors.white.withValues(alpha: 0.1),
+      height: Layout.v(48),
+      color: AppColors.divider.withValues(alpha: 0.3),
     );
   }
 }
@@ -87,14 +85,12 @@ class _NavItem extends StatefulWidget {
   final String label;
   final bool isActive;
   final VoidCallback onTap;
-  final bool isCenter;
 
   const _NavItem({
     required this.icon,
     required this.label,
     required this.isActive,
     required this.onTap,
-    this.isCenter = false,
   });
 
   @override
@@ -169,38 +165,17 @@ class _NavItemState extends State<_NavItem>
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
-              widget.isCenter
-                  ? AnimatedContainer(
-                      duration: const Duration(milliseconds: 200),
-                      curve: Curves.easeOut,
-                      width: Layout.v(32),
-                      height: Layout.v(32),
-                      decoration: BoxDecoration(
-                        color: widget.isActive
-                            ? activeColor
-                            : Colors.white.withValues(alpha: 0.06),
-                        borderRadius: BorderRadius.circular(Layout.v(10)),
-                      ),
-                      child: Icon(
-                        widget.icon,
-                        size: Layout.size18,
-                        color: widget.isActive ? Colors.white : inactiveColor,
-                      ),
-                    )
-                  : Icon(
-                      widget.icon,
-                      size: Layout.v(24),
-                      color: widget.isActive ? activeColor : inactiveColor,
-                    ),
-
+              Icon(
+                widget.icon,
+                size: Layout.v(24),
+                color: widget.isActive ? activeColor : inactiveColor,
+              ),
               Layout.heightBox(4),
-
               AnimatedDefaultTextStyle(
                 duration: const Duration(milliseconds: 200),
                 style: AppTextStyles.font12.copyWith(
-                  fontWeight: widget.isActive
-                      ? FontWeight.w600
-                      : FontWeight.w400,
+                  fontWeight:
+                      widget.isActive ? FontWeight.w600 : FontWeight.w400,
                   color: widget.isActive ? activeColor : inactiveColor,
                   letterSpacing: 0.3,
                 ),
