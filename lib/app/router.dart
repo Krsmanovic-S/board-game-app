@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:board_game_app/localization/localization.dart';
+import 'package:board_game_app/providers/auth_controller.dart';
 import 'package:board_game_app/widgets/bottom_nav_bar.dart';
 import 'package:board_game_app/screens/auth_screen.dart';
+import 'package:board_game_app/screens/profile_screen.dart';
+
+final authController = AuthController();
 
 // Effect for Transitioning
 CustomTransitionPage<void> _fadePage(GoRouterState state, Widget child) =>
@@ -43,8 +47,16 @@ class RootPagePopHandler extends StatelessWidget {
 }
 
 final appRouter = GoRouter(
-  // Populate Initial Location
   initialLocation: '/auth',
+  refreshListenable: authController,
+  redirect: (context, state) {
+    if (!authController.initialized) return null;
+    final loggedIn = authController.isLoggedIn;
+    final onAuth = state.matchedLocation == '/auth';
+    if (!loggedIn && !onAuth) return '/auth';
+    if (loggedIn && onAuth) return '/watchlist';
+    return null;
+  },
   routes: [
     GoRoute(
       path: '/auth',
@@ -81,8 +93,7 @@ final appRouter = GoRouter(
             state,
             RootPagePopHandler(
               onBackInvoked: () => _handleRootBack(context),
-              // Populate this screen
-              child: Text('Placeholder'),
+              child: const ProfileScreen(),
             ),
           ),
         ),

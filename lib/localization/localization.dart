@@ -16,11 +16,38 @@ class AppLocalization {
   static String get registerTitle => _strings['registerTitle']!;
   static String get username => _strings['username']!;
   static String get password => _strings['password']!;
+  static String get confirmPassword => _strings['confirmPassword']!;
   static String get email => _strings['email']!;
   static String get continueWithGoogle => _strings['continueWithGoogle']!;
   static String get continueWithApple => _strings['continueWithApple']!;
   static String get noAccount => _strings['noAccount']!;
   static String get haveAccount => _strings['haveAccount']!;
+  static String get forgotPassword => _strings['forgotPassword']!;
+
+  // ── Validation ────────────────────────────────────────────────────────────
+  static String get validationError => _strings['validationError']!;
+  static String get invalidEmail => _strings['invalidEmail']!;
+  static String get usernameRequired => _strings['usernameRequired']!;
+  static String get usernameTaken => _strings['usernameTaken']!;
+  static String get passwordTooShort => _strings['passwordTooShort']!;
+  static String get passwordsDontMatch => _strings['passwordsDontMatch']!;
+
+  // ── Auth Errors ───────────────────────────────────────────────────────────
+  static String get error => _strings['error']!;
+  static String get loginError => _strings['loginError']!;
+  static String get registerError => _strings['registerError']!;
+  static String get emailInUse => _strings['emailInUse']!;
+  static String get wrongCredentials => _strings['wrongCredentials']!;
+  static String get networkError => _strings['networkError']!;
+  static String get unknownError => _strings['unknownError']!;
+
+  // ── Profile ────────────────────────────────────────────────────────────────
+  static String get logout => _strings['logout']!;
+  static String get profileMyData => _strings['profileMyData']!;
+  static String get profileSettings => _strings['profileSettings']!;
+  static String get profileContact => _strings['profileContact']!;
+  static String get sendEmail => _strings['sendEmail']!;
+  static String get settingsComingSoon => _strings['settingsComingSoon']!;
 
   // ── Nav Bar ────────────────────────────────────────────────────────
   static String get browseLabel => _strings['browseLabel']!;

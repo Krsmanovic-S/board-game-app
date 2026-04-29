@@ -48,11 +48,38 @@ const Map<String, String> serbianLocalization = {
   'registerTitle': 'Registracija',
   'username': 'Korisničko ime',
   'password': 'Lozinka',
+  'confirmPassword': 'Potvrdi lozinku',
   'email': 'Email',
   'continueWithGoogle': 'Nastavi uz Google ',
   'continueWithApple': 'Nastavi uz Apple ',
   'noAccount': 'Nemate nalog? Registrujte se ovde',
   'haveAccount': 'Imate nalog? Ulogujte se ovde',
+  'forgotPassword': 'Zaboravili ste lozinku?',
+
+  // ── Validation ────────────────────────────────────────────────────────────
+  'error': 'Greška',
+  'validationError': 'Greška',
+  'invalidEmail': 'Unesite ispravnu email adresu.',
+  'usernameRequired': 'Korisničko ime je obavezno.',
+  'usernameTaken': 'Ovo korisničko ime je zauzeto. Molimo izaberite drugo.',
+  'passwordTooShort': 'Lozinka mora imati najmanje 6 karaktera.',
+  'passwordsDontMatch': 'Lozinke se ne podudaraju.',
+
+  // ── Auth Errors ───────────────────────────────────────────────────────────
+  'loginError': 'Greška pri prijavi',
+  'registerError': 'Greška pri registraciji',
+  'emailInUse': 'Ova email adresa je već registrovana.',
+  'wrongCredentials': 'Pogrešan email ili lozinka. Pokušajte ponovo.',
+  'networkError': 'Greška mreže. Proverite konekciju i pokušajte ponovo.',
+  'unknownError': 'Došlo je do neočekivane greške. Pokušajte ponovo.',
+
+  // ── Profile ────────────────────────────────────────────────────────────────
+  'logout': 'Odjava',
+  'profileMyData': 'Tvoji podaci',
+  'profileSettings': 'Podešavanja',
+  'profileContact': 'Imate pitanja? - Pošaljite mejl',
+  'sendEmail': 'Pošalji mejl',
+  'settingsComingSoon': 'Više opcija uskoro.',
 
   // ── Navigation Tabs ────────────────────────────────────────────────────
 
