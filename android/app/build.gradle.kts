@@ -10,7 +10,6 @@ plugins {
 
 android {
     namespace = "com.krsmanovic.boardgametracker"
-    applicationId = "com.krsmanovic.boardgametracker"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -24,7 +23,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.krsmanovic.kockica"
+        applicationId = "com.krsmanovic.boardgametracker"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

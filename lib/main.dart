@@ -8,6 +8,9 @@ import 'package:board_game_app/providers/settings_controller.dart';
 import 'package:board_game_app/localization/localization.dart';
 import 'package:board_game_app/app/layout.dart';
 
+import 'package:board_game_app/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 final _settingsController = SettingsController();
 final _tipService = TipService();
 
@@ -26,6 +29,10 @@ void main() async {
   await _settingsController.load();
 
   AppLocalization.setLanguage('sr');
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const MyApp());
 }

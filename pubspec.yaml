@@ -40,6 +40,10 @@ dependencies:
   audioplayers: ^6.6.0
   sign_in_button: ^3.2.0
 
+  firebase_core: ^3.0.0
+  firebase_auth: ^5.0.0
+  cloud_firestore: ^5.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -73,5 +77,7 @@ flutter:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/icon/icon.png"   
+  image_path: "assets/icon/icon_ios.png"   
+  adaptive_icon_background: "#1C4B40"
+  adaptive_icon_foreground: "assets/icon/icon.png"
 

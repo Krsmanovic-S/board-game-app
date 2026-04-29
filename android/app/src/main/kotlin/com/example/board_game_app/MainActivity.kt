@@ -1,4 +1,4 @@
-package com.krsmanovic.kockica
+package com.krsmanovic.boardgametracker
 
 import io.flutter.embedding.android.FlutterActivity
 

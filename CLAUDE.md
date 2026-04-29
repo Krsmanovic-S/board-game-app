@@ -107,8 +107,7 @@ Schema that is used for each product in Firebase:
 Users have profiles and can register/login with an email and password. Relevant data for each user: username (unique), email (unique), password (crypted).
 Watched games are stored as a Firestore subcollection `watchlist/{userId}/items/{productId}` rather than a field on the user document. Each item contains: productId, notifyPriceDrop, notifyPriceIncrease, notifyOutOfStock, notifyBackInStock, addedAt.
 Login and register options include 'Continue with Google' and 'Continue with Apple' for easier and quicker registration and login. Default way to log in is to submit email and password.
-User passwords aren't stored directly in the database, we want to use a hashing algorithm and store the hash only. 
-For security reasons, rate limit the login and register attempts to prevent brute-force hacking.
+User passwords are hashed by Firebase, there is no need to write our own hashing functions, just send passwords to Firebase directly.
 
 ### Theming & Localization
 All colors, text styles, and button styles live in `lib/app/theme.dart` as three abstract classes: `AppColors`, `AppTextStyles`, `AppButtonStyles`. Edit these to retheme the app. Never hardcode colors or text styles inline — always reference these classes.
