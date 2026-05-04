@@ -1,3 +1,4 @@
+import 'package:board_game_app/widgets/field_card.dart';
 import 'package:flutter/material.dart';
 import 'package:board_game_app/app/layout.dart';
 import 'package:board_game_app/app/theme.dart';
@@ -23,20 +24,18 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _SectionHeader(AppLocalization.profileMyData),
-
-              _InfoCard(
+              SectionHeader(title: AppLocalization.profileMyData),
+              Layout.heightBox(12),
+              FieldCard(
                 label: AppLocalization.username,
                 value: user?.username ?? '',
               ),
               Layout.heightBox(8),
-              _InfoCard(
+              FieldCard(
                 label: AppLocalization.email,
                 value: user?.email ?? '',
               ),
-
               Layout.heightBox(16),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -51,17 +50,13 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
               Layout.heightBox(28),
-
-              _SectionHeader(AppLocalization.profileSettings),
-              _InfoCard(value: AppLocalization.settingsComingSoon),
-
+              SectionHeader(title: AppLocalization.profileSettings),
+              Layout.heightBox(8),
+              FieldCard(value: AppLocalization.settingsComingSoon),
               Layout.heightBox(28),
-
-              _SectionHeader(AppLocalization.profileContact),
-              Layout.heightBox(4),
-
+              SectionHeader(title: AppLocalization.profileContact),
+              Layout.heightBox(8),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -87,67 +82,6 @@ class ProfileScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _SectionHeader extends StatelessWidget {
-  final String title;
-
-  const _SectionHeader(this.title);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: AppTextStyles.font18.copyWith(
-            fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        Layout.heightBox(6),
-        Divider(color: AppColors.primary, thickness: 1.5, height: 0),
-        Layout.heightBox(12),
-      ],
-    );
-  }
-}
-
-class _InfoCard extends StatelessWidget {
-  final String? label;
-  final String value;
-
-  const _InfoCard({this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(Layout.v(10)),
-        border: Border.all(color: AppColors.border),
-      ),
-      padding: Layout.symmetric(horizontal: 14, vertical: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (label != null) ...[
-            Text(
-              label!,
-              style: AppTextStyles.font12.copyWith(color: AppColors.textMuted),
-            ),
-            Layout.heightBox(3),
-          ],
-          Text(
-            value,
-            style: AppTextStyles.font16.copyWith(color: AppColors.textPrimary),
-          ),
-        ],
       ),
     );
   }

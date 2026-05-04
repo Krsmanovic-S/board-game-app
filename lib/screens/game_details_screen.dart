@@ -1,3 +1,4 @@
+import 'package:board_game_app/widgets/field_card.dart';
 import 'package:flutter/material.dart';
 import 'package:board_game_app/data/models/board_game.dart';
 import 'package:board_game_app/app/layout.dart';
@@ -32,16 +33,44 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
         height: double.infinity,
         decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
         child: SafeArea(
-          child: Scaffold(
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
-                elevation: 0,
-                title: Text(AppLocalization.gameDetailsAppBar),
-                foregroundColor: AppColors.secondary,
-                leadingWidth: Layout.v(70),
-                titleSpacing: 0,
-              ),
-              body: Text('Placeholder')),
-        ));
+            child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            elevation: 0,
+            title: Text(AppLocalization.gameDetailsAppBar),
+            foregroundColor: AppColors.secondary,
+            leadingWidth: Layout.v(70),
+            titleSpacing: 0,
+          ),
+          body: Padding(
+            padding: Layout.all(16),
+            child: Column(
+              children: [
+                SectionHeader(title: 'Ime Igre'),
+                Layout.heightBox(10),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(Layout.v(10)),
+                    border: Border.all(color: AppColors.border),
+                  ),
+                  padding: Layout.symmetric(horizontal: 14, vertical: 12),
+                  child: Center(
+                    child: Text(
+                      widget.game!.name,
+                      textAlign: TextAlign.center,
+                      style: AppTextStyles.font20.copyWith(
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.textPrimary,
+                        height: 1.4,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        )));
   }
 }
