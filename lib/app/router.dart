@@ -1,3 +1,4 @@
+import 'package:board_game_app/screens/watchlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -19,9 +20,9 @@ CustomTransitionPage<void> _fadePage(GoRouterState state, Widget child) =>
       reverseTransitionDuration: const Duration(milliseconds: 140),
       transitionsBuilder: (context, animation, secondaryAnimation, child) =>
           FadeTransition(
-            opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
-            child: child,
-          ),
+        opacity: CurvedAnimation(parent: animation, curve: Curves.easeOut),
+        child: child,
+      ),
     );
 
 class RootPagePopHandler extends StatelessWidget {
@@ -83,7 +84,7 @@ final appRouter = GoRouter(
             RootPagePopHandler(
               onBackInvoked: () => _handleRootBack(context),
               // Populate this screen
-              child: Text('Placeholder'),
+              child: const WatchlistScreen(),
             ),
           ),
         ),

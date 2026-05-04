@@ -94,4 +94,7 @@ const Map<String, String> englishLocalization = {
   'areYouSureDelete': 'Are you sure you want to delete "{name}"?',
   'createdSuccessfully': '"{name}" created successfully',
   'updatedSuccessfully': '"{name}" updated successfully',
+  'watchlistAppBar': 'Watched Games',
+  'emptyWatchlistText':
+      'Your list is empty..\n\nSearch for games and start tracking them.',
 };

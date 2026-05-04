@@ -59,6 +59,11 @@ class AppLocalization {
   static String get noSearchResults => _strings['noSearchResults']!;
   static String get price => _strings['price']!;
 
+  // ── Watchlist ────────────────────────────────────────────────────────────────
+  static String get watchlistAppBar => _strings['watchlistAppBar']!;
+  static String get emptyWatchlistText1 => _strings['emptyWatchlistText1']!;
+  static String get emptyWatchlistText2 => _strings['emptyWatchlistText2']!;
+
   // ── Common Actions ────────────────────────────────────────────────────────
   static String get add => _strings['add']!;
   static String get all => _strings['all']!;

@@ -97,4 +97,7 @@ const Map<String, String> serbianLocalization = {
   'areYouSureDelete': 'Da li ste sigurni da želite da obrišete „{name}“?',
   'createdSuccessfully': '„{name}“ je uspešno kreiran',
   'updatedSuccessfully': '„{name}“ je uspešno ažuriran',
+  'watchlistAppBar': 'Praćene Igre',
+  'emptyWatchlistText1': 'Tvoja lista je prazna..',
+  'emptyWatchlistText2': 'Pretraži igre i počni da ih pratiš.',
 };

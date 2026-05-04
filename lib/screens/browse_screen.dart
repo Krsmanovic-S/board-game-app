@@ -185,7 +185,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
       return Center(
         child: Text(
           AppLocalization.noSearchResults,
-          style: AppTextStyles.font16.copyWith(color: AppColors.textMuted),
+          style: AppTextStyles.font18.copyWith(color: AppColors.textMuted),
         ),
       );
     }
