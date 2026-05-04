@@ -58,6 +58,7 @@ class AppLocalization {
   static String get searchHint => _strings['searchHint']!;
   static String get noSearchResults => _strings['noSearchResults']!;
   static String get price => _strings['price']!;
+  static String get lowestPrice => _strings['lowestPrice']!;
   static String get notAvailable => _strings['notAvailable']!;
 
   // ── Watchlist ────────────────────────────────────────────────────────────────

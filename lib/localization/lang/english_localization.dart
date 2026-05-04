@@ -84,6 +84,7 @@ const Map<String, String> englishLocalization = {
   'searchHint': 'Search games...',
   'noSearchResults': 'No results found.',
   'price': 'Price',
+  'lowestPrice': 'Lowest Price',
 
   // ── Languages ──────────────────────────────────────────────────
 

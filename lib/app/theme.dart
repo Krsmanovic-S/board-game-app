@@ -42,7 +42,7 @@ abstract class AppColors {
   static const Color textDisabled = Color(0xFFB0B0B0);
 
   // Borders and Divider
-  static const Color border = Color(0xFFD8CFBF);
+  static const Color border = Color(0xFFC8BFB0);
   static const Color divider = Color.fromARGB(255, 212, 205, 193);
 }
 

@@ -87,6 +87,7 @@ const Map<String, String> serbianLocalization = {
   'searchHint': 'Pretraži igre...',
   'noSearchResults': 'Nema rezultata pretrage.',
   'price': 'Cena',
+  'lowestPrice': 'Najniža Cena',
 
   // ── Languages ──────────────────────────────────────────────────
 

@@ -76,9 +76,9 @@ class _GameCardState extends State<GameCard> {
           border: Border.all(color: AppColors.border),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.06),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
+              color: Colors.black.withValues(alpha: 0.10),
+              blurRadius: 12,
+              offset: Offset(0, 3),
             ),
           ],
         ),
@@ -98,7 +98,7 @@ class _GameCardState extends State<GameCard> {
                     style: AppTextStyles.font14.copyWith(
                       fontWeight: FontWeight.w600,
                       color: AppColors.textPrimary,
-                      height: 1.2,
+                      height: 1.4,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -111,7 +111,7 @@ class _GameCardState extends State<GameCard> {
 
             // Game Image
             Padding(
-              padding: Layout.symmetric(vertical: 8, horizontal: 8),
+              padding: Layout.symmetric(vertical: 12, horizontal: 8),
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxHeight: Layout.v(120)),
                 child: _buildImage(urls),
@@ -131,9 +131,10 @@ class _GameCardState extends State<GameCard> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            AppLocalization.price,
+                            AppLocalization.lowestPrice,
                             style: AppTextStyles.font12.copyWith(
-                              color: AppColors.textMuted,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.secondary,
                               letterSpacing: 0.8,
                             ),
                           ),
@@ -141,7 +142,7 @@ class _GameCardState extends State<GameCard> {
                             _formatPrice(widget.game.lowestPrice),
                             style: AppTextStyles.font14.copyWith(
                               fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary,
+                              color: AppColors.primary,
                             ),
                           ),
                         ],
