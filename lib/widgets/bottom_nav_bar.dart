@@ -21,7 +21,6 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     SettingsScope.of(context); // subscribe to theme changes
     final location = GoRouterState.of(context).uri.toString();
-    print('Loc: $location');
     final currentIndex = _locationToIndex(location);
 
     return Container(

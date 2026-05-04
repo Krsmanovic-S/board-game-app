@@ -76,6 +76,14 @@ const Map<String, String> englishLocalization = {
   'settingsComingSoon': 'More options coming soon.',
 
   // ── Navigation Tabs ────────────────────────────────────────────────────
+  'browseLabel': 'Browse',
+  'watchlistLabel': 'Watchlist',
+  'profileLabel': 'Profile',
+
+  // ── Browse ─────────────────────────────────────────────────────────────────
+  'searchHint': 'Search games...',
+  'noSearchResults': 'No results found.',
+  'price': 'Price',
 
   // ── Languages ──────────────────────────────────────────────────
 

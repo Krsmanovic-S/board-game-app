@@ -83,6 +83,11 @@ const Map<String, String> serbianLocalization = {
 
   // ── Navigation Tabs ────────────────────────────────────────────────────
 
+  // ── Browse ─────────────────────────────────────────────────────────────────
+  'searchHint': 'Pretraži igre...',
+  'noSearchResults': 'Nema rezultata pretrage.',
+  'price': 'Cena',
+
   // ── Languages ──────────────────────────────────────────────────
 
   // ── Color Names ────────────────────────────────────────────────────────────

@@ -5,6 +5,7 @@ import 'package:board_game_app/localization/localization.dart';
 import 'package:board_game_app/providers/auth_controller.dart';
 import 'package:board_game_app/widgets/bottom_nav_bar.dart';
 import 'package:board_game_app/screens/auth_screen.dart';
+import 'package:board_game_app/screens/browse_screen.dart';
 import 'package:board_game_app/screens/profile_screen.dart';
 
 final authController = AuthController();
@@ -71,8 +72,7 @@ final appRouter = GoRouter(
             state,
             RootPagePopHandler(
               onBackInvoked: () => _handleRootBack(context),
-              // Populate this screen
-              child: Text('Placeholder'),
+              child: const BrowseScreen(),
             ),
           ),
         ),
