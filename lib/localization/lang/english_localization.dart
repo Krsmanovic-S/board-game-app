@@ -97,4 +97,5 @@ const Map<String, String> englishLocalization = {
   'watchlistAppBar': 'Watched Games',
   'emptyWatchlistText':
       'Your list is empty..\n\nSearch for games and start tracking them.',
+  'notAvailable': 'Not Available',
 };

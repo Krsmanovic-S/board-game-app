@@ -6,6 +6,7 @@ import 'package:board_game_app/data/models/board_game.dart';
 import 'package:board_game_app/localization/localization.dart';
 import 'package:board_game_app/widgets/game_card.dart';
 import 'package:board_game_app/widgets/search_bar_field.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class BrowseScreen extends StatefulWidget {
   const BrowseScreen({super.key});
@@ -22,7 +23,6 @@ class _BrowseScreenState extends State<BrowseScreen> {
   bool _hasError = false;
 
   List<BoardGame> _games = [];
-  List<_GameIndexEntry> _index = [];
   List<BoardGame> _searchResults = [];
 
   @override
@@ -43,22 +43,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
           await FirebaseFirestore.instance.collection('products').get();
       final games = snapshot.docs.map(BoardGame.fromFirestore).toList();
 
-      final index = games
-          .where((g) => g.lowestPrice > 0 && g.inStockAnywhere)
-          .map(
-            (g) => _GameIndexEntry(
-              id: g.id,
-              name: g.name,
-              lowestPrice: g.lowestPrice,
-              imageUrl: g.firstImageUrl,
-            ),
-          )
-          .toList();
-
       if (mounted) {
         setState(() {
           _games = games;
-          _index = index;
           _isLoading = false;
         });
       }
@@ -77,13 +64,13 @@ class _BrowseScreenState extends State<BrowseScreen> {
       setState(() => _searchResults = []);
       return;
     }
+
     final lower = query.toLowerCase();
-    final matchingIds = _index
-        .where((e) => e.name.toLowerCase().contains(lower))
-        .map((e) => e.id)
-        .toSet();
+
     setState(() {
-      _searchResults = _games.where((g) => matchingIds.contains(g.id)).toList();
+      _searchResults = _games
+          .where((game) => game.name.toLowerCase().contains(lower))
+          .toList();
     });
   }
 
@@ -190,30 +177,15 @@ class _BrowseScreenState extends State<BrowseScreen> {
       );
     }
 
-    return GridView.builder(
-      padding: Layout.symmetric(horizontal: 8, vertical: 16),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: Layout.v(12),
-        mainAxisSpacing: Layout.v(12),
-        childAspectRatio: 0.65,
-      ),
+    return MasonryGridView.count(
+      padding: Layout.symmetric(horizontal: 12, vertical: 16),
+      crossAxisCount: 2, // Exactly 2 cards per row
+      mainAxisSpacing: Layout.v(12),
+      crossAxisSpacing: Layout.v(12),
       itemCount: _displayGames.length,
-      itemBuilder: (context, index) => GameCard(game: _displayGames[index]),
+      itemBuilder: (context, index) {
+        return GameCard(game: _displayGames[index]);
+      },
     );
   }
-}
-
-class _GameIndexEntry {
-  final String id;
-  final String name;
-  final int lowestPrice;
-  final String? imageUrl;
-
-  const _GameIndexEntry({
-    required this.id,
-    required this.name,
-    required this.lowestPrice,
-    required this.imageUrl,
-  });
 }
