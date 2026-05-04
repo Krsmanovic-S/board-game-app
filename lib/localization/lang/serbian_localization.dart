@@ -101,4 +101,5 @@ const Map<String, String> serbianLocalization = {
   'emptyWatchlistText1': 'Tvoja lista je prazna..',
   'emptyWatchlistText2': 'Pretraži igre i počni da ih pratiš.',
   'notAvailable': 'Nije Dostupno',
+  'gameDetailsAppBar': 'Detalji Igre'
 };

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:board_game_app/app/layout.dart';
 import 'package:board_game_app/app/theme.dart';
+import 'package:board_game_app/controllers/games_controller.dart';
 import 'package:board_game_app/data/models/board_game.dart';
 import 'package:board_game_app/localization/localization.dart';
 import 'package:board_game_app/widgets/game_card.dart';
@@ -19,17 +19,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
   final _searchController = TextEditingController();
 
   bool _isSearching = false;
-  bool _isLoading = true;
-  bool _hasError = false;
-
-  List<BoardGame> _games = [];
   List<BoardGame> _searchResults = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _loadGames();
-  }
 
   @override
   void dispose() {
@@ -37,40 +27,16 @@ class _BrowseScreenState extends State<BrowseScreen> {
     super.dispose();
   }
 
-  Future<void> _loadGames() async {
-    try {
-      final snapshot =
-          await FirebaseFirestore.instance.collection('products').get();
-      final games = snapshot.docs.map(BoardGame.fromFirestore).toList();
-
-      if (mounted) {
-        setState(() {
-          _games = games;
-          _isLoading = false;
-        });
-      }
-    } catch (_) {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-          _hasError = true;
-        });
-      }
-    }
-  }
-
   void _onSearchChanged(String query) {
+    final allGames = GamesScope.of(context).games;
     if (query.isEmpty) {
       setState(() => _searchResults = []);
       return;
     }
-
     final lower = query.toLowerCase();
-
     setState(() {
-      _searchResults = _games
-          .where((game) => game.name.toLowerCase().contains(lower))
-          .toList();
+      _searchResults =
+          allGames.where((g) => g.name.toLowerCase().contains(lower)).toList();
     });
   }
 
@@ -84,19 +50,11 @@ class _BrowseScreenState extends State<BrowseScreen> {
     });
   }
 
-  List<BoardGame> get _displayGames {
-    if (!_isSearching || _searchController.text.isEmpty) return _games;
-    return _searchResults;
-  }
-
-  bool get _showEmptyState =>
-      _isSearching &&
-      _searchController.text.isNotEmpty &&
-      _searchResults.isEmpty;
-
   @override
   Widget build(BuildContext context) {
     Layout.init(context);
+    final gamesCtrl = GamesScope.of(context);
+
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -105,7 +63,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
         child: Column(
           children: [
             _buildAppBar(),
-            Expanded(child: _buildBody()),
+            Expanded(child: _buildBody(gamesCtrl)),
           ],
         ),
       ),
@@ -153,12 +111,14 @@ class _BrowseScreenState extends State<BrowseScreen> {
     );
   }
 
-  Widget _buildBody() {
-    if (_isLoading) {
-      return const Center(child: CircularProgressIndicator());
+  Widget _buildBody(GamesController gamesCtrl) {
+    if (gamesCtrl.isLoading) {
+      return Center(
+        child: CircularProgressIndicator(color: AppColors.primary),
+      );
     }
 
-    if (_hasError) {
+    if (gamesCtrl.error != null) {
       return Center(
         child: Text(
           AppLocalization.unknownError,
@@ -168,23 +128,29 @@ class _BrowseScreenState extends State<BrowseScreen> {
       );
     }
 
-    if (_showEmptyState) {
+    final displayGames = _isSearching && _searchController.text.isNotEmpty
+        ? _searchResults
+        : gamesCtrl.games;
+
+    if (_isSearching &&
+        _searchController.text.isNotEmpty &&
+        displayGames.isEmpty) {
       return Center(
         child: Text(
           AppLocalization.noSearchResults,
-          style: AppTextStyles.font18.copyWith(color: AppColors.textMuted),
+          style: AppTextStyles.font16.copyWith(color: AppColors.textMuted),
         ),
       );
     }
 
     return MasonryGridView.count(
-      padding: Layout.symmetric(horizontal: 12, vertical: 16),
-      crossAxisCount: 2, // Exactly 2 cards per row
-      mainAxisSpacing: Layout.v(12),
-      crossAxisSpacing: Layout.v(12),
-      itemCount: _displayGames.length,
+      padding: Layout.symmetric(horizontal: 8, vertical: 16),
+      crossAxisCount: 2,
+      mainAxisSpacing: Layout.v(8),
+      crossAxisSpacing: Layout.v(8),
+      itemCount: displayGames.length,
       itemBuilder: (context, index) {
-        return GameCard(game: _displayGames[index]);
+        return GameCard(game: displayGames[index]);
       },
     );
   }

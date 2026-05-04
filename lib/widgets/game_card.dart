@@ -6,30 +6,69 @@ import 'package:board_game_app/app/theme.dart';
 import 'package:board_game_app/data/models/board_game.dart';
 import 'package:board_game_app/localization/localization.dart';
 
-class GameCard extends StatelessWidget {
+class GameCard extends StatefulWidget {
   final BoardGame game;
 
   const GameCard({super.key, required this.game});
+
+  @override
+  State<GameCard> createState() => _GameCardState();
+}
+
+class _GameCardState extends State<GameCard> {
+  int _imageIndex = 0;
 
   String _formatPrice(int price) {
     final str = price.toString();
     final offset = str.length % 3;
     final buffer = StringBuffer();
-
     for (int i = 0; i < str.length; i++) {
       if (i > 0 && (i - offset) % 3 == 0 && i >= offset) buffer.write('.');
       buffer.write(str[i]);
     }
-
     return '${buffer.toString()},00 RSD';
+  }
+
+  Widget _buildImage(List<String> urls) {
+    if (urls.isEmpty || _imageIndex >= urls.length) {
+      return Icon(
+        Icons.image_outlined,
+        color: AppColors.textMuted,
+        size: Layout.v(120),
+      );
+    }
+
+    return CachedNetworkImage(
+      imageUrl: urls[_imageIndex],
+      fit: BoxFit.contain,
+      placeholder: (context, url) =>
+          const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+      errorWidget: (context, url, error) {
+        if (_imageIndex < urls.length - 1) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) setState(() => _imageIndex++);
+          });
+          return const Center(child: CircularProgressIndicator(strokeWidth: 2));
+        }
+        return SizedBox(
+          height: Layout.v(120),
+          child: Icon(
+            Icons.broken_image_outlined,
+            color: AppColors.textMuted,
+            size: Layout.v(40),
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final imageUrl = game.firstImageUrl;
+    final urls = widget.game.imageUrls;
 
     return GestureDetector(
-      onTap: () => context.go('/product/${game.id}'),
+      onTap: () =>
+          context.push('/product/${widget.game.id}', extra: widget.game),
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,
@@ -54,7 +93,7 @@ class GameCard extends StatelessWidget {
                 height: Layout.v(44),
                 child: Center(
                   child: Text(
-                    game.name,
+                    widget.game.name,
                     textAlign: TextAlign.center,
                     style: AppTextStyles.font14.copyWith(
                       fontWeight: FontWeight.w600,
@@ -72,32 +111,10 @@ class GameCard extends StatelessWidget {
 
             // Game Image
             Padding(
-              padding: Layout.symmetric(vertical: 16, horizontal: 8),
+              padding: Layout.symmetric(vertical: 8, horizontal: 8),
               child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: Layout.v(120),
-                ),
-                child: imageUrl != null
-                    ? CachedNetworkImage(
-                        imageUrl: imageUrl,
-                        fit: BoxFit.contain,
-                        placeholder: (context, url) => const Center(
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                        errorWidget: (context, url, error) => SizedBox(
-                          height: Layout.v(120),
-                          child: Icon(
-                            Icons.broken_image_outlined,
-                            color: AppColors.textMuted,
-                            size: Layout.v(40),
-                          ),
-                        ),
-                      )
-                    : Icon(
-                        Icons.image_outlined,
-                        color: AppColors.textMuted,
-                        size: Layout.v(120),
-                      ),
+                constraints: BoxConstraints(maxHeight: Layout.v(120)),
+                child: _buildImage(urls),
               ),
             ),
 
@@ -108,7 +125,7 @@ class GameCard extends StatelessWidget {
               padding: Layout.symmetric(horizontal: 12, vertical: 8),
               child: SizedBox(
                 height: Layout.v(44),
-                child: game.lowestPrice > 0
+                child: widget.game.lowestPrice > 0
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -117,10 +134,11 @@ class GameCard extends StatelessWidget {
                             AppLocalization.price,
                             style: AppTextStyles.font12.copyWith(
                               color: AppColors.textMuted,
+                              letterSpacing: 0.8,
                             ),
                           ),
                           Text(
-                            _formatPrice(game.lowestPrice),
+                            _formatPrice(widget.game.lowestPrice),
                             style: AppTextStyles.font14.copyWith(
                               fontWeight: FontWeight.w700,
                               color: AppColors.textPrimary,
@@ -134,13 +152,13 @@ class GameCard extends StatelessWidget {
                           AppLocalization.notAvailable,
                           style: AppTextStyles.font14.copyWith(
                             fontWeight: FontWeight.w700,
-                            color: AppColors.textPrimary,
+                            color: AppColors.textMuted,
                           ),
                           textAlign: TextAlign.center,
                         ),
                       ),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -65,6 +65,9 @@ class AppLocalization {
   static String get emptyWatchlistText1 => _strings['emptyWatchlistText1']!;
   static String get emptyWatchlistText2 => _strings['emptyWatchlistText2']!;
 
+  // ── Game Details ────────────────────────────────────────────────────────────────
+  static String get gameDetailsAppBar => _strings['gameDetailsAppBar']!;
+
   // ── Common Actions ────────────────────────────────────────────────────────
   static String get add => _strings['add']!;
   static String get all => _strings['all']!;

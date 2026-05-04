@@ -2,12 +2,15 @@ import 'package:board_game_app/screens/watchlist_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:board_game_app/app/theme.dart';
 import 'package:board_game_app/localization/localization.dart';
 import 'package:board_game_app/providers/auth_controller.dart';
 import 'package:board_game_app/widgets/bottom_nav_bar.dart';
 import 'package:board_game_app/screens/auth_screen.dart';
 import 'package:board_game_app/screens/browse_screen.dart';
 import 'package:board_game_app/screens/profile_screen.dart';
+import 'package:board_game_app/screens/game_details_screen.dart';
+import 'package:board_game_app/data/models/board_game.dart';
 
 final authController = AuthController();
 
@@ -49,20 +52,44 @@ class RootPagePopHandler extends StatelessWidget {
 }
 
 final appRouter = GoRouter(
-  initialLocation: '/auth',
+  initialLocation: '/loading',
   refreshListenable: authController,
   redirect: (context, state) {
     if (!authController.initialized) return null;
     final loggedIn = authController.isLoggedIn;
-    final onAuth = state.matchedLocation == '/auth';
-    if (!loggedIn && !onAuth) return '/auth';
-    if (loggedIn && onAuth) return '/watchlist';
+    final loc = state.matchedLocation;
+    if (!loggedIn && loc != '/auth') return '/auth';
+    if (loggedIn && (loc == '/auth' || loc == '/loading')) return '/watchlist';
     return null;
   },
   routes: [
     GoRoute(
+      path: '/loading',
+      pageBuilder: (context, state) => _fadePage(
+        state,
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
+          child: Center(
+            child: CircularProgressIndicator(color: AppColors.primary),
+          ),
+        ),
+      ),
+    ),
+    GoRoute(
       path: '/auth',
       pageBuilder: (context, state) => _fadePage(state, const AuthScreen()),
+    ),
+    GoRoute(
+      path: '/product/:id',
+      pageBuilder: (context, state) {
+        final gameId = state.pathParameters['id']!;
+
+        final game = state.extra as BoardGame?;
+
+        return _fadePage(state, GameDetailsScreen(gameId: gameId, game: game));
+      },
     ),
     ShellRoute(
       builder: (context, state, child) => _AppShell(child: child),

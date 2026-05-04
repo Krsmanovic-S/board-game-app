@@ -51,6 +51,15 @@ class BoardGame {
     return null;
   }
 
+  List<String> get imageUrls {
+    final urls = <String>[];
+    for (final store in _storeOrder) {
+      final img = storeInfo[store]?.image;
+      if (img != null && img.isNotEmpty) urls.add(img);
+    }
+    return urls;
+  }
+
   factory BoardGame.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     final rawStoreInfo = (data['storeInfo'] as Map<String, dynamic>?) ?? {};
