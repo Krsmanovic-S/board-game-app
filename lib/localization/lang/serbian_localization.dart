@@ -112,5 +112,8 @@ const Map<String, String> serbianLocalization = {
   'globalNotificationsDesc1':
       'Ovde možete globalno uključiti ili isključiti tipove obaveštenja koja dobijate za igre.',
   'globalNotificationsDesc2':
-      'Ova podešavanja važe za sve praćene igre globalno, za specifične igre to možete promeniti na njenoj stranici.'
+      'Ova podešavanja važe za sve praćene igre globalno, za specifične igre to možete promeniti na njenoj stranici.',
+  'watchToEnableNotifications':
+      'Pratite ovu igru da biste podesili obaveštenja',
+  'saveError': 'Greška pri čuvanju izmena',
 };

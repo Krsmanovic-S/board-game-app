@@ -61,6 +61,20 @@ class AuthController extends ChangeNotifier {
   Future<void> logout() async {
     await _auth.signOut();
   }
+
+  void patchGlobalNotification(String field, bool value) {
+    if (_appUser == null) return;
+    final updated = Map<String, bool>.from(_appUser!.globalNotifications);
+    updated[field] = value;
+    _appUser = AppUser(
+      uid: _appUser!.uid,
+      email: _appUser!.email,
+      username: _appUser!.username,
+      fcmToken: _appUser!.fcmToken,
+      globalNotifications: updated,
+    );
+    notifyListeners();
+  }
 }
 
 class AuthScope extends InheritedNotifier<AuthController> {

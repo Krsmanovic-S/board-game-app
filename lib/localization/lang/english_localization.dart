@@ -60,6 +60,7 @@ const Map<String, String> englishLocalization = {
   'passwordsDontMatch': 'Passwords do not match.',
 
   // ── Auth Errors ───────────────────────────────────────────────────────────
+  'error': 'Error',
   'loginError': 'Login Failed',
   'registerError': 'Registration Failed',
   'emailInUse': 'This email address is already registered.',
@@ -95,8 +96,8 @@ const Map<String, String> englishLocalization = {
   'createdSuccessfully': '"{name}" created successfully',
   'updatedSuccessfully': '"{name}" updated successfully',
   'watchlistAppBar': 'Watched Games',
-  'emptyWatchlistText':
-      'Your list is empty..\n\nSearch for games and start tracking them.',
+  'emptyWatchlistText1': 'Your watchlist is empty..',
+  'emptyWatchlistText2': 'Search for games and start tracking them.',
   'notAvailable': 'Not Available',
   'gameDetailsAppBar': 'Product Details',
   'buyOnButton': 'Buy on',
@@ -109,5 +110,8 @@ const Map<String, String> englishLocalization = {
   'globalNotificationsDesc1':
       'Here you can globally enable or disable the types of notifications you receive for games.',
   'globalNotificationsDesc2':
-      'These settings apply to all tracked games globally, for specific games you can change this on their individual pages.'
+      'These settings apply to all tracked games globally, for specific games you can change this on their individual pages.',
+  'watchToEnableNotifications':
+      'Watch this game to configure notification settings',
+  'saveError': 'Failed to save changes',
 };

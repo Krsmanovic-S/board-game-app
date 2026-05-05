@@ -4,6 +4,7 @@ import 'package:board_game_app/app/layout.dart';
 import 'package:board_game_app/app/router.dart';
 import 'package:board_game_app/app/theme.dart';
 import 'package:board_game_app/controllers/games_controller.dart';
+import 'package:board_game_app/controllers/watchlist_controller.dart';
 import 'package:board_game_app/firebase_options.dart';
 import 'package:board_game_app/localization/localization.dart';
 import 'package:board_game_app/providers/auth_controller.dart';
@@ -15,6 +16,7 @@ import 'package:firebase_core/firebase_core.dart';
 final _settingsController = SettingsController();
 final _tipService = TipService();
 final _gamesController = GamesController();
+final _watchlistController = WatchlistController(authController);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,14 +57,17 @@ class MyApp extends StatelessWidget {
           controller: _gamesController,
           child: AuthScope(
             controller: authController,
-            child: SettingsScope(
-              controller: _settingsController,
-              child: TipServiceScope(
-                tipService: _tipService,
-                child: MaterialApp.router(
-                  title: 'Kockica',
-                  theme: buildAppTheme(),
-                  routerConfig: appRouter,
+            child: WatchlistScope(
+              controller: _watchlistController,
+              child: SettingsScope(
+                controller: _settingsController,
+                child: TipServiceScope(
+                  tipService: _tipService,
+                  child: MaterialApp.router(
+                    title: 'Kockica',
+                    theme: buildAppTheme(),
+                    routerConfig: appRouter,
+                  ),
                 ),
               ),
             ),

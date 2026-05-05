@@ -80,6 +80,9 @@ class AppLocalization {
   static String get priceIncreaseLabel => _strings['priceIncreaseLabel']!;
   static String get outOfStockLabel => _strings['outOfStockLabel']!;
   static String get backInStockLabel => _strings['backInStockLabel']!;
+  static String get watchToEnableNotifications =>
+      _strings['watchToEnableNotifications']!;
+  static String get saveError => _strings['saveError']!;
 
   // ── Common Actions ────────────────────────────────────────────────────────
   static String get add => _strings['add']!;
