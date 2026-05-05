@@ -1,4 +1,5 @@
 import 'package:board_game_app/widgets/field_card.dart';
+import 'package:board_game_app/widgets/settings_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:board_game_app/app/layout.dart';
 import 'package:board_game_app/app/theme.dart';
@@ -24,6 +25,7 @@ class ProfileScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Profile Info
               SectionHeader(title: AppLocalization.profileMyData),
               Layout.heightBox(12),
               FieldCard(
@@ -50,11 +52,50 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Layout.heightBox(28),
+
+              Layout.heightBox(22),
+
+              // Notification Settings
               SectionHeader(title: AppLocalization.profileSettings),
               Layout.heightBox(8),
-              FieldCard(value: AppLocalization.settingsComingSoon),
-              Layout.heightBox(28),
+              Column(
+                children: [
+                  Text(
+                    AppLocalization.globalNotificationsDesc1,
+                    style: AppTextStyles.font16,
+                  ),
+                  Layout.heightBox(8),
+                  Text(
+                    AppLocalization.globalNotificationsDesc2,
+                    style: AppTextStyles.font16,
+                  ),
+                ],
+              ),
+
+              Layout.heightBox(8),
+              SwitchRow(
+                  label: AppLocalization.priceDropLabel,
+                  value: true,
+                  onChanged: (value) {}),
+              Layout.heightBox(8),
+              SwitchRow(
+                  label: AppLocalization.priceIncreaseLabel,
+                  value: true,
+                  onChanged: (value) {}),
+              Layout.heightBox(8),
+              SwitchRow(
+                  label: AppLocalization.backInStockLabel,
+                  value: true,
+                  onChanged: (value) {}),
+              Layout.heightBox(8),
+              SwitchRow(
+                  label: AppLocalization.outOfStockLabel,
+                  value: true,
+                  onChanged: (value) {}),
+
+              Layout.heightBox(22),
+
+              // Feedback & Bug Reports
               SectionHeader(title: AppLocalization.profileContact),
               Layout.heightBox(8),
               SizedBox(

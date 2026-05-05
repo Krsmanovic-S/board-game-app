@@ -47,7 +47,10 @@ class AppLocalization {
   static String get profileSettings => _strings['profileSettings']!;
   static String get profileContact => _strings['profileContact']!;
   static String get sendEmail => _strings['sendEmail']!;
-  static String get settingsComingSoon => _strings['settingsComingSoon']!;
+  static String get globalNotificationsDesc1 =>
+      _strings['globalNotificationsDesc1']!;
+  static String get globalNotificationsDesc2 =>
+      _strings['globalNotificationsDesc2']!;
 
   // ── Nav Bar ────────────────────────────────────────────────────────
   static String get browseLabel => _strings['browseLabel']!;

@@ -73,7 +73,6 @@ const Map<String, String> englishLocalization = {
   'profileSettings': 'Settings',
   'profileContact': 'Questions? Send us an email',
   'sendEmail': 'Send email',
-  'settingsComingSoon': 'More options coming soon.',
 
   // ── Navigation Tabs ────────────────────────────────────────────────────
   'browseLabel': 'Browse',
@@ -107,4 +106,8 @@ const Map<String, String> englishLocalization = {
   'priceIncreaseLabel': 'Price Increase',
   'outOfStockLabel': 'Out of Stock',
   'backInStockLabel': 'Back in Stock',
+  'globalNotificationsDesc1':
+      'Here you can globally enable or disable the types of notifications you receive for games.',
+  'globalNotificationsDesc2':
+      'These settings apply to all tracked games globally, for specific games you can change this on their individual pages.'
 };

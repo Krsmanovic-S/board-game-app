@@ -311,7 +311,7 @@ ThemeData buildAppTheme() => ThemeData(
               : AppColors.border,
         ),
         trackOutlineColor: WidgetStateProperty.resolveWith((s) {
-          return AppColors.border;
+          return Colors.transparent;
         }),
       ),
       extensions: [

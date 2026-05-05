@@ -19,11 +19,10 @@ class SwitchRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: AppColors.surface,
-      borderRadius: BorderRadius.circular(10),
+    return Container(
+      decoration: context.cardDecoration,
       child: Padding(
-        padding: Layout.symmetric(horizontal: 16, vertical: 8),
+        padding: Layout.symmetric(horizontal: 16, vertical: 4),
         child: Row(
           children: [
             Text(

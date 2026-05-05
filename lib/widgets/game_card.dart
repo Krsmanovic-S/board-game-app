@@ -114,7 +114,7 @@ class _GameCardState extends State<GameCard> {
                 height: Layout.v(44),
                 child: widget.game.lowestPrice > 0
                     ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(

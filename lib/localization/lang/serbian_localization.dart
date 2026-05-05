@@ -79,7 +79,6 @@ const Map<String, String> serbianLocalization = {
   'profileSettings': 'Podešavanja',
   'profileContact': 'Imate pitanja? - Pošaljite mejl',
   'sendEmail': 'Pošalji mejl',
-  'settingsComingSoon': 'Više opcija uskoro.',
 
   // ── Navigation Tabs ────────────────────────────────────────────────────
 
@@ -106,8 +105,12 @@ const Map<String, String> serbianLocalization = {
   'buyOnButton': 'Kupi na',
   'pricePerStore': 'Cena po Prodavnici',
   'notifications': 'Obaveštenja',
-  'priceDropLabel': 'Pad cene',
-  'priceIncreaseLabel': 'Rast cene',
+  'priceDropLabel': 'Pad Cene',
+  'priceIncreaseLabel': 'Rast Cene',
   'outOfStockLabel': 'Rasprodato',
-  'backInStockLabel': 'Ponovo dostupno'
+  'backInStockLabel': 'Ponovo Dostupno',
+  'globalNotificationsDesc1':
+      'Ovde možete globalno uključiti ili isključiti tipove obaveštenja koja dobijate za igre.',
+  'globalNotificationsDesc2':
+      'Ova podešavanja važe za sve praćene igre globalno, za specifične igre to možete promeniti na njenoj stranici.'
 };
