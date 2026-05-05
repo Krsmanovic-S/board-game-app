@@ -86,9 +86,21 @@ final appRouter = GoRouter(
       pageBuilder: (context, state) {
         final gameId = state.pathParameters['id']!;
 
-        final game = state.extra as BoardGame?;
+        // 1. Cast the extra as a Map
+        final extraMap = state.extra as Map<String, dynamic>?;
 
-        return _fadePage(state, GameDetailsScreen(gameId: gameId, game: game));
+        // 2. Extract the objects using the keys we'll define in the GameCard
+        final game = extraMap?['game'] as BoardGame?;
+        final initialImageUrl = extraMap?['initialImageUrl'] as String?;
+
+        return _fadePage(
+          state,
+          GameDetailsScreen(
+            gameId: gameId,
+            game: game,
+            initialImageUrl: initialImageUrl, // Pass this to your constructor
+          ),
+        );
       },
     ),
     ShellRoute(

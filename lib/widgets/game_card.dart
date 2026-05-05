@@ -1,3 +1,4 @@
+import 'package:board_game_app/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:go_router/go_router.dart';
@@ -17,17 +18,6 @@ class GameCard extends StatefulWidget {
 
 class _GameCardState extends State<GameCard> {
   int _imageIndex = 0;
-
-  String _formatPrice(int price) {
-    final str = price.toString();
-    final offset = str.length % 3;
-    final buffer = StringBuffer();
-    for (int i = 0; i < str.length; i++) {
-      if (i > 0 && (i - offset) % 3 == 0 && i >= offset) buffer.write('.');
-      buffer.write(str[i]);
-    }
-    return '${buffer.toString()},00 RSD';
-  }
 
   Widget _buildImage(List<String> urls) {
     if (urls.isEmpty || _imageIndex >= urls.length) {
@@ -67,21 +57,18 @@ class _GameCardState extends State<GameCard> {
     final urls = widget.game.imageUrls;
 
     return GestureDetector(
-      onTap: () =>
-          context.push('/product/${widget.game.id}', extra: widget.game),
+      onTap: () {
+        final workingUrl = widget.game.imageUrls.isNotEmpty
+            ? widget.game.imageUrls[_imageIndex]
+            : null;
+
+        context.push('/product/${widget.game.id}', extra: {
+          'game': widget.game,
+          'initialImageUrl': workingUrl,
+        });
+      },
       child: Container(
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(Layout.v(12)),
-          border: Border.all(color: AppColors.border),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.10),
-              blurRadius: 12,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
+        decoration: context.cardDecoration,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -139,9 +126,9 @@ class _GameCardState extends State<GameCard> {
                             ),
                           ),
                           Text(
-                            _formatPrice(widget.game.lowestPrice),
+                            AppHelpers.formatPrice(widget.game.lowestPrice),
                             style: AppTextStyles.font14.copyWith(
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.w900,
                               color: AppColors.primary,
                             ),
                           ),

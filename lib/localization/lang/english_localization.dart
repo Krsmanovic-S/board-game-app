@@ -99,5 +99,7 @@ const Map<String, String> englishLocalization = {
   'emptyWatchlistText':
       'Your list is empty..\n\nSearch for games and start tracking them.',
   'notAvailable': 'Not Available',
-  'gameDetailsAppBar': 'Product Details'
+  'gameDetailsAppBar': 'Product Details',
+  'buyOnButton': 'Buy on',
+  'pricePerStore': 'Price per Store',
 };

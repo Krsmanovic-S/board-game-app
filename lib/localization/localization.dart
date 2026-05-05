@@ -68,6 +68,8 @@ class AppLocalization {
 
   // ── Game Details ────────────────────────────────────────────────────────────────
   static String get gameDetailsAppBar => _strings['gameDetailsAppBar']!;
+  static String get buyOnButton => _strings['buyOnButton']!;
+  static String get pricePerStore => _strings['pricePerStore']!;
 
   // ── Common Actions ────────────────────────────────────────────────────────
   static String get add => _strings['add']!;

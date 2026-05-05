@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:board_game_app/app/layout.dart';
 
+extension ThemeGetter on BuildContext {
+  BoxDecoration get cardDecoration =>
+      Theme.of(this).extension<AppCustomDecorations>()!.primaryCard;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // COLOR TOKENS - Edit these to retheme the entire app.
 // ─────────────────────────────────────────────────────────────────────────────
@@ -52,19 +57,19 @@ abstract class AppColors {
 
 abstract class AppTextStyles {
   static TextStyle get font10 =>
-      TextStyle(fontFamily: 'UbuntuCondensed', fontSize: Layout.size10);
+      TextStyle(fontFamily: 'Nunito', fontSize: Layout.size10);
   static TextStyle get font12 =>
-      TextStyle(fontFamily: 'UbuntuCondensed', fontSize: Layout.size12);
+      TextStyle(fontFamily: 'Nunito', fontSize: Layout.size12);
   static TextStyle get font14 =>
-      TextStyle(fontFamily: 'UbuntuCondensed', fontSize: Layout.size14);
+      TextStyle(fontFamily: 'Nunito', fontSize: Layout.size14);
   static TextStyle get font16 =>
-      TextStyle(fontFamily: 'UbuntuCondensed', fontSize: Layout.size16);
+      TextStyle(fontFamily: 'Nunito', fontSize: Layout.size16);
   static TextStyle get font18 =>
-      TextStyle(fontFamily: 'UbuntuCondensed', fontSize: Layout.size18);
+      TextStyle(fontFamily: 'Nunito', fontSize: Layout.size18);
   static TextStyle get font20 =>
-      TextStyle(fontFamily: 'UbuntuCondensed', fontSize: Layout.size20);
+      TextStyle(fontFamily: 'Nunito', fontSize: Layout.size20);
   static TextStyle get font22 =>
-      TextStyle(fontFamily: 'UbuntuCondensed', fontSize: Layout.size22);
+      TextStyle(fontFamily: 'Nunito', fontSize: Layout.size22);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -156,6 +161,30 @@ abstract class AppButtonStyles {
           borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
       );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// THEME EXTENSIONS
+// ─────────────────────────────────────────────────────────────────────────────
+
+class AppCustomDecorations extends ThemeExtension<AppCustomDecorations> {
+  final BoxDecoration primaryCard;
+
+  AppCustomDecorations({required this.primaryCard});
+
+  @override
+  ThemeExtension<AppCustomDecorations> copyWith({BoxDecoration? primaryCard}) {
+    return AppCustomDecorations(primaryCard: primaryCard ?? this.primaryCard);
+  }
+
+  @override
+  ThemeExtension<AppCustomDecorations> lerp(
+      ThemeExtension<AppCustomDecorations>? other, double t) {
+    if (other is! AppCustomDecorations) return this;
+    return AppCustomDecorations(
+      primaryCard: BoxDecoration.lerp(primaryCard, other.primaryCard, t)!,
+    );
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -276,4 +305,21 @@ ThemeData buildAppTheme() => ThemeData(
               : AppColors.border,
         ),
       ),
+      extensions: [
+        AppCustomDecorations(
+          primaryCard: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius:
+                BorderRadius.circular(12), // Use a fixed value or Layout.v
+            border: Border.all(color: AppColors.border),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.10),
+                blurRadius: 12,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
