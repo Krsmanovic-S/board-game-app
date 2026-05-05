@@ -70,6 +70,13 @@ class AppLocalization {
   static String get gameDetailsAppBar => _strings['gameDetailsAppBar']!;
   static String get buyOnButton => _strings['buyOnButton']!;
   static String get pricePerStore => _strings['pricePerStore']!;
+  static String get notifications => _strings['notifications']!;
+
+  // ── Game Notifications ────────────────────────────────────────────────────────────────
+  static String get priceDropLabel => _strings['priceDropLabel']!;
+  static String get priceIncreaseLabel => _strings['priceIncreaseLabel']!;
+  static String get outOfStockLabel => _strings['outOfStockLabel']!;
+  static String get backInStockLabel => _strings['backInStockLabel']!;
 
   // ── Common Actions ────────────────────────────────────────────────────────
   static String get add => _strings['add']!;

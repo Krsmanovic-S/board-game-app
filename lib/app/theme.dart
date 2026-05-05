@@ -49,6 +49,12 @@ abstract class AppColors {
   // Borders and Divider
   static const Color border = Color(0xFFC8BFB0);
   static const Color divider = Color.fromARGB(255, 212, 205, 193);
+
+  // Store Colors
+  static const Color games4you = Color(0xFFE31E24);
+  static const Color mipl = Color(0xFFF58220);
+  static const Color gnom = Color(0xFF1B365D);
+  static const Color kraken = Color(0xFF005B5C);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -297,13 +303,16 @@ ThemeData buildAppTheme() => ThemeData(
         thumbColor: WidgetStateProperty.resolveWith(
           (s) => s.contains(WidgetState.selected)
               ? AppColors.primary
-              : AppColors.textMuted,
+              : AppColors.surface,
         ),
         trackColor: WidgetStateProperty.resolveWith(
           (s) => s.contains(WidgetState.selected)
               ? AppColors.primary.withValues(alpha: 0.4)
               : AppColors.border,
         ),
+        trackOutlineColor: WidgetStateProperty.resolveWith((s) {
+          return AppColors.border;
+        }),
       ),
       extensions: [
         AppCustomDecorations(

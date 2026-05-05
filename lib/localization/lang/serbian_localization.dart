@@ -105,4 +105,9 @@ const Map<String, String> serbianLocalization = {
   'gameDetailsAppBar': 'Detalji Igre',
   'buyOnButton': 'Kupi na',
   'pricePerStore': 'Cena po Prodavnici',
+  'notifications': 'Obaveštenja',
+  'priceDropLabel': 'Pad cene',
+  'priceIncreaseLabel': 'Rast cene',
+  'outOfStockLabel': 'Rasprodato',
+  'backInStockLabel': 'Ponovo dostupno'
 };

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:board_game_app/app/theme.dart';
 
 class AppHelpers {
   static const Map<String, String> _storeLabels = {
@@ -15,6 +16,23 @@ class AppHelpers {
 
     final normalizedKey = key.trim().toLowerCase();
     return _storeLabels[normalizedKey] ?? 'null';
+  }
+
+  static Color getStoreColor(String? key) {
+    if (key == null) return Colors.white;
+
+    switch (key) {
+      case 'games4you':
+        return AppColors.games4you;
+      case 'mipl':
+        return AppColors.mipl;
+      case 'gnom':
+        return AppColors.gnom;
+      case 'kraken':
+        return AppColors.kraken;
+    }
+
+    return AppColors.surface;
   }
 
   // Returns price in 999,00 RSD format

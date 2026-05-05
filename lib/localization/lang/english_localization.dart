@@ -102,4 +102,9 @@ const Map<String, String> englishLocalization = {
   'gameDetailsAppBar': 'Product Details',
   'buyOnButton': 'Buy on',
   'pricePerStore': 'Price per Store',
+  'notifications': 'Notifications',
+  'priceDropLabel': 'Price Drop',
+  'priceIncreaseLabel': 'Price Increase',
+  'outOfStockLabel': 'Out of Stock',
+  'backInStockLabel': 'Back in Stock',
 };
