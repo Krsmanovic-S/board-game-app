@@ -116,4 +116,5 @@ const Map<String, String> serbianLocalization = {
   'watchToEnableNotifications':
       'Pratite ovu igru da biste podesili obaveštenja',
   'saveError': 'Greška pri čuvanju izmena',
+  'noPriceHistory': 'Nema podataka za ovaj proizvod..'
 };

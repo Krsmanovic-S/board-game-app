@@ -114,4 +114,5 @@ const Map<String, String> englishLocalization = {
   'watchToEnableNotifications':
       'Watch this game to configure notification settings',
   'saveError': 'Failed to save changes',
+  'noPriceHistory': 'No data for this product..'
 };

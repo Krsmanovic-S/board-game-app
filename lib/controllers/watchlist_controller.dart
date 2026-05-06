@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
 import 'package:board_game_app/data/models/watchlist_item.dart';
-import 'package:board_game_app/providers/auth_controller.dart';
+import 'package:board_game_app/controllers/auth_controller.dart';
 
 class WatchlistController extends ChangeNotifier {
   final AuthController _auth;
@@ -53,8 +53,7 @@ class WatchlistController extends ChangeNotifier {
 
       for (final doc in snap.docs) {
         // Don't overwrite items that have pending optimistic per-field writes
-        final hasPending =
-            _pending.keys.any((k) => k.startsWith('${doc.id}-'));
+        final hasPending = _pending.keys.any((k) => k.startsWith('${doc.id}-'));
         if (!hasPending) {
           _items[doc.id] = WatchlistItem.fromFirestore(doc);
         }
@@ -161,8 +160,7 @@ class WatchlistController extends ChangeNotifier {
   }
 
   void flushGamePendingWrites(String gameId) {
-    final keys =
-        _pending.keys.where((k) => k.startsWith('$gameId-')).toList();
+    final keys = _pending.keys.where((k) => k.startsWith('$gameId-')).toList();
     for (final key in keys) {
       _timers[key]?.cancel();
       _timers.remove(key);
@@ -176,8 +174,7 @@ class WatchlistController extends ChangeNotifier {
   }
 
   void flushGlobalPendingWrites() {
-    final keys =
-        _pending.keys.where((k) => k.startsWith('global-')).toList();
+    final keys = _pending.keys.where((k) => k.startsWith('global-')).toList();
     for (final key in keys) {
       _timers[key]?.cancel();
       _timers.remove(key);

@@ -7,9 +7,9 @@ import 'package:board_game_app/controllers/games_controller.dart';
 import 'package:board_game_app/controllers/watchlist_controller.dart';
 import 'package:board_game_app/firebase_options.dart';
 import 'package:board_game_app/localization/localization.dart';
-import 'package:board_game_app/providers/auth_controller.dart';
-import 'package:board_game_app/providers/settings_controller.dart';
-import 'package:board_game_app/providers/tip_controller.dart';
+import 'package:board_game_app/controllers/auth_controller.dart';
+import 'package:board_game_app/controllers/settings_controller.dart';
+import 'package:board_game_app/controllers/tip_controller.dart';
 import 'package:board_game_app/utils/tip_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 

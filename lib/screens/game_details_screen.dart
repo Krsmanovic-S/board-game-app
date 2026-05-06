@@ -1,5 +1,6 @@
 import 'package:board_game_app/controllers/watchlist_controller.dart';
 import 'package:board_game_app/widgets/field_card.dart';
+import 'package:board_game_app/widgets/price_history_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:board_game_app/data/models/board_game.dart';
@@ -146,7 +147,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
           ),
           Layout.heightBox(8),
           Text(
-            store.value.price != 0
+            store.value.price != 0 && store.value.inStock
                 ? AppHelpers.formatPrice(store.value.price)
                 : AppLocalization.notAvailable,
             style: AppTextStyles.font18.copyWith(
@@ -211,6 +212,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // Game Name
                 Text(
                   widget.game!.name,
                   style: AppTextStyles.font20.copyWith(
@@ -223,6 +225,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
 
                 Layout.heightBox(16),
 
+                // Game Image
                 Container(
                   width: double.infinity,
                   decoration: context.cardDecoration,
@@ -244,6 +247,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
 
                 Layout.heightBox(16),
 
+                // Buy Now Button
                 ElevatedButton(
                   onPressed: targetUrl != null
                       ? () => AppHelpers.launchStoreUrl(targetUrl)
@@ -268,6 +272,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
 
                 Layout.heightBox(16),
 
+                // Store Price Grid
                 SectionHeader(title: AppLocalization.pricePerStore),
 
                 Layout.heightBox(16),
@@ -276,10 +281,17 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
 
                 Layout.heightBox(16),
 
-                SectionHeader(title: AppLocalization.notifications),
+                SectionHeader(title: 'Istorija Cene'),
 
                 Layout.heightBox(16),
 
+                PriceHistoryWidget(gameId: widget.gameId),
+
+                Layout.heightBox(16),
+
+                SectionHeader(title: AppLocalization.notifications),
+
+                Layout.heightBox(16),
                 if (_effectiveIsWatched) ...[
                   if (watchlistItem != null) ...[
                     SwitchRow(

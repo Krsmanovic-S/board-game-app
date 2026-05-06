@@ -4,7 +4,7 @@ import 'package:sign_in_button/sign_in_button.dart';
 import 'package:board_game_app/app/layout.dart';
 import 'package:board_game_app/app/theme.dart';
 import 'package:board_game_app/localization/localization.dart';
-import 'package:board_game_app/providers/auth_controller.dart';
+import 'package:board_game_app/controllers/auth_controller.dart';
 import 'package:board_game_app/utils/auth.dart';
 import 'package:board_game_app/widgets/info_modal.dart';
 
@@ -124,7 +124,9 @@ class _AuthCardState extends State<_AuthCard> {
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       final message = switch (e.code) {
-        'user-not-found' || 'wrong-password' || 'invalid-credential' =>
+        'user-not-found' ||
+        'wrong-password' ||
+        'invalid-credential' =>
           AppLocalization.wrongCredentials,
         'network-request-failed' => AppLocalization.networkError,
         _ => AppLocalization.unknownError,
@@ -195,15 +197,12 @@ class _AuthCardState extends State<_AuthCard> {
               ),
               textAlign: TextAlign.center,
             ),
-
             Layout.heightBox(24),
-
             _buildTextField(
               controller: _emailController,
               hint: AppLocalization.email,
               keyboardType: TextInputType.emailAddress,
             ),
-
             if (!widget.isLogin) ...[
               Layout.heightBox(16),
               _buildTextField(
@@ -211,9 +210,7 @@ class _AuthCardState extends State<_AuthCard> {
                 hint: AppLocalization.username,
               ),
             ],
-
             Layout.heightBox(16),
-
             _buildPasswordField(
               controller: _passwordController,
               hint: AppLocalization.password,
@@ -221,7 +218,6 @@ class _AuthCardState extends State<_AuthCard> {
               onToggle: () =>
                   setState(() => _obscurePassword = !_obscurePassword),
             ),
-
             if (!widget.isLogin) ...[
               Layout.heightBox(16),
               _buildPasswordField(
@@ -233,7 +229,6 @@ class _AuthCardState extends State<_AuthCard> {
                 ),
               ),
             ],
-
             if (widget.isLogin) ...[
               Layout.heightBox(20),
               SignInButton(
@@ -250,9 +245,7 @@ class _AuthCardState extends State<_AuthCard> {
                 onPressed: () {},
               ),
             ],
-
             Layout.heightBox(20),
-
             GestureDetector(
               onTap: widget.onToggle,
               child: Text(
@@ -267,9 +260,7 @@ class _AuthCardState extends State<_AuthCard> {
                 textAlign: TextAlign.center,
               ),
             ),
-
             Layout.heightBox(20),
-
             ElevatedButton(
               onPressed: _isLoading ? null : _submit,
               style: AppButtonStyles.primaryFilled.copyWith(

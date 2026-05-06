@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:board_game_app/app/layout.dart';
 import 'package:board_game_app/app/theme.dart';
 import 'package:board_game_app/localization/localization.dart';
-import 'package:board_game_app/providers/auth_controller.dart';
+import 'package:board_game_app/controllers/auth_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -52,18 +53,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Profile Info
               SectionHeader(title: AppLocalization.profileMyData),
+
               Layout.heightBox(12),
+
               FieldCard(
                 label: AppLocalization.username,
                 value: user?.username ?? '',
               ),
+
               Layout.heightBox(8),
+
               FieldCard(
                 label: AppLocalization.email,
                 value: user?.email ?? '',
               ),
+
               Layout.heightBox(16),
+
+              // Logout Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -78,9 +87,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
+
               Layout.heightBox(16),
+
+              // Global Notification Settings
               SectionHeader(title: AppLocalization.profileSettings),
+
               Layout.heightBox(8),
+
               Column(
                 children: [
                   Text(
@@ -94,7 +108,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
               ),
+
               Layout.heightBox(8),
+
               SwitchRow(
                 label: AppLocalization.priceDropLabel,
                 value: notifications['priceDrop'] ?? true,
@@ -123,8 +139,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _watchlistCtrl.updateGlobalNotification('outOfStock', v),
               ),
               Layout.heightBox(16),
+
+              // Feedback Email
               SectionHeader(title: AppLocalization.profileContact),
-              Layout.heightBox(8),
+
+              Layout.heightBox(16),
+
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
@@ -147,6 +167,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Text(AppLocalization.sendEmail),
                 ),
               ),
+
+              Layout.heightBox(16),
+
+              // Debug Button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final db = FirebaseFirestore.instance;
+                    final snap = await db
+                        .collection('products')
+                        .orderBy('updatedAt', descending: true)
+                        .limit(10)
+                        .get();
+
+                    for (final doc in snap.docs) {
+                      final data = doc.data();
+                      debugPrint(
+                          '${data['name']} - updatedAt: ${data['updatedAt']}');
+                    }
+                  },
+                  child: const Text('Debug: Show Changed Games'),
+                ),
+              ),
+
+              Layout.heightBox(16),
             ],
           ),
         ),

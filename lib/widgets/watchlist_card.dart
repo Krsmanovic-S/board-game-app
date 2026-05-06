@@ -54,7 +54,7 @@ class _WatchlistCardState extends State<WatchlistCard> {
   @override
   Widget build(BuildContext context) {
     final urls = widget.game.imageUrls;
-    final price = widget.game.lowestPrice > 0
+    final price = widget.game.lowestPrice > 0 && widget.game.inStockAnywhere
         ? AppHelpers.formatPrice(widget.game.lowestPrice)
         : AppLocalization.notAvailable;
 
@@ -91,12 +91,15 @@ class _WatchlistCardState extends State<WatchlistCard> {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    Layout.heightBox(4),
+                    Layout.heightBox(6),
                     Text(
                       price,
-                      style: AppTextStyles.font14.copyWith(
+                      style: AppTextStyles.font16.copyWith(
                         fontWeight: FontWeight.w800,
-                        color: AppColors.primary,
+                        color: widget.game.lowestPrice > 0 &&
+                                widget.game.inStockAnywhere
+                            ? AppColors.primary
+                            : AppColors.games4you,
                       ),
                     ),
                   ],

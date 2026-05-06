@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:board_game_app/app/theme.dart';
 import 'package:board_game_app/localization/localization.dart';
-import 'package:board_game_app/providers/auth_controller.dart';
+import 'package:board_game_app/controllers/auth_controller.dart';
 import 'package:board_game_app/widgets/bottom_nav_bar.dart';
 import 'package:board_game_app/screens/auth_screen.dart';
 import 'package:board_game_app/screens/browse_screen.dart';

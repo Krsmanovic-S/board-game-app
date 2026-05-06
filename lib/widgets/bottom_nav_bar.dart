@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:board_game_app/localization/localization.dart';
 import 'package:board_game_app/app/theme.dart';
-import 'package:board_game_app/providers/settings_controller.dart';
+import 'package:board_game_app/controllers/settings_controller.dart';
 import 'package:board_game_app/app/layout.dart';
 
 class BottomNavBar extends StatelessWidget {

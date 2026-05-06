@@ -74,6 +74,7 @@ class AppLocalization {
   static String get buyOnButton => _strings['buyOnButton']!;
   static String get pricePerStore => _strings['pricePerStore']!;
   static String get notifications => _strings['notifications']!;
+  static String get noPriceHistory => _strings['noPriceHistory']!;
 
   // ── Game Notifications ────────────────────────────────────────────────────────────────
   static String get priceDropLabel => _strings['priceDropLabel']!;
