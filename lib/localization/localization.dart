@@ -52,6 +52,17 @@ class AppLocalization {
   static String get globalNotificationsDesc2 =>
       _strings['globalNotificationsDesc2']!;
 
+  // ── Tipping ────────────────────────────────────────────────────────────────
+  static String get supportDeveloperHeader =>
+      _strings['supportDeveloperHeader']!;
+  static String get supportDeveloperButton =>
+      _strings['supportDeveloperButton']!;
+  static String get supportApp => _strings['supportApp']!;
+  static String get supportDescription => _strings['supportDescription']!;
+  static String get buyTipSmall => _strings['buyTipSmall']!;
+  static String get buyTipMedium => _strings['buyTipMedium']!;
+  static String get buyTipLarge => _strings['buyTipLarge']!;
+
   // ── Nav Bar ────────────────────────────────────────────────────────
   static String get browseLabel => _strings['browseLabel']!;
   static String get watchlistLabel => _strings['watchlistLabel']!;

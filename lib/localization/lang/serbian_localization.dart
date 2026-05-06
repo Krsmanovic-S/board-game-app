@@ -116,5 +116,13 @@ const Map<String, String> serbianLocalization = {
   'watchToEnableNotifications':
       'Pratite ovu igru da biste podesili obaveštenja',
   'saveError': 'Greška pri čuvanju izmena',
-  'noPriceHistory': 'Nema podataka za ovaj proizvod..'
+  'noPriceHistory': 'Nema podataka za ovaj proizvod..',
+  'supportDeveloperHeader': 'Sviđa vam se aplikacija?',
+  'supportDeveloperButton': 'Podržite razvoj',
+  'supportApp': 'Support App',
+  'supportDescription':
+      'Aplikacija je besplatna i bez reklama. Ako vam je korisna, mala donacija pomaže daljem razvoju.',
+  'buyTipLarge': 'Kupi mi društvenu igru 🎲',
+  'buyTipMedium': 'Kupi mi ekspanziju 🃏',
+  'buyTipSmall': 'Kupi mi kafu ☕',
 };

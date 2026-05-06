@@ -4,9 +4,9 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 
 class TipService extends ChangeNotifier {
   static const _tipIds = {
-    'shelfwatch_tip_small',
-    'shelfwatch_tip_medium',
-    'shelfwatch_tip_large',
+    'app_tip_small',
+    'app_tip_medium',
+    'app_tip_large',
   };
 
   final _iap = InAppPurchase.instance;
@@ -15,6 +15,7 @@ class TipService extends ChangeNotifier {
   List<ProductDetails> products = [];
   bool available = false;
   bool loading = true;
+  bool purchasing = false;
 
   Future<void> init() async {
     available = await _iap.isAvailable();
@@ -35,8 +36,15 @@ class TipService extends ChangeNotifier {
   }
 
   Future<void> tip(ProductDetails product) async {
-    final param = PurchaseParam(productDetails: product);
-    await _iap.buyConsumable(purchaseParam: param);
+    purchasing = true;
+    notifyListeners();
+    try {
+      final param = PurchaseParam(productDetails: product);
+      await _iap.buyConsumable(purchaseParam: param);
+    } catch (_) {
+      purchasing = false;
+      notifyListeners();
+    }
   }
 
   Future<void> tipById(String productId) async {
@@ -44,12 +52,23 @@ class TipService extends ChangeNotifier {
     await tip(product);
   }
 
-  void _onPurchaseUpdate(List<PurchaseDetails> purchases) {
+  Future<void> _onPurchaseUpdate(List<PurchaseDetails> purchases) async {
     for (final p in purchases) {
-      if (p.status == PurchaseStatus.purchased ||
-          p.status == PurchaseStatus.restored) {
-        _iap.completePurchase(p); // critical — never skip this
+      switch (p.status) {
+        case PurchaseStatus.pending:
+          break;
+        case PurchaseStatus.purchased:
+        case PurchaseStatus.restored:
+          if (p.pendingCompletePurchase) await _iap.completePurchase(p);
+          purchasing = false;
+          notifyListeners();
+        case PurchaseStatus.error:
+        case PurchaseStatus.canceled:
+          purchasing = false;
+          notifyListeners();
       }
+      // iOS: always complete if still pending after status handling
+      if (p.pendingCompletePurchase) await _iap.completePurchase(p);
     }
   }
 

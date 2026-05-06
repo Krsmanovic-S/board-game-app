@@ -7,6 +7,8 @@ import 'package:board_game_app/app/theme.dart';
 import 'package:board_game_app/localization/localization.dart';
 import 'package:board_game_app/controllers/auth_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:board_game_app/controllers/tip_controller.dart';
+import 'package:board_game_app/utils/tip_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -18,6 +20,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late WatchlistController _watchlistCtrl;
 
+  TipService get _tipService => TipServiceScope.of(context);
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -28,6 +32,80 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void dispose() {
     _watchlistCtrl.flushGlobalPendingWrites();
     super.dispose();
+  }
+
+  void _showTipPicker() async {
+    if (_tipService.loading ||
+        !_tipService.available ||
+        _tipService.products.isEmpty) {
+      return;
+    }
+
+    await showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: AppColors.surface,
+      isScrollControlled: true,
+      useSafeArea: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) => Padding(
+        padding: Layout.fromLTRB(24, 20, 24, 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                color: AppColors.border,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            Layout.heightBox(20),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                AppLocalization.supportApp,
+                style: AppTextStyles.font22.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ),
+            Layout.heightBox(4),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                AppLocalization.supportDescription,
+                style: AppTextStyles.font16.copyWith(
+                  color: AppColors.textMuted,
+                ),
+              ),
+            ),
+            Layout.heightBox(12),
+            ...['vigor_tip_small', 'vigor_tip_medium', 'vigor_tip_large'].map(
+              (id) => TipOptionRow(
+                productId: id,
+                onTap: () {
+                  Navigator.pop(ctx);
+                  _tipService.tipById(id);
+                },
+              ),
+            ),
+            Layout.heightBox(20),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton(
+                onPressed: () => Navigator.pop(ctx),
+                style: AppButtonStyles.modalCancel,
+                child: Text(AppLocalization.cancel),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -53,6 +131,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Tipping
+              SectionHeader(title: AppLocalization.supportDeveloperHeader),
+
+              Layout.heightBox(12),
+
+              MenuTile(
+                icon: Icons.favorite,
+                label: AppLocalization.supportDeveloperButton,
+                onTap: _showTipPicker,
+              ),
+
+              Layout.heightBox(12),
+
               // Profile Info
               SectionHeader(title: AppLocalization.profileMyData),
 
@@ -193,6 +284,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
 
               Layout.heightBox(16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TipOptionRow extends StatelessWidget {
+  final String productId;
+  final VoidCallback onTap;
+
+  static final _labels = {
+    'app_tip_small': AppLocalization.buyTipSmall,
+    'app_tip_medium': AppLocalization.buyTipMedium,
+    'app_tip_large': AppLocalization.buyTipLarge,
+  };
+
+  const TipOptionRow({required this.productId, required this.onTap, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final tipService = TipServiceScope.of(context);
+    final product = tipService.products.firstWhere((p) => p.id == productId);
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(8),
+        child: Padding(
+          padding: Layout.symmetric(horizontal: 12, vertical: 14),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  _labels[productId] ?? productId,
+                  style: AppTextStyles.font16.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ),
+              Text(
+                product.price,
+                style: AppTextStyles.font16.copyWith(
+                  color: AppColors.textMuted,
+                ),
+              ),
+              Layout.widthBox(6),
+              Icon(
+                Icons.chevron_right_rounded,
+                color: AppColors.textMuted,
+                size: Layout.v(20),
+              ),
             ],
           ),
         ),

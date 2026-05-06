@@ -114,5 +114,13 @@ const Map<String, String> englishLocalization = {
   'watchToEnableNotifications':
       'Watch this game to configure notification settings',
   'saveError': 'Failed to save changes',
-  'noPriceHistory': 'No data for this product..'
+  'noPriceHistory': 'No data for this product..',
+  'supportDeveloperHeader': 'Enjoying the App?',
+  'supportDeveloperButton': 'Support the Developer',
+  'supportApp': 'Support the Development',
+  'supportDescription':
+      'The app is free with no ads. If you find it useful, a small tip helps keep development going.',
+  'buyTipLarge': 'Buy me a board game 🎲',
+  'buyTipMedium': 'Buy me an expansion 🃏',
+  'buyTipSmall': 'Buy me a coffee ☕',
 };
