@@ -34,12 +34,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Layout.init(context);
     final auth = AuthScope.of(context);
     final user = auth.appUser;
-    final notifications = user?.globalNotifications ?? {
-      'priceDrop': true,
-      'priceIncrease': true,
-      'outOfStock': true,
-      'backInStock': true,
-    };
+    final notifications = user?.globalNotifications ??
+        {
+          'priceDrop': true,
+          'priceIncrease': true,
+          'outOfStock': true,
+          'backInStock': true,
+        };
 
     return Container(
       width: double.infinity,
@@ -77,9 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
               ),
-
-              Layout.heightBox(22),
-
+              Layout.heightBox(16),
               SectionHeader(title: AppLocalization.profileSettings),
               Layout.heightBox(8),
               Column(
@@ -95,7 +94,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
               ),
-
               Layout.heightBox(8),
               SwitchRow(
                 label: AppLocalization.priceDropLabel,
@@ -124,9 +122,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onChanged: (v) =>
                     _watchlistCtrl.updateGlobalNotification('outOfStock', v),
               ),
-
-              Layout.heightBox(22),
-
+              Layout.heightBox(16),
               SectionHeader(title: AppLocalization.profileContact),
               Layout.heightBox(8),
               SizedBox(

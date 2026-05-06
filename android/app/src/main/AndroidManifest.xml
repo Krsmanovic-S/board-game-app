@@ -7,7 +7,7 @@
     </queries>
 
     <application
-        android:label="Kockica"
+        android:label="Tesera"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

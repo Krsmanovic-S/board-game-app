@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:board_game_app/controllers/watchlist_controller.dart';
 import 'package:board_game_app/widgets/field_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -24,12 +22,12 @@ class GameDetailsScreen extends StatefulWidget {
 }
 
 class _GameDetailsScreenState extends State<GameDetailsScreen> {
-  bool? _pendingWatchState;
-  Timer? _watchTimer;
+  bool _watchLoading = false;
+  bool? _optimisticWatched;
   late WatchlistController _watchlistCtrl;
 
   bool get _effectiveIsWatched =>
-      _pendingWatchState ?? _watchlistCtrl.isWatched(widget.gameId);
+      _optimisticWatched ?? _watchlistCtrl.isWatched(widget.gameId);
 
   @override
   void didChangeDependencies() {
@@ -39,42 +37,40 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
 
   @override
   void dispose() {
-    if (_watchTimer != null && _pendingWatchState != null) {
-      _watchTimer!.cancel();
-      _watchTimer = null;
-      if (_pendingWatchState!) {
-        _watchlistCtrl.watchGame(widget.gameId);
-      } else {
-        _watchlistCtrl.unwatchGame(widget.gameId);
-      }
-      _pendingWatchState = null;
-    }
     _watchlistCtrl.flushGamePendingWrites(widget.gameId);
     super.dispose();
   }
 
-  void _onBookmarkTapped() {
+  void _onBookmarkTapped() async {
+    if (_watchLoading) return;
     final newState = !_effectiveIsWatched;
-    setState(() => _pendingWatchState = newState);
-    _watchTimer?.cancel();
-    _watchTimer = Timer(const Duration(seconds: 2), () async {
-      try {
-        if (newState) {
-          await _watchlistCtrl.watchGame(widget.gameId);
-        } else {
-          await _watchlistCtrl.unwatchGame(widget.gameId);
-        }
-        if (mounted) setState(() => _pendingWatchState = null);
-      } catch (_) {
-        if (mounted) {
-          setState(() => _pendingWatchState = null);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(AppLocalization.saveError)),
-          );
-        }
-      }
-      _watchTimer = null;
+    setState(() {
+      _watchLoading = true;
+      _optimisticWatched = newState;
     });
+    try {
+      if (newState) {
+        await _watchlistCtrl.watchGame(widget.gameId);
+      } else {
+        await _watchlistCtrl.unwatchGame(widget.gameId);
+      }
+      if (mounted) {
+        setState(() {
+          _watchLoading = false;
+          _optimisticWatched = null;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _watchLoading = false;
+          _optimisticWatched = null;
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalization.saveError)),
+        );
+      }
+    }
   }
 
   Widget _buildPriceGrid() {
@@ -184,15 +180,30 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
             titleSpacing: 0,
             actionsPadding: Layout.only(right: 20),
             actions: [
-              IconButton(
-                onPressed: _onBookmarkTapped,
-                icon: Icon(
-                  _effectiveIsWatched
-                      ? Icons.bookmark
-                      : Icons.bookmark_add_outlined,
-                  size: Layout.v(28),
+              if (_watchLoading)
+                Padding(
+                  padding: Layout.only(right: 12),
+                  child: Center(
+                    child: SizedBox(
+                      width: Layout.v(24),
+                      height: Layout.v(24),
+                      child: CircularProgressIndicator(
+                        color: AppColors.primary,
+                        strokeWidth: 2,
+                      ),
+                    ),
+                  ),
+                )
+              else
+                IconButton(
+                  onPressed: _onBookmarkTapped,
+                  icon: Icon(
+                    _effectiveIsWatched
+                        ? Icons.bookmark
+                        : Icons.bookmark_add_outlined,
+                    size: Layout.v(28),
+                  ),
                 ),
-              ),
             ],
           ),
           body: SingleChildScrollView(
@@ -269,34 +280,50 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
 
                 Layout.heightBox(16),
 
-                if (watchlistItem != null) ...[
-                  SwitchRow(
-                    label: AppLocalization.priceDropLabel,
-                    value: watchlistItem.notifyPriceDrop,
-                    onChanged: (v) => _watchlistCtrl.updatePerGameNotification(
-                        widget.gameId, 'notifyPriceDrop', v),
-                  ),
-                  Layout.heightBox(8),
-                  SwitchRow(
-                    label: AppLocalization.priceIncreaseLabel,
-                    value: watchlistItem.notifyPriceIncrease,
-                    onChanged: (v) => _watchlistCtrl.updatePerGameNotification(
-                        widget.gameId, 'notifyPriceIncrease', v),
-                  ),
-                  Layout.heightBox(8),
-                  SwitchRow(
-                    label: AppLocalization.outOfStockLabel,
-                    value: watchlistItem.notifyOutOfStock,
-                    onChanged: (v) => _watchlistCtrl.updatePerGameNotification(
-                        widget.gameId, 'notifyOutOfStock', v),
-                  ),
-                  Layout.heightBox(8),
-                  SwitchRow(
-                    label: AppLocalization.backInStockLabel,
-                    value: watchlistItem.notifyBackInStock,
-                    onChanged: (v) => _watchlistCtrl.updatePerGameNotification(
-                        widget.gameId, 'notifyBackInStock', v),
-                  ),
+                if (_effectiveIsWatched) ...[
+                  if (watchlistItem != null) ...[
+                    SwitchRow(
+                      label: AppLocalization.priceDropLabel,
+                      value: watchlistItem.notifyPriceDrop,
+                      onChanged: (v) =>
+                          _watchlistCtrl.updatePerGameNotification(
+                              widget.gameId, 'notifyPriceDrop', v),
+                    ),
+                    Layout.heightBox(8),
+                    SwitchRow(
+                      label: AppLocalization.priceIncreaseLabel,
+                      value: watchlistItem.notifyPriceIncrease,
+                      onChanged: (v) =>
+                          _watchlistCtrl.updatePerGameNotification(
+                              widget.gameId, 'notifyPriceIncrease', v),
+                    ),
+                    Layout.heightBox(8),
+                    SwitchRow(
+                      label: AppLocalization.outOfStockLabel,
+                      value: watchlistItem.notifyOutOfStock,
+                      onChanged: (v) =>
+                          _watchlistCtrl.updatePerGameNotification(
+                              widget.gameId, 'notifyOutOfStock', v),
+                    ),
+                    Layout.heightBox(8),
+                    SwitchRow(
+                      label: AppLocalization.backInStockLabel,
+                      value: watchlistItem.notifyBackInStock,
+                      onChanged: (v) =>
+                          _watchlistCtrl.updatePerGameNotification(
+                              widget.gameId, 'notifyBackInStock', v),
+                    ),
+                  ] else
+                    Center(
+                      child: SizedBox(
+                        height: Layout.v(24),
+                        width: Layout.v(24),
+                        child: CircularProgressIndicator(
+                          color: AppColors.primary,
+                          strokeWidth: 2,
+                        ),
+                      ),
+                    ),
                 ] else
                   Padding(
                     padding: Layout.symmetric(vertical: 8),

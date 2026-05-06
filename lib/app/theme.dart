@@ -319,7 +319,7 @@ ThemeData buildAppTheme() => ThemeData(
           primaryCard: BoxDecoration(
             color: AppColors.surface,
             borderRadius:
-                BorderRadius.circular(12), // Use a fixed value or Layout.v
+                BorderRadius.circular(12),
             border: Border.all(color: AppColors.border),
             boxShadow: [
               BoxShadow(
