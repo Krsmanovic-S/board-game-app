@@ -7,7 +7,7 @@
     </queries>
 
     <application
-        android:label="Tesera"
+        android:label="Tessera"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
