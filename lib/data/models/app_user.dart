@@ -7,7 +7,6 @@ class AppUser {
   final String fcmToken;
   final Map<String, bool> globalNotifications;
   final bool pushNotificationsEnabled;
-  final bool emailNotificationsEnabled;
 
   AppUser({
     required this.uid,
@@ -16,7 +15,6 @@ class AppUser {
     required this.fcmToken,
     required this.globalNotifications,
     this.pushNotificationsEnabled = true,
-    this.emailNotificationsEnabled = false,
   });
 
   factory AppUser.fromFirestore(DocumentSnapshot doc) {
@@ -36,8 +34,6 @@ class AppUser {
       },
       pushNotificationsEnabled:
           data['pushNotificationsEnabled'] as bool? ?? true,
-      emailNotificationsEnabled:
-          data['emailNotificationsEnabled'] as bool? ?? false,
     );
   }
 
@@ -47,6 +43,5 @@ class AppUser {
         'fcmToken': fcmToken,
         'globalNotifications': globalNotifications,
         'pushNotificationsEnabled': pushNotificationsEnabled,
-        'emailNotificationsEnabled': emailNotificationsEnabled,
       };
 }

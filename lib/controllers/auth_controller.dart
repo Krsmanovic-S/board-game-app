@@ -77,7 +77,6 @@ class AuthController extends ChangeNotifier {
       fcmToken: _appUser!.fcmToken,
       globalNotifications: updated,
       pushNotificationsEnabled: _appUser!.pushNotificationsEnabled,
-      emailNotificationsEnabled: _appUser!.emailNotificationsEnabled,
     );
     notifyListeners();
   }
@@ -91,21 +90,6 @@ class AuthController extends ChangeNotifier {
       fcmToken: _appUser!.fcmToken,
       globalNotifications: _appUser!.globalNotifications,
       pushNotificationsEnabled: value,
-      emailNotificationsEnabled: _appUser!.emailNotificationsEnabled,
-    );
-    notifyListeners();
-  }
-
-  void patchEmailNotificationsEnabled(bool value) {
-    if (_appUser == null) return;
-    _appUser = AppUser(
-      uid: _appUser!.uid,
-      email: _appUser!.email,
-      username: _appUser!.username,
-      fcmToken: _appUser!.fcmToken,
-      globalNotifications: _appUser!.globalNotifications,
-      pushNotificationsEnabled: _appUser!.pushNotificationsEnabled,
-      emailNotificationsEnabled: value,
     );
     notifyListeners();
   }

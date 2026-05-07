@@ -148,19 +148,6 @@ class WatchlistController extends ChangeNotifier {
     });
   }
 
-  void updateEmailNotificationsEnabled(bool value) {
-    _auth.patchEmailNotificationsEnabled(value);
-
-    const key = 'emailNotificationsEnabled';
-    _timers[key]?.cancel();
-    _pending[key] = {'type': 'userField', 'field': key, 'value': value};
-    _timers[key] = Timer(const Duration(seconds: 2), () {
-      _doWriteUserField(key, value);
-      _timers.remove(key);
-      _pending.remove(key);
-    });
-  }
-
   void _doWritePerGame(String gameId, String field, bool value) async {
     final uid = _auth.firebaseUser?.uid;
     if (uid == null) return;
@@ -210,7 +197,10 @@ class WatchlistController extends ChangeNotifier {
   }
 
   void flushGlobalPendingWrites() {
-    const userFieldKeys = {'pushNotificationsEnabled', 'emailNotificationsEnabled'};
+    const userFieldKeys = {
+      'pushNotificationsEnabled',
+      'emailNotificationsEnabled'
+    };
     final keys = _pending.keys
         .where((k) => k.startsWith('global-') || userFieldKeys.contains(k))
         .toList();
