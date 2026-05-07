@@ -13,6 +13,7 @@ import 'package:board_game_app/screens/game_details_screen.dart';
 import 'package:board_game_app/data/models/board_game.dart';
 
 final authController = AuthController();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 // Effect for Transitioning
 CustomTransitionPage<void> _fadePage(GoRouterState state, Widget child) =>
@@ -52,6 +53,7 @@ class RootPagePopHandler extends StatelessWidget {
 }
 
 final appRouter = GoRouter(
+  navigatorKey: navigatorKey,
   initialLocation: '/loading',
   refreshListenable: authController,
   redirect: (context, state) {

@@ -3,12 +3,14 @@ import 'package:board_game_app/widgets/field_card.dart';
 import 'package:board_game_app/widgets/price_history_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:board_game_app/data/models/board_game.dart';
 import 'package:board_game_app/app/layout.dart';
 import 'package:board_game_app/app/theme.dart';
 import 'package:board_game_app/localization/localization.dart';
 import 'package:board_game_app/utils/app_helpers.dart';
 import 'package:board_game_app/widgets/settings_buttons.dart';
+import 'package:board_game_app/controllers/games_controller.dart';
 
 class GameDetailsScreen extends StatefulWidget {
   final String gameId;
@@ -26,6 +28,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
   bool _watchLoading = false;
   bool? _optimisticWatched;
   late WatchlistController _watchlistCtrl;
+  BoardGame? _game;
 
   bool get _effectiveIsWatched =>
       _optimisticWatched ?? _watchlistCtrl.isWatched(widget.gameId);
@@ -34,6 +37,11 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _watchlistCtrl = WatchlistScope.of(context);
+
+    _game ??= widget.game ??
+        GamesScope.of(context)
+            .games
+            .firstWhereOrNull((g) => g.id == widget.gameId);
   }
 
   @override
@@ -75,7 +83,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
   }
 
   Widget _buildPriceGrid() {
-    final stores = widget.game!.storeInfo.entries.toList();
+    final stores = _game!.storeInfo.entries.toList();
 
     return Container(
       decoration: context.cardDecoration,
@@ -163,7 +171,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final String? targetUrl =
-        widget.game!.storeInfo[widget.game!.lowestPriceStore]?.sourceUrl;
+        _game!.storeInfo[_game!.lowestPriceStore]?.sourceUrl;
     final watchlistItem = _watchlistCtrl.getItem(widget.gameId);
 
     return Container(
@@ -214,7 +222,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
               children: [
                 // Game Name
                 Text(
-                  widget.game!.name,
+                  _game!.name,
                   style: AppTextStyles.font20.copyWith(
                     fontSize: Layout.v(28),
                     fontWeight: FontWeight.w800,
@@ -252,16 +260,16 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
                   onPressed: targetUrl != null
                       ? () => AppHelpers.launchStoreUrl(targetUrl)
                       : null,
-                  child: widget.game!.inStockAnywhere
+                  child: _game!.inStockAnywhere
                       ? Column(
                           children: [
                             Text(
-                              '${AppLocalization.buyOnButton} ${AppHelpers.getStoreLabel(widget.game!.lowestPriceStore)}',
+                              '${AppLocalization.buyOnButton} ${AppHelpers.getStoreLabel(_game!.lowestPriceStore)}',
                               style: AppTextStyles.font18,
                             ),
                             Layout.heightBox(4),
                             Text(
-                              AppHelpers.formatPrice(widget.game!.lowestPrice),
+                              AppHelpers.formatPrice(_game!.lowestPrice),
                               style: AppTextStyles.font18
                                   .copyWith(fontWeight: FontWeight.w900),
                             ),

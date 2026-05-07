@@ -38,6 +38,7 @@ dependencies:
   go_router: ^17.1.0
   in_app_purchase: ^3.2.0
   sign_in_button: ^3.2.0
+  collection: ^1.18.0
 
   firebase_core: ^3.0.0
   firebase_auth: ^5.0.0
