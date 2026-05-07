@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
                 child: TipServiceScope(
                   tipService: _tipService,
                   child: MaterialApp.router(
-                    title: 'Tesera',
+                    title: 'Tessera',
                     theme: buildAppTheme(),
                     routerConfig: appRouter,
                   ),

@@ -55,11 +55,16 @@ final appRouter = GoRouter(
   initialLocation: '/loading',
   refreshListenable: authController,
   redirect: (context, state) {
-    if (!authController.initialized) return null;
+    if (!authController.initialized) return '/loading';
+
     final loggedIn = authController.isLoggedIn;
+
     final loc = state.matchedLocation;
+
     if (!loggedIn && loc != '/auth') return '/auth';
+
     if (loggedIn && (loc == '/auth' || loc == '/loading')) return '/watchlist';
+
     return null;
   },
   routes: [

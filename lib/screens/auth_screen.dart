@@ -1,5 +1,10 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import 'package:board_game_app/app/layout.dart';
 import 'package:board_game_app/app/theme.dart';
@@ -87,6 +92,34 @@ class _AuthCardState extends State<_AuthCard> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _isLoading = false;
+  final _googleSignIn = GoogleSignIn();
+
+  // Real-time validation state
+  String? _emailError;
+  String? _usernameError;
+  String? _passwordError;
+  String? _confirmError;
+
+  bool _usernameChecking = false;
+  UsernameValidationResult? _usernameResult;
+
+  Timer? _usernameDebounce;
+
+  bool get _canSubmit {
+    if (_isLoading) return false;
+    if (widget.isLogin) {
+      return _emailError == null &&
+          _emailController.text.trim().isNotEmpty &&
+          _passwordController.text.isNotEmpty;
+    }
+    return _emailError == null &&
+        _emailController.text.trim().isNotEmpty &&
+        _usernameResult == UsernameValidationResult.valid &&
+        _passwordError == null &&
+        _passwordController.text.isNotEmpty &&
+        _confirmError == null &&
+        _confirmPasswordController.text.isNotEmpty;
+  }
 
   @override
   void dispose() {
@@ -94,13 +127,76 @@ class _AuthCardState extends State<_AuthCard> {
     _usernameController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _usernameDebounce?.cancel();
     super.dispose();
   }
 
-  Future<void> _submit() async {
-    if (_isLoading) return;
-    setState(() => _isLoading = true);
+  // - Real-time validators ----------------------------------------------------
 
+  void _onEmailChanged(String value) {
+    setState(() {
+      _emailError = validateEmailFormat(value.trim());
+    });
+  }
+
+  void _onUsernameChanged(String value) {
+    _usernameDebounce?.cancel();
+    final trimmed = value.trim();
+
+    final instantResult = validateUsernameFormat(trimmed);
+    if (instantResult != UsernameValidationResult.valid) {
+      setState(() {
+        _usernameResult = instantResult;
+        _usernameError = usernameErrorMessage(instantResult);
+        _usernameChecking = false;
+      });
+      return;
+    }
+
+    setState(() {
+      _usernameResult = null;
+      _usernameError = null;
+      _usernameChecking = true;
+    });
+
+    _usernameDebounce = Timer(const Duration(milliseconds: 500), () async {
+      final result = await validateUsername(trimmed);
+      if (mounted) {
+        setState(() {
+          _usernameResult = result;
+          _usernameError = result == UsernameValidationResult.valid
+              ? null
+              : usernameErrorMessage(result);
+          _usernameChecking = false;
+        });
+      }
+    });
+  }
+
+  void _onPasswordChanged(String value) {
+    setState(() {
+      _passwordError = validatePasswordFormat(value);
+      if (_confirmPasswordController.text.isNotEmpty) {
+        _confirmError = value != _confirmPasswordController.text
+            ? AppLocalization.passwordsNoMatch
+            : null;
+      }
+    });
+  }
+
+  void _onConfirmChanged(String value) {
+    setState(() {
+      _confirmError = value != _passwordController.text
+          ? AppLocalization.passwordsNoMatch
+          : null;
+    });
+  }
+
+  // - Submit ------------------------------------------------------------------
+
+  Future<void> _submit() async {
+    if (!_canSubmit) return;
+    setState(() => _isLoading = true);
     try {
       if (widget.isLogin) {
         await _login();
@@ -116,8 +212,6 @@ class _AuthCardState extends State<_AuthCard> {
     final email = _emailController.text.trim();
     final password = _passwordController.text;
     final controller = AuthScope.of(context);
-
-    if (!await validateEmail(context, email)) return;
 
     try {
       await controller.login(email, password);
@@ -143,17 +237,19 @@ class _AuthCardState extends State<_AuthCard> {
     final email = _emailController.text.trim();
     final username = _usernameController.text.trim();
     final password = _passwordController.text;
-    final confirm = _confirmPasswordController.text;
     final controller = AuthScope.of(context);
 
-    if (!await validateEmail(context, email)) return;
-    if (!mounted) return;
-    if (!await validateUsername(context, username)) return;
-    if (!mounted) return;
-    if (!await validatePassword(context, password)) return;
-    if (!mounted) return;
-    if (!await validatePasswordsMatch(context, password, confirm)) return;
-    if (!mounted) return;
+    // Final submit-time checks
+    final usernameResult = await validateUsername(username);
+    if (usernameResult != UsernameValidationResult.valid) {
+      if (mounted) {
+        setState(() {
+          _usernameResult = usernameResult;
+          _usernameError = usernameErrorMessage(usernameResult);
+        });
+      }
+      return;
+    }
 
     try {
       await controller.register(email, password, username);
@@ -171,6 +267,41 @@ class _AuthCardState extends State<_AuthCard> {
       );
     }
   }
+
+  Future<void> _continueWithGoogle() async {
+    try {
+      final googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return;
+
+      final googleAuth = await googleUser.authentication;
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      if (!mounted) return;
+
+      if (userCredential.additionalUserInfo?.isNewUser ?? false) {
+        context.push('/username-picker', extra: userCredential.user);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      await InfoModal.show(
+        context,
+        title: AppLocalization.error,
+        message: e.message ?? AppLocalization.unknownError,
+      );
+    }
+  }
+
+  Future<void> _continueWithApple() async {
+    // Apple sign-in — implement when targeting iOS
+  }
+
+  // - Build -------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -198,26 +329,38 @@ class _AuthCardState extends State<_AuthCard> {
               textAlign: TextAlign.center,
             ),
             Layout.heightBox(24),
+
+            // Email
             _buildTextField(
               controller: _emailController,
               hint: AppLocalization.email,
               keyboardType: TextInputType.emailAddress,
+              maxLength: 30,
+              onChanged: _onEmailChanged,
+              error: _emailError,
             ),
+
+            // Username (register only)
             if (!widget.isLogin) ...[
               Layout.heightBox(16),
-              _buildTextField(
-                controller: _usernameController,
-                hint: AppLocalization.username,
-              ),
+              _buildUsernameField(),
             ],
+
             Layout.heightBox(16),
+
+            // Password
             _buildPasswordField(
               controller: _passwordController,
               hint: AppLocalization.password,
               obscure: _obscurePassword,
               onToggle: () =>
                   setState(() => _obscurePassword = !_obscurePassword),
+              onChanged:
+                  widget.isLogin ? (_) => setState(() {}) : _onPasswordChanged,
+              error: _passwordError,
             ),
+
+            // Confirm password (register only)
             if (!widget.isLogin) ...[
               Layout.heightBox(16),
               _buildPasswordField(
@@ -227,25 +370,33 @@ class _AuthCardState extends State<_AuthCard> {
                 onToggle: () => setState(
                   () => _obscureConfirmPassword = !_obscureConfirmPassword,
                 ),
+                onChanged: _onConfirmChanged,
+                error: _confirmError,
               ),
             ],
+
+            // Google / Apple
             if (widget.isLogin) ...[
               Layout.heightBox(20),
-              SignInButton(
-                Buttons.google,
-                padding: Layout.symmetric(vertical: 4),
-                text: AppLocalization.continueWithGoogle,
-                onPressed: () {},
-              ),
-              Layout.heightBox(12),
-              SignInButton(
-                Buttons.apple,
-                padding: Layout.symmetric(vertical: 4),
-                text: AppLocalization.continueWithApple,
-                onPressed: () {},
-              ),
+              if (Platform.isAndroid)
+                SignInButton(
+                  Buttons.google,
+                  padding: Layout.symmetric(vertical: 4),
+                  text: AppLocalization.continueWithGoogle,
+                  onPressed: _continueWithGoogle,
+                ),
+              if (Platform.isIOS)
+                SignInButton(
+                  Buttons.apple,
+                  padding: Layout.symmetric(vertical: 4),
+                  text: AppLocalization.continueWithApple,
+                  onPressed: _continueWithApple,
+                ),
             ],
+
             Layout.heightBox(20),
+
+            // Toggle link
             GestureDetector(
               onTap: widget.onToggle,
               child: Text(
@@ -260,13 +411,16 @@ class _AuthCardState extends State<_AuthCard> {
                 textAlign: TextAlign.center,
               ),
             ),
+
             Layout.heightBox(20),
+
+            // Submit button
             ElevatedButton(
-              onPressed: _isLoading ? null : _submit,
+              onPressed: _canSubmit ? _submit : null,
               style: AppButtonStyles.primaryFilled.copyWith(
                 backgroundColor: WidgetStateProperty.resolveWith(
                   (s) => s.contains(WidgetState.disabled)
-                      ? AppColors.primaryDim
+                      ? AppColors.disabled
                       : AppColors.primary,
                 ),
               ),
@@ -274,7 +428,7 @@ class _AuthCardState extends State<_AuthCard> {
                   ? SizedBox(
                       height: Layout.v(20),
                       width: Layout.v(20),
-                      child: CircularProgressIndicator(
+                      child: const CircularProgressIndicator(
                         strokeWidth: 2,
                         color: Colors.white,
                       ),
@@ -286,6 +440,7 @@ class _AuthCardState extends State<_AuthCard> {
                       style: AppTextStyles.font18.copyWith(
                         fontWeight: FontWeight.w900,
                         letterSpacing: 1.2,
+                        color: _canSubmit ? Colors.white : AppColors.textMuted,
                       ),
                     ),
             ),
@@ -295,17 +450,89 @@ class _AuthCardState extends State<_AuthCard> {
     );
   }
 
+  // - Field builders ----------------------------------------------------------
+
   Widget _buildTextField({
     required TextEditingController controller,
     required String hint,
     TextInputType keyboardType = TextInputType.text,
+    int? maxLength,
+    ValueChanged<String>? onChanged,
+    String? error,
   }) {
-    return TextField(
-      controller: controller,
-      keyboardType: keyboardType,
-      style: AppTextStyles.font16.copyWith(color: AppColors.textPrimary),
-      decoration: InputDecoration(hintText: hint),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: controller,
+          keyboardType: keyboardType,
+          onChanged: onChanged,
+          inputFormatters: maxLength != null
+              ? [LengthLimitingTextInputFormatter(maxLength)]
+              : null,
+          style: AppTextStyles.font16.copyWith(color: AppColors.textPrimary),
+          decoration: InputDecoration(hintText: hint),
+        ),
+        if (error != null) ...[
+          Layout.heightBox(4),
+          Text(
+            error,
+            style: AppTextStyles.font12.copyWith(color: AppColors.error),
+          ),
+        ],
+      ],
     );
+  }
+
+  Widget _buildUsernameField() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: _usernameController,
+          onChanged: _onUsernameChanged,
+          inputFormatters: [LengthLimitingTextInputFormatter(15)],
+          style: AppTextStyles.font16.copyWith(color: AppColors.textPrimary),
+          decoration: InputDecoration(
+            hintText: AppLocalization.username,
+            suffixIcon: _buildUsernameSuffix(),
+          ),
+        ),
+        if (_usernameError != null) ...[
+          Layout.heightBox(4),
+          Text(
+            _usernameError!,
+            style: AppTextStyles.font12.copyWith(color: AppColors.error),
+          ),
+        ],
+      ],
+    );
+  }
+
+  Widget? _buildUsernameSuffix() {
+    if (_usernameController.text.isEmpty) return null;
+    if (_usernameChecking) {
+      return Padding(
+        padding: EdgeInsets.all(Layout.v(12)),
+        child: SizedBox(
+          width: Layout.v(16),
+          height: Layout.v(16),
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: AppColors.primary,
+          ),
+        ),
+      );
+    }
+    if (_usernameResult == UsernameValidationResult.valid) {
+      return Icon(Icons.check_circle_outline_rounded,
+          color: AppColors.primary, size: Layout.v(20));
+    }
+    if (_usernameResult != null) {
+      return Icon(Icons.cancel_outlined,
+          color: AppColors.error, size: Layout.v(20));
+    }
+    return null;
   }
 
   Widget _buildPasswordField({
@@ -313,22 +540,37 @@ class _AuthCardState extends State<_AuthCard> {
     required String hint,
     required bool obscure,
     required VoidCallback onToggle,
+    ValueChanged<String>? onChanged,
+    String? error,
   }) {
-    return TextField(
-      controller: controller,
-      obscureText: obscure,
-      style: AppTextStyles.font16.copyWith(color: AppColors.textPrimary),
-      decoration: InputDecoration(
-        hintText: hint,
-        suffixIcon: GestureDetector(
-          onTap: onToggle,
-          child: Icon(
-            obscure ? Icons.visibility_off : Icons.visibility,
-            color: AppColors.textMuted,
-            size: Layout.v(20),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TextField(
+          controller: controller,
+          obscureText: obscure,
+          onChanged: onChanged,
+          style: AppTextStyles.font16.copyWith(color: AppColors.textPrimary),
+          decoration: InputDecoration(
+            hintText: hint,
+            suffixIcon: GestureDetector(
+              onTap: onToggle,
+              child: Icon(
+                obscure ? Icons.visibility_off : Icons.visibility,
+                color: AppColors.textMuted,
+                size: Layout.v(20),
+              ),
+            ),
           ),
         ),
-      ),
+        if (error != null) ...[
+          Layout.heightBox(4),
+          Text(
+            error,
+            style: AppTextStyles.font12.copyWith(color: AppColors.error),
+          ),
+        ],
+      ],
     );
   }
 }

@@ -56,7 +56,6 @@ const Map<String, String> englishLocalization = {
   'invalidEmail': 'Please enter a valid email address.',
   'usernameRequired': 'Username is required.',
   'usernameTaken': 'This username is already taken. Please choose another.',
-  'passwordTooShort': 'Password must be at least 6 characters long.',
   'passwordsDontMatch': 'Passwords do not match.',
 
   // ── Auth Errors ───────────────────────────────────────────────────────────
@@ -123,4 +122,20 @@ const Map<String, String> englishLocalization = {
   'buyTipLarge': 'Buy me a board game 🎲',
   'buyTipMedium': 'Buy me an expansion 🃏',
   'buyTipSmall': 'Buy me a coffee ☕',
+  'emailRequired': 'Email is required',
+  'emailInvalid': 'Enter a valid email address',
+  'passwordRequired': 'Password is required',
+  'passwordTooShort': 'Password must be at least 6 characters',
+  'passwordsNoMatch': 'Passwords do not match',
+  'usernameTooShort': 'Username must be at least 5 characters',
+  'usernameTooLong': 'Username cannot exceed 12 characters',
+  'usernameInvalidChars': 'Only letters and numbers are allowed',
+
+  // ── Support Email ────────────────────────────────────────────────────────────
+  'supportEmail': 'vigor.support@gmail.com',
+  'emailSubjectFeedback': 'Vigor App - Feedback',
+  'emailFeedbackPrompt':
+      'Got any ideas on how to improve the app? Type a message below and I will look it over as soon as I can:',
+  'noEmailFound': 'No email app found on this device.',
+  'failedEmailLaunch': 'Failed to launch email:',
 };

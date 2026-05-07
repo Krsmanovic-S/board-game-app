@@ -55,6 +55,10 @@ abstract class AppColors {
   static const Color mipl = Color(0xFFF58220);
   static const Color gnom = Color(0xFF1B365D);
   static const Color kraken = Color(0xFF005B5C);
+
+  // Disabled States
+  static const Color disabled = Color(0xFFE0E0E0);
+  static const Color onDisabled = Color(0xFF9E9E9E);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -318,8 +322,7 @@ ThemeData buildAppTheme() => ThemeData(
         AppCustomDecorations(
           primaryCard: BoxDecoration(
             color: AppColors.surface,
-            borderRadius:
-                BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.border),
             boxShadow: [
               BoxShadow(

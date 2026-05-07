@@ -62,7 +62,6 @@ const Map<String, String> serbianLocalization = {
   'invalidEmail': 'Unesite ispravnu email adresu.',
   'usernameRequired': 'Korisničko ime je obavezno.',
   'usernameTaken': 'Ovo korisničko ime je zauzeto. Molimo izaberite drugo.',
-  'passwordTooShort': 'Lozinka mora imati najmanje 6 karaktera.',
   'passwordsDontMatch': 'Lozinke se ne podudaraju.',
 
   // ── Auth Errors ───────────────────────────────────────────────────────────
@@ -125,4 +124,20 @@ const Map<String, String> serbianLocalization = {
   'buyTipLarge': 'Kupi mi društvenu igru 🎲',
   'buyTipMedium': 'Kupi mi ekspanziju 🃏',
   'buyTipSmall': 'Kupi mi kafu ☕',
+
+  'emailRequired': 'Email je obavezan',
+  'emailInvalid': 'Unesite ispravnu email adresu',
+  'passwordRequired': 'Lozinka je obavezna',
+  'passwordTooShort': 'Lozinka mora imati najmanje 6 karaktera',
+  'passwordsNoMatch': 'Lozinke se ne poklapaju',
+  'usernameTooShort': 'Username mora imati najmanje 5 karaktera',
+  'usernameTooLong': 'Username ne može biti duži od 12 karaktera',
+  'usernameInvalidChars': 'Dozvoljeni su samo slova i brojevi',
+
+  // ── Support Email ────────────────────────────────────────────────────────────
+  'emailSubjectFeedback': 'Vigor App - Utisci i predlozi',
+  'emailFeedbackPrompt':
+      'Imaš ideju kako da poboljšamo aplikaciju? Napiši poruku ispod i pogledaću je čim budem mogao:',
+  'noEmailFound': 'Nije pronađena aplikacija za e-poštu na ovom uređaju.',
+  'failedEmailLaunch': 'Greška pri pokretanju e-pošte:',
 };

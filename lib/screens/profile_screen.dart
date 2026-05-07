@@ -9,6 +9,7 @@ import 'package:board_game_app/controllers/auth_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:board_game_app/controllers/tip_controller.dart';
 import 'package:board_game_app/utils/tip_service.dart';
+import 'package:board_game_app/utils/support_email.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -239,7 +240,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    final size = MediaQuery.of(context).size;
+                    sendSupportEmail(
+                        context: context,
+                        screenSize:
+                            "${size.width.toInt()}x${size.height.toInt()}");
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.secondary,
                     foregroundColor: Colors.white,

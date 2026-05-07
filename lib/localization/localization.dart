@@ -1,5 +1,6 @@
 import 'package:board_game_app/localization/lang/english_localization.dart';
 import 'package:board_game_app/localization/lang/serbian_localization.dart';
+import 'package:board_game_app/utils/auth.dart';
 
 class AppLocalization {
   static String _code = 'en';
@@ -23,13 +24,39 @@ class AppLocalization {
   static String get noAccount => _strings['noAccount']!;
   static String get haveAccount => _strings['haveAccount']!;
   static String get forgotPassword => _strings['forgotPassword']!;
+  static String get usernameTooShort => _strings['usernameTooShort']!;
+  static String get usernameTooLong => _strings['usernameTooLong']!;
+  static String get usernameInvalidChars => _strings['usernameInvalidChars']!;
+  static String get emailRequired => _strings['emailRequired']!;
+  static String get emailInvalid => _strings['emailInvalid']!;
+  static String get passwordRequired => _strings['passwordRequired']!;
+  static String get passwordTooShort => _strings['passwordTooShort']!;
+  static String get passwordsNoMatch => _strings['passwordsNoMatch']!;
+
+  static String? usernameError(UsernameValidationResult result) {
+    return switch (result) {
+      UsernameValidationResult.valid => null,
+      UsernameValidationResult.empty => AppLocalization.usernameRequired,
+      UsernameValidationResult.tooShort => AppLocalization.usernameTooShort,
+      UsernameValidationResult.tooLong => AppLocalization.usernameTooLong,
+      UsernameValidationResult.invalidCharacters =>
+        AppLocalization.usernameInvalidChars,
+      UsernameValidationResult.taken => AppLocalization.usernameTaken,
+    };
+  }
+
+  // ── Support Email ────────────────────────────────────────────────────────────
+  static String get supportEmail => _strings['supportEmail']!;
+  static String get emailSubjectFeedback => _strings['emailSubjectFeedback']!;
+  static String get emailFeedbackPrompt => _strings['emailFeedbackPrompt']!;
+  static String get noEmailFound => _strings['noEmailFound']!;
+  static String get failedEmailLaunch => _strings['failedEmailLaunch']!;
 
   // ── Validation ────────────────────────────────────────────────────────────
   static String get validationError => _strings['validationError']!;
   static String get invalidEmail => _strings['invalidEmail']!;
   static String get usernameRequired => _strings['usernameRequired']!;
   static String get usernameTaken => _strings['usernameTaken']!;
-  static String get passwordTooShort => _strings['passwordTooShort']!;
   static String get passwordsDontMatch => _strings['passwordsDontMatch']!;
 
   // ── Auth Errors ───────────────────────────────────────────────────────────

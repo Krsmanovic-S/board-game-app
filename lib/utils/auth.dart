@@ -1,85 +1,79 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'package:board_game_app/localization/localization.dart';
-import 'package:board_game_app/widgets/info_modal.dart';
 
-/// Returns true if valid, shows InfoModal and returns false otherwise.
-
-Future<bool> validateEmail(BuildContext context, String email) async {
-  final regex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-  if (!regex.hasMatch(email.trim())) {
-    if (context.mounted) {
-      await InfoModal.show(
-        context,
-        title: AppLocalization.error,
-        message: AppLocalization.invalidEmail,
-      );
-    }
-    return false;
-  }
-  return true;
+enum UsernameValidationResult {
+  valid,
+  empty,
+  tooShort,
+  tooLong,
+  invalidCharacters,
+  taken,
 }
 
-Future<bool> validateUsername(BuildContext context, String username) async {
-  final trimmed = username.trim();
-  if (trimmed.isEmpty) {
-    if (context.mounted) {
-      await InfoModal.show(
-        context,
-        title: AppLocalization.error,
-        message: AppLocalization.usernameRequired,
-      );
-    }
-    return false;
+// - Format-only validators (no network, instant) ------------------------------
+
+String? validateEmailFormat(String email) {
+  if (email.isEmpty) return AppLocalization.emailRequired;
+  final regex = RegExp(r'^[\w.+-]+@[\w-]+\.[a-zA-Z]{2,}$');
+  if (!regex.hasMatch(email)) return AppLocalization.emailInvalid;
+  return null;
+}
+
+String? validatePasswordFormat(String password) {
+  if (password.isEmpty) return AppLocalization.passwordRequired;
+  if (password.length < 6) return AppLocalization.passwordTooShort;
+  return null;
+}
+
+UsernameValidationResult validateUsernameFormat(String username) {
+  if (username.isEmpty) return UsernameValidationResult.empty;
+  if (username.length < 3) return UsernameValidationResult.tooShort;
+  if (username.length > 10) return UsernameValidationResult.tooLong;
+  if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(username)) {
+    return UsernameValidationResult.invalidCharacters;
   }
+  return UsernameValidationResult.valid;
+}
+
+String? usernameErrorMessage(UsernameValidationResult result) {
+  return switch (result) {
+    UsernameValidationResult.valid => null,
+    UsernameValidationResult.empty => AppLocalization.usernameRequired,
+    UsernameValidationResult.tooShort => AppLocalization.usernameTooShort,
+    UsernameValidationResult.tooLong => AppLocalization.usernameTooLong,
+    UsernameValidationResult.invalidCharacters =>
+      AppLocalization.usernameInvalidChars,
+    UsernameValidationResult.taken => AppLocalization.usernameTaken,
+  };
+}
+
+// - Network validators (Firestore) --------------------------------------------
+
+Future<UsernameValidationResult> validateUsername(String username) async {
+  final formatResult = validateUsernameFormat(username);
+  if (formatResult != UsernameValidationResult.valid) return formatResult;
 
   final query = await FirebaseFirestore.instance
       .collection('users')
-      .where('username', isEqualTo: trimmed)
+      .where('username', isEqualTo: username.trim())
       .limit(1)
       .get();
 
-  if (query.docs.isNotEmpty) {
-    if (context.mounted) {
-      await InfoModal.show(
-        context,
-        title: AppLocalization.error,
-        message: AppLocalization.usernameTaken,
-      );
-    }
-    return false;
-  }
-  return true;
+  if (query.docs.isNotEmpty) return UsernameValidationResult.taken;
+  return UsernameValidationResult.valid;
 }
 
-Future<bool> validatePassword(BuildContext context, String password) async {
-  if (password.length < 6) {
-    if (context.mounted) {
-      await InfoModal.show(
-        context,
-        title: AppLocalization.error,
-        message: AppLocalization.passwordTooShort,
-      );
-    }
-    return false;
-  }
-  return true;
+// - Submit-time validators (with context, for modal errors) -------------------
+
+Future<bool> validateEmail(String email) async {
+  return validateEmailFormat(email) == null;
 }
 
-Future<bool> validatePasswordsMatch(
-  BuildContext context,
-  String password,
-  String confirm,
-) async {
-  if (password != confirm) {
-    if (context.mounted) {
-      await InfoModal.show(
-        context,
-        title: AppLocalization.error,
-        message: AppLocalization.passwordsDontMatch,
-      );
-    }
-    return false;
-  }
-  return true;
+Future<bool> validatePassword(String password) async {
+  return validatePasswordFormat(password) == null;
+}
+
+Future<bool> validatePasswordsMatch(String password, String confirm) async {
+  return password == confirm;
 }
