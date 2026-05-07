@@ -135,6 +135,32 @@ class WatchlistController extends ChangeNotifier {
     });
   }
 
+  void updatePushNotificationsEnabled(bool value) {
+    _auth.patchPushNotificationsEnabled(value);
+
+    const key = 'pushNotificationsEnabled';
+    _timers[key]?.cancel();
+    _pending[key] = {'type': 'userField', 'field': key, 'value': value};
+    _timers[key] = Timer(const Duration(seconds: 2), () {
+      _doWriteUserField(key, value);
+      _timers.remove(key);
+      _pending.remove(key);
+    });
+  }
+
+  void updateEmailNotificationsEnabled(bool value) {
+    _auth.patchEmailNotificationsEnabled(value);
+
+    const key = 'emailNotificationsEnabled';
+    _timers[key]?.cancel();
+    _pending[key] = {'type': 'userField', 'field': key, 'value': value};
+    _timers[key] = Timer(const Duration(seconds: 2), () {
+      _doWriteUserField(key, value);
+      _timers.remove(key);
+      _pending.remove(key);
+    });
+  }
+
   void _doWritePerGame(String gameId, String field, bool value) async {
     final uid = _auth.firebaseUser?.uid;
     if (uid == null) return;
@@ -146,6 +172,16 @@ class WatchlistController extends ChangeNotifier {
           .doc(gameId)
           .update({field: value});
     } catch (_) {}
+  }
+
+  void _doWriteUserField(String field, bool value) async {
+    final uid = _auth.firebaseUser?.uid;
+    if (uid == null) return;
+    try {
+      await _firestore.collection('users').doc(uid).update({field: value});
+    } catch (e) {
+      debugPrint('Failed to write $field: $e');
+    }
   }
 
   void _doWriteGlobal(String field, bool value) async {
@@ -174,12 +210,19 @@ class WatchlistController extends ChangeNotifier {
   }
 
   void flushGlobalPendingWrites() {
-    final keys = _pending.keys.where((k) => k.startsWith('global-')).toList();
+    const userFieldKeys = {'pushNotificationsEnabled', 'emailNotificationsEnabled'};
+    final keys = _pending.keys
+        .where((k) => k.startsWith('global-') || userFieldKeys.contains(k))
+        .toList();
     for (final key in keys) {
       _timers[key]?.cancel();
       _timers.remove(key);
       final data = _pending.remove(key)!;
-      _doWriteGlobal(data['field'] as String, data['value'] as bool);
+      if (data['type'] == 'userField') {
+        _doWriteUserField(data['field'] as String, data['value'] as bool);
+      } else {
+        _doWriteGlobal(data['field'] as String, data['value'] as bool);
+      }
     }
   }
 
@@ -196,6 +239,8 @@ class WatchlistController extends ChangeNotifier {
           data['field'] as String,
           data['value'] as bool,
         );
+      } else if (data['type'] == 'userField') {
+        _doWriteUserField(data['field'] as String, data['value'] as bool);
       } else {
         _doWriteGlobal(data['field'] as String, data['value'] as bool);
       }

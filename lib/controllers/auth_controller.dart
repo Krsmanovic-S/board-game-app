@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:board_game_app/data/models/app_user.dart';
+import 'package:board_game_app/utils/notifications.dart';
 
 class AuthController extends ChangeNotifier {
   final _auth = FirebaseAuth.instance;
@@ -24,6 +25,7 @@ class AuthController extends ChangeNotifier {
     _firebaseUser = user;
     if (user != null) {
       await _loadAppUser(user.uid);
+      await initNotifications();
     } else {
       _appUser = null;
     }
@@ -55,6 +57,8 @@ class AuthController extends ChangeNotifier {
       'email': email,
       'username': username,
       'fcmToken': '',
+      'pushNotificationsEnabled': true,
+      'emailNotificationsEnabled': false,
     });
   }
 
@@ -72,6 +76,36 @@ class AuthController extends ChangeNotifier {
       username: _appUser!.username,
       fcmToken: _appUser!.fcmToken,
       globalNotifications: updated,
+      pushNotificationsEnabled: _appUser!.pushNotificationsEnabled,
+      emailNotificationsEnabled: _appUser!.emailNotificationsEnabled,
+    );
+    notifyListeners();
+  }
+
+  void patchPushNotificationsEnabled(bool value) {
+    if (_appUser == null) return;
+    _appUser = AppUser(
+      uid: _appUser!.uid,
+      email: _appUser!.email,
+      username: _appUser!.username,
+      fcmToken: _appUser!.fcmToken,
+      globalNotifications: _appUser!.globalNotifications,
+      pushNotificationsEnabled: value,
+      emailNotificationsEnabled: _appUser!.emailNotificationsEnabled,
+    );
+    notifyListeners();
+  }
+
+  void patchEmailNotificationsEnabled(bool value) {
+    if (_appUser == null) return;
+    _appUser = AppUser(
+      uid: _appUser!.uid,
+      email: _appUser!.email,
+      username: _appUser!.username,
+      fcmToken: _appUser!.fcmToken,
+      globalNotifications: _appUser!.globalNotifications,
+      pushNotificationsEnabled: _appUser!.pushNotificationsEnabled,
+      emailNotificationsEnabled: value,
     );
     notifyListeners();
   }

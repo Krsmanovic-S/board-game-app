@@ -76,7 +76,7 @@ const Map<String, String> serbianLocalization = {
   'logout': 'Odjava',
   'profileMyData': 'Tvoji podaci',
   'profileSettings': 'Podešavanja',
-  'profileContact': 'Imate pitanja? - Pošaljite mejl',
+  'profileContact': 'Imate pitanja ili sugestije?',
   'sendEmail': 'Pošalji mejl',
 
   // ── Navigation Tabs ────────────────────────────────────────────────────
@@ -109,9 +109,9 @@ const Map<String, String> serbianLocalization = {
   'outOfStockLabel': 'Rasprodato',
   'backInStockLabel': 'Ponovo Dostupno',
   'globalNotificationsDesc1':
-      'Ovde možete globalno uključiti ili isključiti tipove obaveštenja koja dobijate za igre.',
+      'Ovde možete uključiti ili isključiti određene tipove obaveštenja koja dobijate za igre.',
   'globalNotificationsDesc2':
-      'Ova podešavanja važe za sve praćene igre globalno, za specifične igre to možete promeniti na njenoj stranici.',
+      'Ova podešavanja važe za sve praćene igre, za specifične igre to možete promeniti na njenoj stranici.',
   'watchToEnableNotifications':
       'Pratite ovu igru da biste podesili obaveštenja',
   'saveError': 'Greška pri čuvanju izmena',
@@ -133,6 +133,9 @@ const Map<String, String> serbianLocalization = {
   'usernameTooShort': 'Username mora imati najmanje 5 karaktera',
   'usernameTooLong': 'Username ne može biti duži od 12 karaktera',
   'usernameInvalidChars': 'Dozvoljeni su samo slova i brojevi',
+  'receivedNotificationsHeader': 'Obaveštenja',
+  'emailNotifications': 'Email Obaveštenja',
+  'pushNotifications': 'Mobilna obaveštenja',
 
   // ── Support Email ────────────────────────────────────────────────────────────
   'emailSubjectFeedback': 'Vigor App - Utisci i predlozi',

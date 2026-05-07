@@ -78,6 +78,10 @@ class AppLocalization {
       _strings['globalNotificationsDesc1']!;
   static String get globalNotificationsDesc2 =>
       _strings['globalNotificationsDesc2']!;
+  static String get receivedNotificationsHeader =>
+      _strings['receivedNotificationsHeader']!;
+  static String get pushNotifications => _strings['pushNotifications']!;
+  static String get emailNotifications => _strings['emailNotifications']!;
 
   // ── Tipping ────────────────────────────────────────────────────────────────
   static String get supportDeveloperHeader =>

@@ -12,11 +12,17 @@ import 'package:board_game_app/controllers/settings_controller.dart';
 import 'package:board_game_app/controllers/tip_controller.dart';
 import 'package:board_game_app/utils/tip_service.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 final _settingsController = SettingsController();
 final _tipService = TipService();
 final _gamesController = GamesController();
 final _watchlistController = WatchlistController(authController);
+
+@pragma('vm:entry-point')
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // Background messages are handled by the system automatically
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

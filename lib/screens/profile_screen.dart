@@ -182,6 +182,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               Layout.heightBox(16),
 
+              // Notification Type Settings
+              SectionHeader(title: AppLocalization.receivedNotificationsHeader),
+
+              Layout.heightBox(8),
+
+              SwitchRow(
+                label: AppLocalization.pushNotifications,
+                value: user?.pushNotificationsEnabled ?? true,
+                onChanged: (v) =>
+                    _watchlistCtrl.updatePushNotificationsEnabled(v),
+              ),
+              Layout.heightBox(8),
+              SwitchRow(
+                label: AppLocalization.emailNotifications,
+                value: user?.emailNotificationsEnabled ?? false,
+                onChanged: (v) =>
+                    _watchlistCtrl.updateEmailNotificationsEnabled(v),
+              ),
+
+              Layout.heightBox(16),
+
               // Global Notification Settings
               SectionHeader(title: AppLocalization.profileSettings),
 

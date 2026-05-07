@@ -71,7 +71,7 @@ const Map<String, String> englishLocalization = {
   'logout': 'Logout',
   'profileMyData': 'Your details',
   'profileSettings': 'Settings',
-  'profileContact': 'Questions? Send us an email',
+  'profileContact': 'Got any questions or feedback?',
   'sendEmail': 'Send email',
 
   // ── Navigation Tabs ────────────────────────────────────────────────────
@@ -107,9 +107,9 @@ const Map<String, String> englishLocalization = {
   'outOfStockLabel': 'Out of Stock',
   'backInStockLabel': 'Back in Stock',
   'globalNotificationsDesc1':
-      'Here you can globally enable or disable the types of notifications you receive for games.',
+      'Here you can enable or disable the types of notifications you receive for all games.',
   'globalNotificationsDesc2':
-      'These settings apply to all tracked games globally, for specific games you can change this on their individual pages.',
+      'These settings apply to all tracked games, for specific games you can change this on their individual pages.',
   'watchToEnableNotifications':
       'Watch this game to configure notification settings',
   'saveError': 'Failed to save changes',
@@ -130,6 +130,9 @@ const Map<String, String> englishLocalization = {
   'usernameTooShort': 'Username must be at least 5 characters',
   'usernameTooLong': 'Username cannot exceed 12 characters',
   'usernameInvalidChars': 'Only letters and numbers are allowed',
+  'receivedNotificationsHeader': 'Notifications',
+  'emailNotifications': 'Email Notifications',
+  'pushNotifications': 'Push Notifications',
 
   // ── Support Email ────────────────────────────────────────────────────────────
   'supportEmail': 'vigor.support@gmail.com',
