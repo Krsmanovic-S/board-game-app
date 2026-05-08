@@ -138,6 +138,21 @@ abstract class AppButtonStyles {
         ),
       );
 
+  /// Filled Destructive - 'Delete Account'
+  static ButtonStyle get destructiveFilled => ElevatedButton.styleFrom(
+        backgroundColor: AppColors.error,
+        foregroundColor: AppColors.surface,
+        textStyle: AppTextStyles.font18.copyWith(
+          fontWeight: FontWeight.w700,
+          letterSpacing: 1.2,
+        ),
+        padding: EdgeInsets.symmetric(vertical: Layout.v(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(Layout.v(8))),
+        ),
+        elevation: 10,
+      );
+
   /// Outlined Destructive - 'Cancel', 'Error' etc..
   static ButtonStyle get outlinedDestructive => OutlinedButton.styleFrom(
         foregroundColor: AppColors.error,

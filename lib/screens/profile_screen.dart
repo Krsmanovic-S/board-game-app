@@ -205,12 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             )
                           ],
                         )
-                      ],
-                      if (_lastVerificationSent == null ||
-                          DateTime.now()
-                                  .difference(_lastVerificationSent!)
-                                  .inSeconds >
-                              60) ...[
+                      ] else ...[
                         GestureDetector(
                             child: Text(
                               AppLocalization.resend,
@@ -233,7 +228,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 );
                               }
                             })
-                      ]
+                      ],
                     ],
                   ),
                 ),
@@ -254,6 +249,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       letterSpacing: 1.2,
                     ),
                   ),
+                ),
+              ),
+
+              Layout.heightBox(16),
+
+              // Delete Account Button
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  onPressed: () async {
+                    final confirmed = await showDialog<bool>(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: Text(
+                          AppLocalization.deleteAccountTitle,
+                          textAlign: TextAlign.center,
+                        ),
+                        content: Text(AppLocalization.deleteAccountMessage),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx, false),
+                            child: Text(AppLocalization.cancel,
+                                style: TextStyle(fontWeight: FontWeight.w700)),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(ctx, true),
+                            child: Text(
+                              AppLocalization.delete,
+                              style: TextStyle(
+                                  color: AppColors.error,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirmed == true && context.mounted) {
+                      try {
+                        await auth.deleteAccount();
+                      } on FirebaseAuthException catch (_) {
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(AppLocalization.unknownError)),
+                        );
+                      }
+                    }
+                  },
+                  style: AppButtonStyles.destructiveFilled,
+                  child: Text(AppLocalization.deleteAccount),
                 ),
               ),
 

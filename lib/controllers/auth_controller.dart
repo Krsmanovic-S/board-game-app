@@ -66,6 +66,31 @@ class AuthController extends ChangeNotifier {
     await _auth.signOut();
   }
 
+  Future<void> deleteAccount() async {
+    final uid = _firebaseUser?.uid;
+    if (uid == null) return;
+
+    await _firestore.collection('users').doc(uid).delete();
+
+    final watchlistSnap = await _firestore
+        .collection('watchlist')
+        .doc(uid)
+        .collection('items')
+        .get();
+    for (final doc in watchlistSnap.docs) {
+      await doc.reference.delete();
+    }
+
+    try {
+      await _firebaseUser?.delete();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'requires-recent-login') {
+        await _auth.signOut();
+      }
+      rethrow;
+    }
+  }
+
   void patchGlobalNotification(String field, bool value) {
     if (_appUser == null) return;
     final updated = Map<String, bool>.from(_appUser!.globalNotifications);

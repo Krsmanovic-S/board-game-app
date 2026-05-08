@@ -149,4 +149,9 @@ const Map<String, String> englishLocalization = {
   'resend': 'Resend',
   'verificationCooldown': 'Please wait a minute before resending',
   'alreadySent': 'Sent',
+
+  'deleteAccount': 'Delete Account',
+  'deleteAccountTitle': 'Delete Account',
+  'deleteAccountMessage':
+      'Are you sure? This action cannot be undone. All your data will be permanently deleted.',
 };

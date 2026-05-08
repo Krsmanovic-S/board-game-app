@@ -87,6 +87,9 @@ class AppLocalization {
   static String get resend => _strings['resend']!;
   static String get verificationCooldown => _strings['verificationCooldown']!;
   static String get alreadySent => _strings['alreadySent']!;
+  static String get deleteAccount => _strings['deleteAccount']!;
+  static String get deleteAccountTitle => _strings['deleteAccountTitle']!;
+  static String get deleteAccountMessage => _strings['deleteAccountMessage']!;
 
   // ── Tipping ────────────────────────────────────────────────────────────────
   static String get supportDeveloperHeader =>
