@@ -134,7 +134,7 @@ const Map<String, String> serbianLocalization = {
   'passwordTooShort': 'Lozinka mora imati najmanje 6 karaktera',
   'passwordsNoMatch': 'Lozinke se ne poklapaju',
   'usernameTooShort': 'Username mora imati najmanje 5 karaktera',
-  'usernameTooLong': 'Username ne može biti duži od 12 karaktera',
+  'usernameTooLong': 'Username ne može biti duži od 18 karaktera',
   'usernameInvalidChars': 'Dozvoljeni su samo slova i brojevi',
   'receivedNotificationsHeader': 'Obaveštenja',
   'emailNotifications': 'Email Obaveštenja',

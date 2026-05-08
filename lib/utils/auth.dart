@@ -28,8 +28,8 @@ String? validatePasswordFormat(String password) {
 
 UsernameValidationResult validateUsernameFormat(String username) {
   if (username.isEmpty) return UsernameValidationResult.empty;
-  if (username.length < 3) return UsernameValidationResult.tooShort;
-  if (username.length > 10) return UsernameValidationResult.tooLong;
+  if (username.length < 5) return UsernameValidationResult.tooShort;
+  if (username.length > 18) return UsernameValidationResult.tooLong;
   if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(username)) {
     return UsernameValidationResult.invalidCharacters;
   }

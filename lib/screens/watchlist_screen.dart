@@ -46,13 +46,12 @@ class WatchlistScreen extends StatelessWidget {
           children: [
             Text(
               AppLocalization.emptyWatchlistText1,
-              style:
-                  AppTextStyles.font18.copyWith(color: AppColors.textMuted),
+              style: AppTextStyles.font18.copyWith(color: AppColors.textMuted),
             ),
+            Layout.heightBox(8),
             Text(
               AppLocalization.emptyWatchlistText2,
-              style:
-                  AppTextStyles.font18.copyWith(color: AppColors.textMuted),
+              style: AppTextStyles.font18.copyWith(color: AppColors.textMuted),
             ),
           ],
         ),

@@ -36,26 +36,31 @@ class GamesController extends ChangeNotifier {
       final allSnap =
           await FirebaseFirestore.instance.collection('products').get();
       _games = allSnap.docs.map(BoardGame.fromFirestore).toList();
+      _error = null;
+    } catch (e) {
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+      return;
+    }
 
+    try {
       final cutoff =
           Timestamp.fromDate(DateTime.now().subtract(const Duration(days: 7)));
-
       final updatedSnap = await FirebaseFirestore.instance
           .collection('products')
           .where('lastChangedAt', isGreaterThan: cutoff)
           .orderBy('lastChangedAt', descending: true)
           .get();
-
       final gameMap = {for (final g in _games) g.id: g};
       _updatedGames = updatedSnap.docs
           .map((d) => gameMap[d.id])
           .whereType<BoardGame>()
           .toList();
-
-      _error = null;
     } catch (e) {
-      _error = e.toString();
+      debugPrint('Failed to load updated games: $e');
     }
+
     _isLoading = false;
     notifyListeners();
   }

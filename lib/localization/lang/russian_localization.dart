@@ -129,7 +129,7 @@ const Map<String, String> russianLocalization = {
   'passwordTooShort': 'Минимум 6 символов',
   'passwordsNoMatch': 'Пароли не совпадают',
   'usernameTooShort': 'Минимум 5 символов',
-  'usernameTooLong': 'Максимум 12 символов',
+  'usernameTooLong': 'Максимум 18 символов',
   'usernameInvalidChars': 'Только буквы и цифры',
   'receivedNotificationsHeader': 'Уведомления',
   'emailNotifications': 'Email уведомления',
