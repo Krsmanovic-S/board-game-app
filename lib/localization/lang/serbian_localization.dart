@@ -157,4 +157,11 @@ const Map<String, String> serbianLocalization = {
   'deleteAccountTitle': 'Obriši nalog',
   'deleteAccountMessage':
       'Da li ste sigurni? Ova radnja se ne može poništiti. Svi vaši podaci će biti trajno obrisani.',
+
+  'settings': 'Podešavanja',
+  'language': 'Jezik',
+  'serbian': 'Srpski',
+  'english': 'Engleski',
+  'russian': 'Ruski',
+  'priceHistory': 'Istorija Cene'
 };

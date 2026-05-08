@@ -113,8 +113,7 @@ const Map<String, String> englishLocalization = {
       'Here you can enable or disable the types of notifications you receive for all games.',
   'globalNotificationsDesc2':
       'These settings apply to all tracked games, for specific games you can change this on their individual pages.',
-  'watchToEnableNotifications':
-      'Watch this game to configure notification settings',
+  'watchToEnableNotifications': 'Track this game to configure notifications',
   'saveError': 'Failed to save changes',
   'noPriceHistory': 'No data for this product..',
   'supportDeveloperHeader': 'Enjoying the App?',
@@ -154,4 +153,11 @@ const Map<String, String> englishLocalization = {
   'deleteAccountTitle': 'Delete Account',
   'deleteAccountMessage':
       'Are you sure? This action cannot be undone. All your data will be permanently deleted.',
+
+  'settings': 'Settings',
+  'language': 'Language',
+  'serbian': 'Serbian',
+  'english': 'English',
+  'russian': 'Russian',
+  'priceHistory': 'Price History',
 };

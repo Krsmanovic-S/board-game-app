@@ -289,7 +289,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
 
                 Layout.heightBox(16),
 
-                SectionHeader(title: 'Istorija Cene'),
+                SectionHeader(title: AppLocalization.priceHistory),
 
                 Layout.heightBox(16),
 

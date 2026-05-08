@@ -1,5 +1,6 @@
-import 'package:board_game_app/localization/lang/english_localization.dart';
 import 'package:board_game_app/localization/lang/serbian_localization.dart';
+import 'package:board_game_app/localization/lang/english_localization.dart';
+import 'package:board_game_app/localization/lang/russian_localization.dart';
 import 'package:board_game_app/utils/auth.dart';
 
 class AppLocalization {
@@ -10,7 +11,7 @@ class AppLocalization {
   }
 
   static Map<String, String> get _strings =>
-      _languages[_code] ?? _languages['en']!;
+      _languages[_code] ?? _languages['sr']!;
 
   // ── Auth ────────────────────────────────────────────────────────────────────
   static String get loginTitle => _strings['loginTitle']!;
@@ -90,6 +91,13 @@ class AppLocalization {
   static String get deleteAccount => _strings['deleteAccount']!;
   static String get deleteAccountTitle => _strings['deleteAccountTitle']!;
   static String get deleteAccountMessage => _strings['deleteAccountMessage']!;
+  static String get settings => _strings['settings']!;
+
+  // ── Language ────────────────────────────────────────────────────────────────
+  static String get language => _strings['language']!;
+  static String get serbian => _strings['serbian']!;
+  static String get english => _strings['english']!;
+  static String get russian => _strings['russian']!;
 
   // ── Tipping ────────────────────────────────────────────────────────────────
   static String get supportDeveloperHeader =>
@@ -128,6 +136,7 @@ class AppLocalization {
   static String get pricePerStore => _strings['pricePerStore']!;
   static String get notifications => _strings['notifications']!;
   static String get noPriceHistory => _strings['noPriceHistory']!;
+  static String get priceHistory => _strings['priceHistory']!;
 
   // ── Game Notifications ────────────────────────────────────────────────────────────────
   static String get priceDropLabel => _strings['priceDropLabel']!;
@@ -215,7 +224,8 @@ class AppLocalization {
 
   // ── Language Map ──────────────────────────────────────────────────────────
   static const Map<String, Map<String, String>> _languages = {
-    'en': englishLocalization,
     'sr': serbianLocalization,
+    'en': englishLocalization,
+    'ru': russianLocalization
   };
 }

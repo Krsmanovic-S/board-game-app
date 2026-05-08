@@ -37,7 +37,7 @@ void main() async {
 
   await _settingsController.load();
 
-  AppLocalization.setLanguage('sr');
+  AppLocalization.setLanguage(_settingsController.settings.languageCode);
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
