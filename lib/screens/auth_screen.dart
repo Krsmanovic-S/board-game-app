@@ -12,6 +12,7 @@ import 'package:board_game_app/localization/localization.dart';
 import 'package:board_game_app/controllers/auth_controller.dart';
 import 'package:board_game_app/utils/auth.dart';
 import 'package:board_game_app/widgets/info_modal.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -300,7 +301,43 @@ class _AuthCardState extends State<_AuthCard> {
   }
 
   Future<void> _continueWithApple() async {
-    // Apple sign-in — implement when targeting iOS
+    try {
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      final oauthCredential = OAuthProvider('apple.com').credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+
+      if (!mounted) return;
+
+      if (userCredential.additionalUserInfo?.isNewUser ?? false) {
+        context.push('/username-picker', extra: userCredential.user);
+      }
+    } on SignInWithAppleAuthorizationException catch (e) {
+      if (e.code == AuthorizationErrorCode.canceled) return;
+      if (!mounted) return;
+      await InfoModal.show(
+        context,
+        title: AppLocalization.error,
+        message: AppLocalization.unknownError,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      await InfoModal.show(
+        context,
+        title: AppLocalization.error,
+        message: e.message ?? AppLocalization.unknownError,
+      );
+    }
   }
 
   // - Build -------------------------------------------------------------------

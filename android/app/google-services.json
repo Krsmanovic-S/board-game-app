@@ -7,31 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1007917954503:android:4a21cd73c6d3157b7595e2",
-        "android_client_info": {
-          "package_name": "com.krsmanovic.boardGameTracker"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDFR89AFTxB7Xp-QoTj_aXdOSABh57dymQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:1007917954503:android:314998e1c68ff04b7595e2",
         "android_client_info": {
           "package_name": "com.krsmanovic.boardgametracker"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1007917954503-nk90v1b1d9fgb1v3l1gsb6rnvj6dkii6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.krsmanovic.boardgametracker",
+            "certificate_hash": "5a4894b37ed81902b2233a4d1f676650902cc7f5"
+          }
+        },
+        {
+          "client_id": "1007917954503-nh46l78fuctoat2pfl41o5t23roc7k44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDFR89AFTxB7Xp-QoTj_aXdOSABh57dymQ"
@@ -39,26 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:1007917954503:android:ff073cbfe0c1d0327595e2",
-        "android_client_info": {
-          "package_name": "com.krsmanovic.boardgametracker"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDFR89AFTxB7Xp-QoTj_aXdOSABh57dymQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007917954503-nh46l78fuctoat2pfl41o5t23roc7k44.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1007917954503-thkevb5nl0uvm7caba4l3q2nb6qc8ui3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.krsmanovic.boardgametracker"
+              }
+            }
+          ]
         }
       }
     }
