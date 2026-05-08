@@ -71,6 +71,8 @@ class AppLocalization {
 
   // ── Profile ────────────────────────────────────────────────────────────────
   static String get logout => _strings['logout']!;
+  static String get logoutConfirmTitle => _strings['logoutConfirmTitle']!;
+  static String get logoutConfirmMessage => _strings['logoutConfirmMessage']!;
   static String get profileMyData => _strings['profileMyData']!;
   static String get profileSettings => _strings['profileSettings']!;
   static String get profileContact => _strings['profileContact']!;

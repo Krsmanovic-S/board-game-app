@@ -153,6 +153,9 @@ const Map<String, String> serbianLocalization = {
   'verificationCooldown': 'Sačekajte minut pre ponovnog slanja',
   'alreadySent': 'Poslato',
 
+  'logoutConfirmTitle': 'Odjava',
+  'logoutConfirmMessage': 'Da li ste sigurni da želite da se odjavite?',
+
   'deleteAccount': 'Obriši nalog',
   'deleteAccountTitle': 'Obriši nalog',
   'deleteAccountMessage':

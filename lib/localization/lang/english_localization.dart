@@ -149,6 +149,9 @@ const Map<String, String> englishLocalization = {
   'verificationCooldown': 'Please wait a minute before resending',
   'alreadySent': 'Sent',
 
+  'logoutConfirmTitle': 'Logout',
+  'logoutConfirmMessage': 'Are you sure you want to log out?',
+
   'deleteAccount': 'Delete Account',
   'deleteAccountTitle': 'Delete Account',
   'deleteAccountMessage':
