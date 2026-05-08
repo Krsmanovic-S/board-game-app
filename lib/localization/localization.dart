@@ -82,6 +82,11 @@ class AppLocalization {
       _strings['receivedNotificationsHeader']!;
   static String get pushNotifications => _strings['pushNotifications']!;
   static String get emailNotifications => _strings['emailNotifications']!;
+  static String get emailNotVerified => _strings['emailNotVerified']!;
+  static String get verificationSent => _strings['verificationSent']!;
+  static String get resend => _strings['resend']!;
+  static String get verificationCooldown => _strings['verificationCooldown']!;
+  static String get alreadySent => _strings['alreadySent']!;
 
   // ── Tipping ────────────────────────────────────────────────────────────────
   static String get supportDeveloperHeader =>

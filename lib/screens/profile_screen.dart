@@ -9,6 +9,7 @@ import 'package:board_game_app/controllers/auth_controller.dart';
 import 'package:board_game_app/controllers/tip_controller.dart';
 import 'package:board_game_app/utils/tip_service.dart';
 import 'package:board_game_app/utils/support_email.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,6 +20,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late WatchlistController _watchlistCtrl;
+  DateTime? _lastVerificationSent;
 
   TipService get _tipService => TipServiceScope.of(context);
 
@@ -160,6 +162,82 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 label: AppLocalization.email,
                 value: user?.email ?? '',
               ),
+
+              // Verifying Email
+              if (FirebaseAuth.instance.currentUser?.emailVerified ==
+                  false) ...[
+                Layout.heightBox(6),
+                Container(
+                  padding: Layout.symmetric(horizontal: 14, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.errorContainer,
+                    borderRadius: BorderRadius.circular(Layout.v(8)),
+                    border: Border.all(
+                        color: AppColors.error.withValues(alpha: 0.3)),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.warning_amber_rounded,
+                          color: AppColors.error, size: Layout.v(16)),
+                      Layout.widthBox(8),
+                      Expanded(
+                        child: Text(
+                          AppLocalization.emailNotVerified,
+                          style: AppTextStyles.font14
+                              .copyWith(color: AppColors.error),
+                        ),
+                      ),
+                      if (_lastVerificationSent != null &&
+                          DateTime.now()
+                                  .difference(_lastVerificationSent!)
+                                  .inSeconds <
+                              60) ...[
+                        Row(
+                          children: [
+                            Icon(Icons.check_circle),
+                            Layout.widthBox(4),
+                            Text(
+                              AppLocalization.alreadySent,
+                              style: AppTextStyles.font14.copyWith(
+                                color: AppColors.textPrimary,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            )
+                          ],
+                        )
+                      ],
+                      if (_lastVerificationSent == null ||
+                          DateTime.now()
+                                  .difference(_lastVerificationSent!)
+                                  .inSeconds >
+                              60) ...[
+                        GestureDetector(
+                            child: Text(
+                              AppLocalization.resend,
+                              style: AppTextStyles.font14.copyWith(
+                                color: AppColors.error,
+                                fontWeight: FontWeight.w700,
+                                decoration: TextDecoration.underline,
+                                decorationColor: AppColors.error,
+                              ),
+                            ),
+                            onTap: () async {
+                              await FirebaseAuth.instance.currentUser
+                                  ?.sendEmailVerification();
+                              _lastVerificationSent = DateTime.now();
+                              if (context.mounted) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          AppLocalization.verificationSent)),
+                                );
+                              }
+                            })
+                      ]
+                    ],
+                  ),
+                ),
+              ],
 
               Layout.heightBox(16),
 

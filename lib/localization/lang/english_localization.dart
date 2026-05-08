@@ -144,4 +144,9 @@ const Map<String, String> englishLocalization = {
       'Got any ideas on how to improve the app? Type a message below and I will look it over as soon as I can:',
   'noEmailFound': 'No email app found on this device.',
   'failedEmailLaunch': 'Failed to launch email:',
+  'emailNotVerified': 'Email not verified',
+  'verificationSent': 'Verification email sent',
+  'resend': 'Resend',
+  'verificationCooldown': 'Please wait a minute before resending',
+  'alreadySent': 'Sent',
 };

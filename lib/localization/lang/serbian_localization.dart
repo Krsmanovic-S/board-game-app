@@ -147,4 +147,9 @@ const Map<String, String> serbianLocalization = {
       'Imaš ideju kako da poboljšamo aplikaciju? Napiši poruku ispod i pogledaću je čim budem mogao:',
   'noEmailFound': 'Nije pronađena aplikacija za e-poštu na ovom uređaju.',
   'failedEmailLaunch': 'Greška pri pokretanju e-pošte:',
+  'emailNotVerified': 'Email nije verifikovan',
+  'verificationSent': 'Email za verifikaciju je poslat',
+  'resend': 'Pošalji ponovo',
+  'verificationCooldown': 'Sačekajte minut pre ponovnog slanja',
+  'alreadySent': 'Poslato',
 };
