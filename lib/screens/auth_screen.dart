@@ -265,6 +265,8 @@ class _AuthCardState extends State<_AuthCard> {
         title: AppLocalization.registerError,
         message: message,
       );
+    } finally {
+      await FirebaseAuth.instance.currentUser?.sendEmailVerification();
     }
   }
 

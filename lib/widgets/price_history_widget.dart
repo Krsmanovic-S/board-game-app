@@ -70,13 +70,13 @@ class _PriceHistoryWidgetState extends State<PriceHistoryWidget> {
 
     if (current < previous) {
       return Icon(Icons.arrow_downward_rounded,
-          color: AppColors.primary, size: Layout.v(16));
+          color: AppColors.primary, size: Layout.v(22));
     } else if (current > previous) {
       return Icon(Icons.arrow_upward_rounded,
-          color: AppColors.error, size: Layout.v(16));
+          color: AppColors.error, size: Layout.v(22));
     } else {
       return Icon(Icons.remove_rounded,
-          color: AppColors.textMuted, size: Layout.v(16));
+          color: AppColors.textMuted, size: Layout.v(22));
     }
   }
 

@@ -6,7 +6,6 @@ import 'package:board_game_app/app/layout.dart';
 import 'package:board_game_app/app/theme.dart';
 import 'package:board_game_app/localization/localization.dart';
 import 'package:board_game_app/controllers/auth_controller.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:board_game_app/controllers/tip_controller.dart';
 import 'package:board_game_app/utils/tip_service.dart';
 import 'package:board_game_app/utils/support_email.dart';
@@ -272,30 +271,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     elevation: 10,
                   ),
                   child: Text(AppLocalization.sendEmail),
-                ),
-              ),
-
-              Layout.heightBox(16),
-
-              // Debug Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    final db = FirebaseFirestore.instance;
-                    final snap = await db
-                        .collection('products')
-                        .orderBy('updatedAt', descending: true)
-                        .limit(10)
-                        .get();
-
-                    for (final doc in snap.docs) {
-                      final data = doc.data();
-                      debugPrint(
-                          '${data['name']} - updatedAt: ${data['updatedAt']}');
-                    }
-                  },
-                  child: const Text('Debug: Show Changed Games'),
                 ),
               ),
 

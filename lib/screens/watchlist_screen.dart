@@ -65,9 +65,27 @@ class WatchlistScreen extends StatelessWidget {
         .map((e) => MapEntry(gameMap[e.key]!, e.value))
         .toList();
 
-    if (watched.isEmpty) {
+    if (watched.isEmpty && games.isLoading) {
       return Center(
         child: CircularProgressIndicator(color: AppColors.primary),
+      );
+    }
+
+    if (watched.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              AppLocalization.emptyWatchlistText1,
+              style: AppTextStyles.font18.copyWith(color: AppColors.textMuted),
+            ),
+            Text(
+              AppLocalization.emptyWatchlistText2,
+              style: AppTextStyles.font18.copyWith(color: AppColors.textMuted),
+            ),
+          ],
+        ),
       );
     }
 

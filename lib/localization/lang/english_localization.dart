@@ -82,6 +82,9 @@ const Map<String, String> englishLocalization = {
   // ── Browse ─────────────────────────────────────────────────────────────────
   'searchHint': 'Search games...',
   'noSearchResults': 'No results found.',
+  'noUpdatedGames': 'No recently updated games..',
+  'allGamesTab': 'All Games',
+  'updatedGamesTab': 'Updated',
   'price': 'Price',
   'lowestPrice': 'Lowest Price',
 
@@ -135,8 +138,8 @@ const Map<String, String> englishLocalization = {
   'pushNotifications': 'Push Notifications',
 
   // ── Support Email ────────────────────────────────────────────────────────────
-  'supportEmail': 'vigor.support@gmail.com',
-  'emailSubjectFeedback': 'Vigor App - Feedback',
+  'supportEmail': 'tessera.app.support@gmail.com',
+  'emailSubjectFeedback': 'Tessera App - Feedback',
   'emailFeedbackPrompt':
       'Got any ideas on how to improve the app? Type a message below and I will look it over as soon as I can:',
   'noEmailFound': 'No email app found on this device.',

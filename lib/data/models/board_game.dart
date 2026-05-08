@@ -33,6 +33,7 @@ class BoardGame {
   final String lowestPriceStore;
   final Map<String, StoreInfo> storeInfo;
   final bool inStockAnywhere;
+  final String? updatedAt;
 
   const BoardGame({
     required this.id,
@@ -41,6 +42,7 @@ class BoardGame {
     this.lowestPriceStore = '',
     required this.storeInfo,
     this.inStockAnywhere = false,
+    this.updatedAt,
   });
 
   String? get firstImageUrl {
@@ -83,6 +85,7 @@ class BoardGame {
       lowestPriceStore: data['lowestPriceStore'] as String? ?? '',
       storeInfo: storeInfo,
       inStockAnywhere: inStockAnywhere,
+      updatedAt: data['updatedAt'] is String ? data['updatedAt'] as String : data['updatedAt']?.toString(),
     );
   }
 }

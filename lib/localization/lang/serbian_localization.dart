@@ -84,6 +84,9 @@ const Map<String, String> serbianLocalization = {
   // ── Browse ─────────────────────────────────────────────────────────────────
   'searchHint': 'Pretraži igre...',
   'noSearchResults': 'Nema rezultata pretrage.',
+  'noUpdatedGames': 'Nema nedavno izmenjenih igara..',
+  'allGamesTab': 'Sve Igre',
+  'updatedGamesTab': 'Izmenjeno',
   'price': 'Cena',
   'lowestPrice': 'Najniža Cena',
 
@@ -138,7 +141,8 @@ const Map<String, String> serbianLocalization = {
   'pushNotifications': 'Mobilna obaveštenja',
 
   // ── Support Email ────────────────────────────────────────────────────────────
-  'emailSubjectFeedback': 'Vigor App - Utisci i predlozi',
+  'supportEmail': 'tessera.app.support@gmail.com',
+  'emailSubjectFeedback': 'Tessera App - Utisci i predlozi',
   'emailFeedbackPrompt':
       'Imaš ideju kako da poboljšamo aplikaciju? Napiši poruku ispod i pogledaću je čim budem mogao:',
   'noEmailFound': 'Nije pronađena aplikacija za e-poštu na ovom uređaju.',
