@@ -292,7 +292,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   60) ...[
                             Row(
                               children: [
-                                Icon(Icons.check_circle),
+                                Icon(Icons.check_circle,
+                                    color: AppColors.primary,
+                                    size: Layout.v(24)),
                                 Layout.widthBox(4),
                                 Text(
                                   AppLocalization.alreadySent,
@@ -317,7 +319,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 onTap: () async {
                                   await FirebaseAuth.instance.currentUser
                                       ?.sendEmailVerification();
-                                  _lastVerificationSent = DateTime.now();
+
+                                  setState(() =>
+                                      _lastVerificationSent = DateTime.now());
+
                                   if (context.mounted) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(

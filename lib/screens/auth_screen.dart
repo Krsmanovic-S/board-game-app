@@ -92,7 +92,6 @@ class _AuthCardState extends State<_AuthCard> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _isLoading = false;
-  bool _isAuthLoading = false;
   final _googleSignIn = GoogleSignIn();
 
   // Real-time validation state
@@ -107,7 +106,7 @@ class _AuthCardState extends State<_AuthCard> {
   Timer? _usernameDebounce;
 
   bool get _canSubmit {
-    if (_isLoading || _isAuthLoading) return false;
+    if (_isLoading) return false;
     if (widget.isLogin) {
       return _emailError == null &&
           _emailController.text.trim().isNotEmpty &&
@@ -197,12 +196,7 @@ class _AuthCardState extends State<_AuthCard> {
 
   Future<void> _submit() async {
     if (!_canSubmit) return;
-
-    setState(() {
-      _isAuthLoading = false;
-      _isLoading = true;
-    });
-
+    setState(() => _isLoading = true);
     try {
       if (widget.isLogin) {
         await _login();
@@ -210,12 +204,7 @@ class _AuthCardState extends State<_AuthCard> {
         await _register();
       }
     } finally {
-      if (mounted) {
-        setState(() {
-          _isAuthLoading = true;
-          _isLoading = false;
-        });
-      }
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -282,11 +271,11 @@ class _AuthCardState extends State<_AuthCard> {
   }
 
   Future<void> _continueWithGoogle() async {
-    setState(() => _isAuthLoading = true);
+    setState(() => _isLoading = true);
     try {
       final googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
-        setState(() => _isAuthLoading = false);
+        setState(() => _isLoading = false);
         return;
       }
 
@@ -300,7 +289,7 @@ class _AuthCardState extends State<_AuthCard> {
       // Router redirect handles all navigation from here
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
-      setState(() => _isAuthLoading = false);
+      setState(() => _isLoading = false);
       await InfoModal.show(
         context,
         title: AppLocalization.error,
@@ -308,12 +297,12 @@ class _AuthCardState extends State<_AuthCard> {
       );
     } catch (e) {
       if (!mounted) return;
-      setState(() => _isAuthLoading = false);
+      setState(() => _isLoading = false);
     }
   }
 
   Future<void> _continueWithApple() async {
-    setState(() => _isAuthLoading = true);
+    setState(() => _isLoading = true);
     try {
       final appleCredential = await SignInWithApple.getAppleIDCredential(
         scopes: [
@@ -331,7 +320,7 @@ class _AuthCardState extends State<_AuthCard> {
       // Router redirect handles all navigation from here
     } on SignInWithAppleAuthorizationException catch (e) {
       if (!mounted) return;
-      setState(() => _isAuthLoading = false);
+      setState(() => _isLoading = false);
       if (e.code == AuthorizationErrorCode.canceled) return;
       await InfoModal.show(
         context,
@@ -340,7 +329,7 @@ class _AuthCardState extends State<_AuthCard> {
       );
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
-      setState(() => _isAuthLoading = false);
+      setState(() => _isLoading = false);
       await InfoModal.show(
         context,
         title: AppLocalization.error,
@@ -348,7 +337,7 @@ class _AuthCardState extends State<_AuthCard> {
       );
     } catch (e) {
       if (!mounted) return;
-      setState(() => _isAuthLoading = false);
+      setState(() => _isLoading = false);
     }
   }
 
@@ -356,155 +345,149 @@ class _AuthCardState extends State<_AuthCard> {
 
   @override
   Widget build(BuildContext context) {
-    return _isAuthLoading
-        ? Center(child: CircularProgressIndicator(color: AppColors.primary))
-        : Card(
-            elevation: 6,
-            shadowColor: Colors.black.withValues(alpha: 0.15),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(Layout.v(16)),
-              side: const BorderSide(color: AppColors.border),
+    return Card(
+      elevation: 6,
+      shadowColor: Colors.black.withValues(alpha: 0.15),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(Layout.v(16)),
+        side: const BorderSide(color: AppColors.border),
+      ),
+      child: Padding(
+        padding: Layout.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              widget.isLogin
+                  ? AppLocalization.loginTitle
+                  : AppLocalization.registerTitle,
+              style: AppTextStyles.font22.copyWith(
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              ),
+              textAlign: TextAlign.center,
             ),
-            child: Padding(
-              padding: Layout.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    widget.isLogin
-                        ? AppLocalization.loginTitle
-                        : AppLocalization.registerTitle,
-                    style: AppTextStyles.font22.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.textPrimary,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  Layout.heightBox(24),
+            Layout.heightBox(24),
 
-                  // Email
-                  _buildTextField(
-                    controller: _emailController,
-                    hint: AppLocalization.email,
-                    keyboardType: TextInputType.emailAddress,
-                    maxLength: 30,
-                    onChanged: _onEmailChanged,
-                    error: _emailError,
-                  ),
+            // Email
+            _buildTextField(
+              controller: _emailController,
+              hint: AppLocalization.email,
+              keyboardType: TextInputType.emailAddress,
+              maxLength: 30,
+              onChanged: _onEmailChanged,
+              error: _emailError,
+            ),
 
-                  // Username (register only)
-                  if (!widget.isLogin) ...[
-                    Layout.heightBox(16),
-                    _buildUsernameField(),
-                  ],
+            // Username (register only)
+            if (!widget.isLogin) ...[
+              Layout.heightBox(16),
+              _buildUsernameField(),
+            ],
 
-                  Layout.heightBox(16),
+            Layout.heightBox(16),
 
-                  // Password
-                  _buildPasswordField(
-                    controller: _passwordController,
-                    hint: AppLocalization.password,
-                    obscure: _obscurePassword,
-                    onToggle: () =>
-                        setState(() => _obscurePassword = !_obscurePassword),
-                    onChanged: widget.isLogin
-                        ? (_) => setState(() {})
-                        : _onPasswordChanged,
-                    error: _passwordError,
-                  ),
+            // Password
+            _buildPasswordField(
+              controller: _passwordController,
+              hint: AppLocalization.password,
+              obscure: _obscurePassword,
+              onToggle: () =>
+                  setState(() => _obscurePassword = !_obscurePassword),
+              onChanged:
+                  widget.isLogin ? (_) => setState(() {}) : _onPasswordChanged,
+              error: _passwordError,
+            ),
 
-                  // Confirm password (register only)
-                  if (!widget.isLogin) ...[
-                    Layout.heightBox(16),
-                    _buildPasswordField(
-                      controller: _confirmPasswordController,
-                      hint: AppLocalization.confirmPassword,
-                      obscure: _obscureConfirmPassword,
-                      onToggle: () => setState(
-                        () =>
-                            _obscureConfirmPassword = !_obscureConfirmPassword,
-                      ),
-                      onChanged: _onConfirmChanged,
-                      error: _confirmError,
-                    ),
-                  ],
+            // Confirm password (register only)
+            if (!widget.isLogin) ...[
+              Layout.heightBox(16),
+              _buildPasswordField(
+                controller: _confirmPasswordController,
+                hint: AppLocalization.confirmPassword,
+                obscure: _obscureConfirmPassword,
+                onToggle: () => setState(
+                  () => _obscureConfirmPassword = !_obscureConfirmPassword,
+                ),
+                onChanged: _onConfirmChanged,
+                error: _confirmError,
+              ),
+            ],
 
-                  // Google / Apple
-                  if (widget.isLogin) ...[
-                    Layout.heightBox(20),
-                    if (Platform.isAndroid)
-                      SignInButton(
-                        Buttons.google,
-                        padding: Layout.symmetric(vertical: 4),
-                        text: AppLocalization.continueWithGoogle,
-                        onPressed: _continueWithGoogle,
-                      ),
-                    if (Platform.isIOS)
-                      SignInButton(
-                        Buttons.apple,
-                        padding: Layout.symmetric(vertical: 4),
-                        text: AppLocalization.continueWithApple,
-                        onPressed: _continueWithApple,
-                      ),
-                  ],
+            // Google / Apple
+            if (widget.isLogin) ...[
+              Layout.heightBox(20),
+              if (Platform.isAndroid)
+                SignInButton(
+                  Buttons.google,
+                  padding: Layout.symmetric(vertical: 4),
+                  text: AppLocalization.continueWithGoogle,
+                  onPressed: _continueWithGoogle,
+                ),
+              if (Platform.isIOS)
+                SignInButton(
+                  Buttons.apple,
+                  padding: Layout.symmetric(vertical: 4),
+                  text: AppLocalization.continueWithApple,
+                  onPressed: _continueWithApple,
+                ),
+            ],
 
-                  Layout.heightBox(20),
+            Layout.heightBox(20),
 
-                  // Toggle link
-                  GestureDetector(
-                    onTap: widget.onToggle,
-                    child: Text(
-                      widget.isLogin
-                          ? AppLocalization.noAccount
-                          : AppLocalization.haveAccount,
-                      style: AppTextStyles.font14.copyWith(
-                        color: AppColors.primary,
-                        decoration: TextDecoration.underline,
-                        decorationColor: AppColors.primary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-
-                  Layout.heightBox(20),
-
-                  // Submit button
-                  ElevatedButton(
-                    onPressed: _canSubmit ? _submit : null,
-                    style: AppButtonStyles.primaryFilled.copyWith(
-                      backgroundColor: WidgetStateProperty.resolveWith(
-                        (s) => s.contains(WidgetState.disabled)
-                            ? AppColors.disabled
-                            : AppColors.primary,
-                      ),
-                    ),
-                    child: _isLoading
-                        ? SizedBox(
-                            height: Layout.v(20),
-                            width: Layout.v(20),
-                            child: const CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : Text(
-                            widget.isLogin
-                                ? AppLocalization.loginTitle
-                                : AppLocalization.registerTitle,
-                            style: AppTextStyles.font18.copyWith(
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: 1.2,
-                              color: _canSubmit
-                                  ? Colors.white
-                                  : AppColors.textMuted,
-                            ),
-                          ),
-                  ),
-                ],
+            // Toggle link
+            GestureDetector(
+              onTap: widget.onToggle,
+              child: Text(
+                widget.isLogin
+                    ? AppLocalization.noAccount
+                    : AppLocalization.haveAccount,
+                style: AppTextStyles.font14.copyWith(
+                  color: AppColors.primary,
+                  decoration: TextDecoration.underline,
+                  decorationColor: AppColors.primary,
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
-          );
+
+            Layout.heightBox(20),
+
+            // Submit button
+            ElevatedButton(
+              onPressed: _canSubmit ? _submit : null,
+              style: AppButtonStyles.primaryFilled.copyWith(
+                backgroundColor: WidgetStateProperty.resolveWith(
+                  (s) => s.contains(WidgetState.disabled)
+                      ? AppColors.disabled
+                      : AppColors.primary,
+                ),
+              ),
+              child: _isLoading
+                  ? SizedBox(
+                      height: Layout.v(20),
+                      width: Layout.v(20),
+                      child: const CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
+                    )
+                  : Text(
+                      widget.isLogin
+                          ? AppLocalization.loginTitle
+                          : AppLocalization.registerTitle,
+                      style: AppTextStyles.font18.copyWith(
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 1.2,
+                        color: _canSubmit ? Colors.white : AppColors.textMuted,
+                      ),
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   // - Field builders ----------------------------------------------------------
