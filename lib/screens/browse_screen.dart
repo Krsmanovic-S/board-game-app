@@ -1,3 +1,4 @@
+import 'package:board_game_app/widgets/page_container.dart';
 import 'package:flutter/material.dart';
 import 'package:board_game_app/app/layout.dart';
 import 'package:board_game_app/app/theme.dart';
@@ -103,16 +104,18 @@ class _BrowseScreenState extends State<BrowseScreen> {
     Layout.init(context);
     final gamesCtrl = GamesScope.of(context);
 
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
-      child: SafeArea(
-        child: Column(
-          children: [
-            _buildAppBar(gamesCtrl),
-            Expanded(child: _buildBody(gamesCtrl)),
-          ],
+    return PageContainer(
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
+        child: SafeArea(
+          child: Column(
+            children: [
+              _buildAppBar(gamesCtrl),
+              Expanded(child: _buildBody(gamesCtrl)),
+            ],
+          ),
         ),
       ),
     );

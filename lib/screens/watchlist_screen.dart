@@ -1,6 +1,7 @@
 import 'package:board_game_app/controllers/games_controller.dart';
 import 'package:board_game_app/controllers/watchlist_controller.dart';
 import 'package:board_game_app/localization/localization.dart';
+import 'package:board_game_app/widgets/page_container.dart';
 import 'package:board_game_app/widgets/watchlist_card.dart';
 import 'package:flutter/material.dart';
 import 'package:board_game_app/app/layout.dart';
@@ -15,23 +16,25 @@ class WatchlistScreen extends StatelessWidget {
     final watchlist = WatchlistScope.of(context);
     final games = GamesScope.of(context);
 
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            elevation: 0,
-            title: Text(AppLocalization.watchlistAppBar),
-            foregroundColor: AppColors.secondary,
+    return PageContainer(
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              elevation: 0,
+              title: Text(AppLocalization.watchlistAppBar),
+              foregroundColor: AppColors.secondary,
+            ),
+            body: watchlist.loading
+                ? Center(
+                    child: CircularProgressIndicator(color: AppColors.primary),
+                  )
+                : _buildBody(context, watchlist, games),
           ),
-          body: watchlist.loading
-              ? Center(
-                  child: CircularProgressIndicator(color: AppColors.primary),
-                )
-              : _buildBody(context, watchlist, games),
         ),
       ),
     );

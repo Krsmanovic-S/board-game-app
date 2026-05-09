@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:board_game_app/widgets/page_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:board_game_app/app/layout.dart';
@@ -134,108 +135,110 @@ class _UsernamePickerScreenState extends State<UsernamePickerScreen> {
   Widget build(BuildContext context) {
     Layout.init(context);
 
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
+    return PageContainer(
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
+        child: Scaffold(
           backgroundColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-        ),
-        body: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: Layout.symmetric(horizontal: 24, vertical: 32),
-              child: Card(
-                elevation: 6,
-                shadowColor: Colors.black.withValues(alpha: 0.15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(Layout.v(16)),
-                  side: const BorderSide(color: AppColors.border),
-                ),
-                child: Padding(
-                  padding: Layout.all(24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Text(
-                        AppLocalization.pickUsername,
-                        style: AppTextStyles.font22.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Layout.heightBox(12),
-                      Text(
-                        AppLocalization.usernamePickerDesc,
-                        style: AppTextStyles.font14.copyWith(
-                          color: AppColors.textMuted,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      Layout.heightBox(24),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextField(
-                            controller: _controller,
-                            onChanged: _onUsernameChanged,
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(15),
-                            ],
-                            style: AppTextStyles.font16
-                                .copyWith(color: AppColors.textPrimary),
-                            decoration: InputDecoration(
-                              hintText: AppLocalization.username,
-                              suffixIcon: _buildSuffixIcon(),
-                            ),
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            automaticallyImplyLeading: false,
+          ),
+          body: SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: Layout.symmetric(horizontal: 24, vertical: 32),
+                child: Card(
+                  elevation: 6,
+                  shadowColor: Colors.black.withValues(alpha: 0.15),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(Layout.v(16)),
+                    side: const BorderSide(color: AppColors.border),
+                  ),
+                  child: Padding(
+                    padding: Layout.all(24),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                          AppLocalization.pickUsername,
+                          style: AppTextStyles.font22.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
                           ),
-                          if (_usernameError != null) ...[
-                            Layout.heightBox(4),
-                            Text(
-                              _usernameError!,
-                              style: AppTextStyles.font12
-                                  .copyWith(color: AppColors.error),
-                            ),
-                          ],
-                        ],
-                      ),
-                      Layout.heightBox(24),
-                      ElevatedButton(
-                        onPressed: _canSubmit ? _submit : null,
-                        style: AppButtonStyles.primaryFilled.copyWith(
-                          backgroundColor: WidgetStateProperty.resolveWith(
-                            (s) => s.contains(WidgetState.disabled)
-                                ? AppColors.disabled
-                                : AppColors.primary,
-                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        child: _isLoading
-                            ? SizedBox(
-                                height: Layout.v(20),
-                                width: Layout.v(20),
-                                child: const CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : Text(
-                                AppLocalization.confirm,
-                                style: AppTextStyles.font18.copyWith(
-                                  fontWeight: FontWeight.w900,
-                                  letterSpacing: 1.2,
-                                  color: _canSubmit
-                                      ? Colors.white
-                                      : AppColors.textMuted,
-                                ),
+                        Layout.heightBox(12),
+                        Text(
+                          AppLocalization.usernamePickerDesc,
+                          style: AppTextStyles.font14.copyWith(
+                            color: AppColors.textMuted,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        Layout.heightBox(24),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextField(
+                              controller: _controller,
+                              onChanged: _onUsernameChanged,
+                              inputFormatters: [
+                                LengthLimitingTextInputFormatter(15),
+                              ],
+                              style: AppTextStyles.font16
+                                  .copyWith(color: AppColors.textPrimary),
+                              decoration: InputDecoration(
+                                hintText: AppLocalization.username,
+                                suffixIcon: _buildSuffixIcon(),
                               ),
-                      ),
-                    ],
+                            ),
+                            if (_usernameError != null) ...[
+                              Layout.heightBox(4),
+                              Text(
+                                _usernameError!,
+                                style: AppTextStyles.font12
+                                    .copyWith(color: AppColors.error),
+                              ),
+                            ],
+                          ],
+                        ),
+                        Layout.heightBox(24),
+                        ElevatedButton(
+                          onPressed: _canSubmit ? _submit : null,
+                          style: AppButtonStyles.primaryFilled.copyWith(
+                            backgroundColor: WidgetStateProperty.resolveWith(
+                              (s) => s.contains(WidgetState.disabled)
+                                  ? AppColors.disabled
+                                  : AppColors.primary,
+                            ),
+                          ),
+                          child: _isLoading
+                              ? SizedBox(
+                                  height: Layout.v(20),
+                                  width: Layout.v(20),
+                                  child: const CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : Text(
+                                  AppLocalization.confirm,
+                                  style: AppTextStyles.font18.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 1.2,
+                                    color: _canSubmit
+                                        ? Colors.white
+                                        : AppColors.textMuted,
+                                  ),
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

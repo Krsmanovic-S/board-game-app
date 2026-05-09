@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:board_game_app/widgets/page_container.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,40 +27,42 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     Layout.init(context);
-    return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              padding: Layout.symmetric(horizontal: 16, vertical: 32),
-              child: AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                transitionBuilder: (child, animation) => FadeTransition(
-                  opacity: animation,
-                  child: ScaleTransition(
-                    scale: Tween<double>(begin: 0.96, end: 1.0).animate(
-                      CurvedAnimation(
-                        parent: animation,
-                        curve: Curves.easeOut,
+    return PageContainer(
+      child: Scaffold(
+        body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
+          child: SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: Layout.symmetric(horizontal: 16, vertical: 32),
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, animation) => FadeTransition(
+                    opacity: animation,
+                    child: ScaleTransition(
+                      scale: Tween<double>(begin: 0.96, end: 1.0).animate(
+                        CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.easeOut,
+                        ),
                       ),
+                      child: child,
                     ),
-                    child: child,
                   ),
+                  child: _isLogin
+                      ? _AuthCard(
+                          key: const ValueKey('login'),
+                          isLogin: true,
+                          onToggle: () => setState(() => _isLogin = false),
+                        )
+                      : _AuthCard(
+                          key: const ValueKey('register'),
+                          isLogin: false,
+                          onToggle: () => setState(() => _isLogin = true),
+                        ),
                 ),
-                child: _isLogin
-                    ? _AuthCard(
-                        key: const ValueKey('login'),
-                        isLogin: true,
-                        onToggle: () => setState(() => _isLogin = false),
-                      )
-                    : _AuthCard(
-                        key: const ValueKey('register'),
-                        isLogin: false,
-                        onToggle: () => setState(() => _isLogin = true),
-                      ),
               ),
             ),
           ),

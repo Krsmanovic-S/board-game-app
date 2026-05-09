@@ -1,5 +1,6 @@
 import 'package:board_game_app/controllers/watchlist_controller.dart';
 import 'package:board_game_app/widgets/field_card.dart';
+import 'package:board_game_app/widgets/page_container.dart';
 import 'package:board_game_app/widgets/price_history_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -174,189 +175,191 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
         _game!.storeInfo[_game!.lowestPriceStore]?.sourceUrl;
     final watchlistItem = _watchlistCtrl.getItem(widget.gameId);
 
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
-      child: SafeArea(
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            elevation: 0,
-            title: Text(AppLocalization.gameDetailsAppBar),
-            foregroundColor: AppColors.secondary,
-            leadingWidth: Layout.v(70),
-            titleSpacing: 0,
-            actionsPadding: Layout.only(right: 20),
-            actions: [
-              if (_watchLoading)
-                Padding(
-                  padding: Layout.only(right: 12),
-                  child: Center(
-                    child: SizedBox(
-                      width: Layout.v(24),
-                      height: Layout.v(24),
-                      child: CircularProgressIndicator(
-                        color: AppColors.primary,
-                        strokeWidth: 2,
-                      ),
-                    ),
-                  ),
-                )
-              else
-                IconButton(
-                  onPressed: _onBookmarkTapped,
-                  icon: Icon(
-                    _effectiveIsWatched
-                        ? Icons.bookmark
-                        : Icons.bookmark_add_outlined,
-                    size: Layout.v(28),
-                  ),
-                ),
-            ],
-          ),
-          body: SingleChildScrollView(
-            padding: Layout.fromLTRB(16, 16, 16, 32),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Game Name
-                Text(
-                  _game!.name,
-                  style: AppTextStyles.font20.copyWith(
-                    fontSize: Layout.v(28),
-                    fontWeight: FontWeight.w800,
-                    height: 1.1,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-
-                Layout.heightBox(16),
-
-                // Game Image
-                Container(
-                  width: double.infinity,
-                  decoration: context.cardDecoration,
-                  child: Padding(
-                    padding: Layout.symmetric(horizontal: 24, vertical: 24),
-                    child: Hero(
-                      tag: 'game_image_${widget.gameId}',
-                      child: CachedNetworkImage(
-                        imageUrl: widget.initialImageUrl ??
-                            widget.game?.imageUrls.first ??
-                            '',
-                        fit: BoxFit.contain,
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.image),
-                      ),
-                    ),
-                  ),
-                ),
-
-                Layout.heightBox(16),
-
-                // Buy Now Button
-                ElevatedButton(
-                  onPressed: targetUrl != null
-                      ? () => AppHelpers.launchStoreUrl(targetUrl)
-                      : null,
-                  child: _game!.inStockAnywhere
-                      ? Column(
-                          children: [
-                            Text(
-                              '${AppLocalization.buyOnButton} ${AppHelpers.getStoreLabel(_game!.lowestPriceStore)}',
-                              style: AppTextStyles.font18,
-                            ),
-                            Layout.heightBox(4),
-                            Text(
-                              AppHelpers.formatPrice(_game!.lowestPrice),
-                              style: AppTextStyles.font18
-                                  .copyWith(fontWeight: FontWeight.w900),
-                            ),
-                          ],
-                        )
-                      : Text(AppLocalization.notAvailable),
-                ),
-
-                Layout.heightBox(16),
-
-                // Store Price Grid
-                SectionHeader(title: AppLocalization.pricePerStore),
-
-                Layout.heightBox(16),
-
-                _buildPriceGrid(),
-
-                Layout.heightBox(16),
-
-                SectionHeader(title: AppLocalization.priceHistory),
-
-                Layout.heightBox(16),
-
-                PriceHistoryWidget(gameId: widget.gameId),
-
-                Layout.heightBox(16),
-
-                SectionHeader(title: AppLocalization.notifications),
-
-                Layout.heightBox(16),
-                if (_effectiveIsWatched) ...[
-                  if (watchlistItem != null) ...[
-                    SwitchRow(
-                      label: AppLocalization.priceDropLabel,
-                      value: watchlistItem.notifyPriceDrop,
-                      onChanged: (v) =>
-                          _watchlistCtrl.updatePerGameNotification(
-                              widget.gameId, 'notifyPriceDrop', v),
-                    ),
-                    Layout.heightBox(8),
-                    SwitchRow(
-                      label: AppLocalization.priceIncreaseLabel,
-                      value: watchlistItem.notifyPriceIncrease,
-                      onChanged: (v) =>
-                          _watchlistCtrl.updatePerGameNotification(
-                              widget.gameId, 'notifyPriceIncrease', v),
-                    ),
-                    Layout.heightBox(8),
-                    SwitchRow(
-                      label: AppLocalization.outOfStockLabel,
-                      value: watchlistItem.notifyOutOfStock,
-                      onChanged: (v) =>
-                          _watchlistCtrl.updatePerGameNotification(
-                              widget.gameId, 'notifyOutOfStock', v),
-                    ),
-                    Layout.heightBox(8),
-                    SwitchRow(
-                      label: AppLocalization.backInStockLabel,
-                      value: watchlistItem.notifyBackInStock,
-                      onChanged: (v) =>
-                          _watchlistCtrl.updatePerGameNotification(
-                              widget.gameId, 'notifyBackInStock', v),
-                    ),
-                  ] else
-                    Center(
+    return PageContainer(
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
+        child: SafeArea(
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              elevation: 0,
+              title: Text(AppLocalization.gameDetailsAppBar),
+              foregroundColor: AppColors.secondary,
+              leadingWidth: Layout.v(70),
+              titleSpacing: 0,
+              actionsPadding: Layout.only(right: 20),
+              actions: [
+                if (_watchLoading)
+                  Padding(
+                    padding: Layout.only(right: 12),
+                    child: Center(
                       child: SizedBox(
-                        height: Layout.v(24),
                         width: Layout.v(24),
+                        height: Layout.v(24),
                         child: CircularProgressIndicator(
                           color: AppColors.primary,
                           strokeWidth: 2,
                         ),
                       ),
                     ),
-                ] else
-                  Padding(
-                    padding: Layout.symmetric(vertical: 8),
-                    child: Text(
-                      AppLocalization.watchToEnableNotifications,
-                      style: AppTextStyles.font14.copyWith(
-                        color: AppColors.textMuted,
-                        fontStyle: FontStyle.italic,
-                      ),
-                      textAlign: TextAlign.center,
+                  )
+                else
+                  IconButton(
+                    onPressed: _onBookmarkTapped,
+                    icon: Icon(
+                      _effectiveIsWatched
+                          ? Icons.bookmark
+                          : Icons.bookmark_add_outlined,
+                      size: Layout.v(28),
                     ),
                   ),
               ],
+            ),
+            body: SingleChildScrollView(
+              padding: Layout.fromLTRB(16, 16, 16, 32),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Game Name
+                  Text(
+                    _game!.name,
+                    style: AppTextStyles.font20.copyWith(
+                      fontSize: Layout.v(28),
+                      fontWeight: FontWeight.w800,
+                      height: 1.1,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+
+                  Layout.heightBox(16),
+
+                  // Game Image
+                  Container(
+                    width: double.infinity,
+                    decoration: context.cardDecoration,
+                    child: Padding(
+                      padding: Layout.symmetric(horizontal: 24, vertical: 24),
+                      child: Hero(
+                        tag: 'game_image_${widget.gameId}',
+                        child: CachedNetworkImage(
+                          imageUrl: widget.initialImageUrl ??
+                              widget.game?.imageUrls.first ??
+                              '',
+                          fit: BoxFit.contain,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.image),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Layout.heightBox(16),
+
+                  // Buy Now Button
+                  ElevatedButton(
+                    onPressed: targetUrl != null
+                        ? () => AppHelpers.launchStoreUrl(targetUrl)
+                        : null,
+                    child: _game!.inStockAnywhere
+                        ? Column(
+                            children: [
+                              Text(
+                                '${AppLocalization.buyOnButton} ${AppHelpers.getStoreLabel(_game!.lowestPriceStore)}',
+                                style: AppTextStyles.font18,
+                              ),
+                              Layout.heightBox(4),
+                              Text(
+                                AppHelpers.formatPrice(_game!.lowestPrice),
+                                style: AppTextStyles.font18
+                                    .copyWith(fontWeight: FontWeight.w900),
+                              ),
+                            ],
+                          )
+                        : Text(AppLocalization.notAvailable),
+                  ),
+
+                  Layout.heightBox(16),
+
+                  // Store Price Grid
+                  SectionHeader(title: AppLocalization.pricePerStore),
+
+                  Layout.heightBox(16),
+
+                  _buildPriceGrid(),
+
+                  Layout.heightBox(16),
+
+                  SectionHeader(title: AppLocalization.priceHistory),
+
+                  Layout.heightBox(16),
+
+                  PriceHistoryWidget(gameId: widget.gameId),
+
+                  Layout.heightBox(16),
+
+                  SectionHeader(title: AppLocalization.notifications),
+
+                  Layout.heightBox(16),
+                  if (_effectiveIsWatched) ...[
+                    if (watchlistItem != null) ...[
+                      SwitchRow(
+                        label: AppLocalization.priceDropLabel,
+                        value: watchlistItem.notifyPriceDrop,
+                        onChanged: (v) =>
+                            _watchlistCtrl.updatePerGameNotification(
+                                widget.gameId, 'notifyPriceDrop', v),
+                      ),
+                      Layout.heightBox(8),
+                      SwitchRow(
+                        label: AppLocalization.priceIncreaseLabel,
+                        value: watchlistItem.notifyPriceIncrease,
+                        onChanged: (v) =>
+                            _watchlistCtrl.updatePerGameNotification(
+                                widget.gameId, 'notifyPriceIncrease', v),
+                      ),
+                      Layout.heightBox(8),
+                      SwitchRow(
+                        label: AppLocalization.outOfStockLabel,
+                        value: watchlistItem.notifyOutOfStock,
+                        onChanged: (v) =>
+                            _watchlistCtrl.updatePerGameNotification(
+                                widget.gameId, 'notifyOutOfStock', v),
+                      ),
+                      Layout.heightBox(8),
+                      SwitchRow(
+                        label: AppLocalization.backInStockLabel,
+                        value: watchlistItem.notifyBackInStock,
+                        onChanged: (v) =>
+                            _watchlistCtrl.updatePerGameNotification(
+                                widget.gameId, 'notifyBackInStock', v),
+                      ),
+                    ] else
+                      Center(
+                        child: SizedBox(
+                          height: Layout.v(24),
+                          width: Layout.v(24),
+                          child: CircularProgressIndicator(
+                            color: AppColors.primary,
+                            strokeWidth: 2,
+                          ),
+                        ),
+                      ),
+                  ] else
+                    Padding(
+                      padding: Layout.symmetric(vertical: 8),
+                      child: Text(
+                        AppLocalization.watchToEnableNotifications,
+                        style: AppTextStyles.font14.copyWith(
+                          color: AppColors.textMuted,
+                          fontStyle: FontStyle.italic,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                ],
+              ),
             ),
           ),
         ),

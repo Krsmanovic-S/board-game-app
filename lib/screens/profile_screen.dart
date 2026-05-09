@@ -1,5 +1,6 @@
 import 'package:board_game_app/controllers/watchlist_controller.dart';
 import 'package:board_game_app/widgets/field_card.dart';
+import 'package:board_game_app/widgets/page_container.dart';
 import 'package:board_game_app/widgets/settings_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:board_game_app/app/layout.dart';
@@ -218,378 +219,385 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     _controller;
 
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
-      child: Stack(children: [
-        SafeArea(
-          child: AbsorbPointer(
-            absorbing: _isUpdating,
-            child: SingleChildScrollView(
-              padding: Layout.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Tipping
-                  SectionHeader(title: AppLocalization.supportDeveloperHeader),
+    return PageContainer(
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(gradient: AppColors.scaffoldGradient),
+        child: Stack(children: [
+          SafeArea(
+            child: AbsorbPointer(
+              absorbing: _isUpdating,
+              child: SingleChildScrollView(
+                padding: Layout.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Tipping
+                    SectionHeader(
+                        title: AppLocalization.supportDeveloperHeader),
 
-                  Layout.heightBox(12),
+                    Layout.heightBox(12),
 
-                  MenuTile(
-                    icon: Icons.favorite,
-                    label: AppLocalization.supportDeveloperButton,
-                    onTap: _showTipPicker,
-                  ),
-
-                  Layout.heightBox(12),
-
-                  // Profile Info
-                  SectionHeader(title: AppLocalization.profileMyData),
-
-                  Layout.heightBox(12),
-
-                  FieldCard(
-                    label: AppLocalization.username,
-                    value: user?.username ?? '',
-                  ),
-
-                  Layout.heightBox(8),
-
-                  FieldCard(
-                    label: AppLocalization.email,
-                    value: user?.email ?? '',
-                  ),
-
-                  // Verifying Email
-                  if (FirebaseAuth.instance.currentUser?.emailVerified ==
-                      false) ...[
-                    Layout.heightBox(6),
-                    Container(
-                      padding: Layout.symmetric(horizontal: 14, vertical: 8),
-                      decoration: BoxDecoration(
-                        color: AppColors.errorContainer,
-                        borderRadius: BorderRadius.circular(Layout.v(8)),
-                        border: Border.all(
-                            color: AppColors.error.withValues(alpha: 0.3)),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.warning_amber_rounded,
-                              color: AppColors.error, size: Layout.v(16)),
-                          Layout.widthBox(8),
-                          Expanded(
-                            child: Text(
-                              AppLocalization.emailNotVerified,
-                              style: AppTextStyles.font14
-                                  .copyWith(color: AppColors.error),
-                            ),
-                          ),
-                          if (_lastVerificationSent != null &&
-                              DateTime.now()
-                                      .difference(_lastVerificationSent!)
-                                      .inSeconds <
-                                  60) ...[
-                            Row(
-                              children: [
-                                Icon(Icons.check_circle,
-                                    color: AppColors.primary,
-                                    size: Layout.v(24)),
-                                Layout.widthBox(4),
-                                Text(
-                                  AppLocalization.alreadySent,
-                                  style: AppTextStyles.font14.copyWith(
-                                    color: AppColors.textPrimary,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                )
-                              ],
-                            )
-                          ] else ...[
-                            GestureDetector(
-                                child: Text(
-                                  AppLocalization.resend,
-                                  style: AppTextStyles.font14.copyWith(
-                                    color: AppColors.error,
-                                    fontWeight: FontWeight.w700,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: AppColors.error,
-                                  ),
-                                ),
-                                onTap: () async {
-                                  await FirebaseAuth.instance.currentUser
-                                      ?.sendEmailVerification();
-
-                                  setState(() =>
-                                      _lastVerificationSent = DateTime.now());
-
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(AppLocalization
-                                              .verificationSent)),
-                                    );
-                                  }
-                                })
-                          ],
-                        ],
-                      ),
+                    MenuTile(
+                      icon: Icons.favorite,
+                      label: AppLocalization.supportDeveloperButton,
+                      onTap: _showTipPicker,
                     ),
-                  ],
 
-                  Layout.heightBox(16),
+                    Layout.heightBox(12),
 
-                  // Logout Button
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final confirmed = await showDialog<bool>(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: Text(
-                              AppLocalization.logoutConfirmTitle,
-                              textAlign: TextAlign.center,
-                            ),
-                            content: Text(AppLocalization.logoutConfirmMessage),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(ctx, false),
-                                child: Text(AppLocalization.cancel,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w700)),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(ctx, true),
-                                child: Text(AppLocalization.yes,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w700)),
-                              ),
-                            ],
-                          ),
-                        );
-                        if (confirmed == true && context.mounted) {
-                          auth.logout();
-                        }
-                      },
-                      style: AppButtonStyles.primaryFilled,
-                      child: Text(
-                        AppLocalization.logout,
-                        style: AppTextStyles.font18.copyWith(
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 1.2,
+                    // Profile Info
+                    SectionHeader(title: AppLocalization.profileMyData),
+
+                    Layout.heightBox(12),
+
+                    FieldCard(
+                      label: AppLocalization.username,
+                      value: user?.username ?? '',
+                    ),
+
+                    Layout.heightBox(8),
+
+                    FieldCard(
+                      label: AppLocalization.email,
+                      value: user?.email ?? '',
+                    ),
+
+                    // Verifying Email
+                    if (FirebaseAuth.instance.currentUser?.emailVerified ==
+                        false) ...[
+                      Layout.heightBox(6),
+                      Container(
+                        padding: Layout.symmetric(horizontal: 14, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: AppColors.errorContainer,
+                          borderRadius: BorderRadius.circular(Layout.v(8)),
+                          border: Border.all(
+                              color: AppColors.error.withValues(alpha: 0.3)),
                         ),
-                      ),
-                    ),
-                  ),
-
-                  Layout.heightBox(16),
-
-                  // Delete Account Button
-                  SizedBox(
-                    width: double.infinity,
-                    child: OutlinedButton(
-                      onPressed: () async {
-                        final confirmed = await showDialog<bool>(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: Text(
-                              AppLocalization.deleteAccountTitle,
-                              textAlign: TextAlign.center,
+                        child: Row(
+                          children: [
+                            Icon(Icons.warning_amber_rounded,
+                                color: AppColors.error, size: Layout.v(16)),
+                            Layout.widthBox(8),
+                            Expanded(
+                              child: Text(
+                                AppLocalization.emailNotVerified,
+                                style: AppTextStyles.font14
+                                    .copyWith(color: AppColors.error),
+                              ),
                             ),
-                            content: Text(AppLocalization.deleteAccountMessage),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(ctx, false),
-                                child: Text(AppLocalization.cancel,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.w700)),
-                              ),
-                              TextButton(
-                                onPressed: () => Navigator.pop(ctx, true),
-                                child: Text(
-                                  AppLocalization.delete,
-                                  style: TextStyle(
+                            if (_lastVerificationSent != null &&
+                                DateTime.now()
+                                        .difference(_lastVerificationSent!)
+                                        .inSeconds <
+                                    60) ...[
+                              Row(
+                                children: [
+                                  Icon(Icons.check_circle,
+                                      color: AppColors.primary,
+                                      size: Layout.v(24)),
+                                  Layout.widthBox(4),
+                                  Text(
+                                    AppLocalization.alreadySent,
+                                    style: AppTextStyles.font14.copyWith(
+                                      color: AppColors.textPrimary,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  )
+                                ],
+                              )
+                            ] else ...[
+                              GestureDetector(
+                                  child: Text(
+                                    AppLocalization.resend,
+                                    style: AppTextStyles.font14.copyWith(
                                       color: AppColors.error,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                              ),
+                                      fontWeight: FontWeight.w700,
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: AppColors.error,
+                                    ),
+                                  ),
+                                  onTap: () async {
+                                    await FirebaseAuth.instance.currentUser
+                                        ?.sendEmailVerification();
+
+                                    setState(() =>
+                                        _lastVerificationSent = DateTime.now());
+
+                                    if (context.mounted) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content: Text(AppLocalization
+                                                .verificationSent)),
+                                      );
+                                    }
+                                  })
                             ],
-                          ),
-                        );
-                        if (confirmed == true && context.mounted) {
-                          try {
-                            await auth.deleteAccount();
-                          } on FirebaseAuthException catch (_) {
-                            if (!context.mounted) return;
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content: Text(AppLocalization.unknownError)),
-                            );
-                          }
-                        }
-                      },
-                      style: AppButtonStyles.destructiveFilled,
-                      child: Text(AppLocalization.deleteAccount),
-                    ),
-                  ),
-
-                  Layout.heightBox(16),
-
-                  // Notification Settings
-                  SectionHeader(
-                      title: AppLocalization.receivedNotificationsHeader),
-
-                  Layout.heightBox(8),
-
-                  Column(
-                    children: [
-                      Text(
-                        AppLocalization.globalNotificationsDesc1,
-                        style: AppTextStyles.font16,
-                      ),
-                      Layout.heightBox(8),
-                      Text(
-                        AppLocalization.globalNotificationsDesc2,
-                        style: AppTextStyles.font16,
+                          ],
+                        ),
                       ),
                     ],
-                  ),
 
-                  Layout.heightBox(8),
+                    Layout.heightBox(16),
 
-                  SwitchRow(
-                    label: AppLocalization.pushNotifications,
-                    value: user?.pushNotificationsEnabled ?? true,
-                    onChanged: (v) =>
-                        _watchlistCtrl.updatePushNotificationsEnabled(v),
-                  ),
-
-                  Layout.heightBox(8),
-
-                  SwitchRow(
-                    label: AppLocalization.priceDropLabel,
-                    value: notifications['priceDrop'] ?? true,
-                    onChanged: (v) =>
-                        _watchlistCtrl.updateGlobalNotification('priceDrop', v),
-                  ),
-                  Layout.heightBox(8),
-                  SwitchRow(
-                    label: AppLocalization.priceIncreaseLabel,
-                    value: notifications['priceIncrease'] ?? true,
-                    onChanged: (v) => _watchlistCtrl.updateGlobalNotification(
-                        'priceIncrease', v),
-                  ),
-                  Layout.heightBox(8),
-                  SwitchRow(
-                    label: AppLocalization.backInStockLabel,
-                    value: notifications['backInStock'] ?? true,
-                    onChanged: (v) => _watchlistCtrl.updateGlobalNotification(
-                        'backInStock', v),
-                  ),
-                  Layout.heightBox(8),
-                  SwitchRow(
-                    label: AppLocalization.outOfStockLabel,
-                    value: notifications['outOfStock'] ?? true,
-                    onChanged: (v) => _watchlistCtrl.updateGlobalNotification(
-                        'outOfStock', v),
-                  ),
-                  Layout.heightBox(16),
-
-                  // App Settings
-                  SectionHeader(title: AppLocalization.settings),
-
-                  Layout.heightBox(16),
-
-                  SettingRow(
-                    label: AppLocalization.language,
-                    value: _languageLabel(_settings.languageCode),
-                    onTap: () => _showPicker(
-                      title: AppLocalization.language,
-                      options: _languageOptions.values.toList(),
-                      current: _languageLabel(_settings.languageCode),
-                      onSave: (v) async {
-                        final code = _languageOptions.entries
-                            .firstWhere((e) => e.value == v)
-                            .key;
-
-                        // Optimization: don't do anything if language didn't change
-                        if (code == _settings.languageCode) return;
-
-                        setState(() => _isUpdating = true);
-
-                        await Future.delayed(
-                          const Duration(milliseconds: 500),
-                        );
-
-                        // Update the backend settings (Controller/Database)
-                        await _controller.updateSettings(
-                          _settings.copyWith(languageCode: code),
-                        );
-
-                        // Update the global localization reference
-                        AppLocalization.setLanguage(code);
-
-                        // Stop the loading spinner
-                        if (mounted) {
-                          setState(() => _isUpdating = false);
-                        }
-                      },
-                    ),
-                  ),
-
-                  Layout.heightBox(16),
-
-                  // Feedback Email
-                  SectionHeader(title: AppLocalization.profileContact),
-
-                  Layout.heightBox(16),
-
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        final size = MediaQuery.of(context).size;
-                        sendSupportEmail(
+                    // Logout Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          final confirmed = await showDialog<bool>(
                             context: context,
-                            screenSize:
-                                "${size.width.toInt()}x${size.height.toInt()}");
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.secondary,
-                        foregroundColor: Colors.white,
-                        textStyle: AppTextStyles.font18.copyWith(
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 1.2,
-                        ),
-                        padding: EdgeInsets.symmetric(vertical: Layout.v(12)),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(Layout.v(8)),
+                            builder: (ctx) => AlertDialog(
+                              title: Text(
+                                AppLocalization.logoutConfirmTitle,
+                                textAlign: TextAlign.center,
+                              ),
+                              content:
+                                  Text(AppLocalization.logoutConfirmMessage),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx, false),
+                                  child: Text(AppLocalization.cancel,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700)),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx, true),
+                                  child: Text(AppLocalization.yes,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700)),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (confirmed == true && context.mounted) {
+                            auth.logout();
+                          }
+                        },
+                        style: AppButtonStyles.primaryFilled,
+                        child: Text(
+                          AppLocalization.logout,
+                          style: AppTextStyles.font18.copyWith(
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.2,
                           ),
                         ),
-                        elevation: 10,
                       ),
-                      child: Text(AppLocalization.sendEmail),
                     ),
-                  ),
 
-                  Layout.heightBox(16),
-                ],
+                    Layout.heightBox(16),
+
+                    // Delete Account Button
+                    SizedBox(
+                      width: double.infinity,
+                      child: OutlinedButton(
+                        onPressed: () async {
+                          final confirmed = await showDialog<bool>(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: Text(
+                                AppLocalization.deleteAccountTitle,
+                                textAlign: TextAlign.center,
+                              ),
+                              content:
+                                  Text(AppLocalization.deleteAccountMessage),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx, false),
+                                  child: Text(AppLocalization.cancel,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700)),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx, true),
+                                  child: Text(
+                                    AppLocalization.delete,
+                                    style: TextStyle(
+                                        color: AppColors.error,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (confirmed == true && context.mounted) {
+                            try {
+                              await auth.deleteAccount();
+                            } on FirebaseAuthException catch (_) {
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content:
+                                        Text(AppLocalization.unknownError)),
+                              );
+                            }
+                          }
+                        },
+                        style: AppButtonStyles.destructiveFilled,
+                        child: Text(AppLocalization.deleteAccount),
+                      ),
+                    ),
+
+                    Layout.heightBox(16),
+
+                    // Notification Settings
+                    SectionHeader(
+                        title: AppLocalization.receivedNotificationsHeader),
+
+                    Layout.heightBox(8),
+
+                    Column(
+                      children: [
+                        Text(
+                          AppLocalization.globalNotificationsDesc1,
+                          style: AppTextStyles.font16,
+                        ),
+                        Layout.heightBox(8),
+                        Text(
+                          AppLocalization.globalNotificationsDesc2,
+                          style: AppTextStyles.font16,
+                        ),
+                      ],
+                    ),
+
+                    Layout.heightBox(8),
+
+                    SwitchRow(
+                      label: AppLocalization.pushNotifications,
+                      value: user?.pushNotificationsEnabled ?? true,
+                      onChanged: (v) =>
+                          _watchlistCtrl.updatePushNotificationsEnabled(v),
+                    ),
+
+                    Layout.heightBox(8),
+
+                    SwitchRow(
+                      label: AppLocalization.priceDropLabel,
+                      value: notifications['priceDrop'] ?? true,
+                      onChanged: (v) => _watchlistCtrl.updateGlobalNotification(
+                          'priceDrop', v),
+                    ),
+                    Layout.heightBox(8),
+                    SwitchRow(
+                      label: AppLocalization.priceIncreaseLabel,
+                      value: notifications['priceIncrease'] ?? true,
+                      onChanged: (v) => _watchlistCtrl.updateGlobalNotification(
+                          'priceIncrease', v),
+                    ),
+                    Layout.heightBox(8),
+                    SwitchRow(
+                      label: AppLocalization.backInStockLabel,
+                      value: notifications['backInStock'] ?? true,
+                      onChanged: (v) => _watchlistCtrl.updateGlobalNotification(
+                          'backInStock', v),
+                    ),
+                    Layout.heightBox(8),
+                    SwitchRow(
+                      label: AppLocalization.outOfStockLabel,
+                      value: notifications['outOfStock'] ?? true,
+                      onChanged: (v) => _watchlistCtrl.updateGlobalNotification(
+                          'outOfStock', v),
+                    ),
+                    Layout.heightBox(16),
+
+                    // App Settings
+                    SectionHeader(title: AppLocalization.settings),
+
+                    Layout.heightBox(16),
+
+                    SettingRow(
+                      label: AppLocalization.language,
+                      value: _languageLabel(_settings.languageCode),
+                      onTap: () => _showPicker(
+                        title: AppLocalization.language,
+                        options: _languageOptions.values.toList(),
+                        current: _languageLabel(_settings.languageCode),
+                        onSave: (v) async {
+                          final code = _languageOptions.entries
+                              .firstWhere((e) => e.value == v)
+                              .key;
+
+                          // Optimization: don't do anything if language didn't change
+                          if (code == _settings.languageCode) return;
+
+                          setState(() => _isUpdating = true);
+
+                          await Future.delayed(
+                            const Duration(milliseconds: 500),
+                          );
+
+                          // Update the backend settings (Controller/Database)
+                          await _controller.updateSettings(
+                            _settings.copyWith(languageCode: code),
+                          );
+
+                          // Update the global localization reference
+                          AppLocalization.setLanguage(code);
+
+                          // Stop the loading spinner
+                          if (mounted) {
+                            setState(() => _isUpdating = false);
+                          }
+                        },
+                      ),
+                    ),
+
+                    Layout.heightBox(16),
+
+                    // Feedback Email
+                    SectionHeader(title: AppLocalization.profileContact),
+
+                    Layout.heightBox(16),
+
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final size = MediaQuery.of(context).size;
+                          sendSupportEmail(
+                              context: context,
+                              screenSize:
+                                  "${size.width.toInt()}x${size.height.toInt()}");
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppColors.secondary,
+                          foregroundColor: Colors.white,
+                          textStyle: AppTextStyles.font18.copyWith(
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.2,
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: Layout.v(12)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(Layout.v(8)),
+                            ),
+                          ),
+                          elevation: 10,
+                        ),
+                        child: Text(AppLocalization.sendEmail),
+                      ),
+                    ),
+
+                    Layout.heightBox(16),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        if (_isUpdating)
-          Positioned.fill(
-            child: Container(
-              color: Colors.black.withValues(alpha: 0.5),
-              child: Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
+          if (_isUpdating)
+            Positioned.fill(
+              child: Container(
+                color: Colors.black.withValues(alpha: 0.5),
+                child: Center(
+                  child: CircularProgressIndicator(color: AppColors.primary),
+                ),
               ),
             ),
-          ),
-      ]),
+        ]),
+      ),
     );
   }
 }
