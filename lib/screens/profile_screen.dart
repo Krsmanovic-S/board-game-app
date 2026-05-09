@@ -179,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             Layout.heightBox(12),
-            ...['vigor_tip_small', 'vigor_tip_medium', 'vigor_tip_large'].map(
+            ...['app_tip_small', 'app_tip_medium', 'app_tip_large'].map(
               (id) => TipOptionRow(
                 productId: id,
                 onTap: () {

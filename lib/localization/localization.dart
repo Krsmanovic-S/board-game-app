@@ -117,6 +117,10 @@ class AppLocalization {
   static String get watchlistLabel => _strings['watchlistLabel']!;
   static String get profileLabel => _strings['profileLabel']!;
 
+  // ── Username Picker ────────────────────────────────────────────────────────
+  static String get pickUsername => _strings['pickUsername']!;
+  static String get usernamePickerDesc => _strings['usernamePickerDesc']!;
+
   // ── Browse ────────────────────────────────────────────────────────────────
   static String get searchHint => _strings['searchHint']!;
   static String get noSearchResults => _strings['noSearchResults']!;

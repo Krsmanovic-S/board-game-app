@@ -11,23 +11,37 @@ class AuthController extends ChangeNotifier {
   User? _firebaseUser;
   AppUser? _appUser;
   bool _initialized = false;
+  bool _needsUsername = false;
 
   User? get firebaseUser => _firebaseUser;
   AppUser? get appUser => _appUser;
   bool get isLoggedIn => _firebaseUser != null;
   bool get initialized => _initialized;
+  bool get needsUsername => _needsUsername;
 
   AuthController() {
     _auth.authStateChanges().listen(_onAuthStateChanged);
   }
 
+  bool _isOAuthUser(User user) => user.providerData.any(
+        (p) => p.providerId == 'google.com' || p.providerId == 'apple.com',
+      );
+
   Future<void> _onAuthStateChanged(User? user) async {
     _firebaseUser = user;
     if (user != null) {
       await _loadAppUser(user.uid);
-      await initNotifications();
+      _needsUsername = _appUser == null && _isOAuthUser(user);
+      if (!_needsUsername) {
+        try {
+          await initNotifications();
+        } catch (e) {
+          debugPrint('[AuthController] initNotifications failed: $e');
+        }
+      }
     } else {
       _appUser = null;
+      _needsUsername = false;
     }
     _initialized = true;
     notifyListeners();
@@ -89,6 +103,31 @@ class AuthController extends ChangeNotifier {
       }
       rethrow;
     }
+  }
+
+  Future<void> createUserDocument(String username) async {
+    final user = _firebaseUser!;
+    await _firestore.collection('users').doc(user.uid).set({
+      'email': user.email ?? '',
+      'username': username,
+      'fcmToken': '',
+      'globalNotifications': {
+        'priceDrop': true,
+        'priceIncrease': true,
+        'outOfStock': true,
+        'backInStock': true,
+      },
+      'pushNotificationsEnabled': true,
+      'emailNotificationsEnabled': false,
+    });
+    await _loadAppUser(user.uid);
+    _needsUsername = false;
+    try {
+      await initNotifications();
+    } catch (e) {
+      debugPrint('[AuthController] initNotifications failed: $e');
+    }
+    notifyListeners();
   }
 
   void patchGlobalNotification(String field, bool value) {

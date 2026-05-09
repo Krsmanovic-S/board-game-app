@@ -10,6 +10,7 @@ import 'package:board_game_app/screens/auth_screen.dart';
 import 'package:board_game_app/screens/browse_screen.dart';
 import 'package:board_game_app/screens/profile_screen.dart';
 import 'package:board_game_app/screens/game_details_screen.dart';
+import 'package:board_game_app/screens/username_picker_screen.dart';
 import 'package:board_game_app/data/models/board_game.dart';
 
 final authController = AuthController();
@@ -60,12 +61,19 @@ final appRouter = GoRouter(
     if (!authController.initialized) return '/loading';
 
     final loggedIn = authController.isLoggedIn;
-
     final loc = state.matchedLocation;
 
     if (!loggedIn && loc != '/auth') return '/auth';
 
-    if (loggedIn && (loc == '/auth' || loc == '/loading')) return '/watchlist';
+    if (loggedIn && authController.needsUsername && loc != '/username-picker') {
+      return '/username-picker';
+    }
+
+    if (loggedIn &&
+        !authController.needsUsername &&
+        (loc == '/auth' || loc == '/loading' || loc == '/username-picker')) {
+      return '/watchlist';
+    }
 
     return null;
   },
@@ -87,6 +95,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/auth',
       pageBuilder: (context, state) => _fadePage(state, const AuthScreen()),
+    ),
+    GoRoute(
+      path: '/username-picker',
+      builder: (context, state) => const UsernamePickerScreen(),
     ),
     GoRoute(
       path: '/product/:id',

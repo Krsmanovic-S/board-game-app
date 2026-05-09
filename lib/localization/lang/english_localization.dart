@@ -163,4 +163,8 @@ const Map<String, String> englishLocalization = {
   'english': 'English',
   'russian': 'Russian',
   'priceHistory': 'Price History',
+
+  // ── Username Picker ────────────────────────────────────────────────────────
+  'pickUsername': 'Choose a Username',
+  'usernamePickerDesc': 'Choose a username to complete your account setup',
 };

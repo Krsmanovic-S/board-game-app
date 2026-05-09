@@ -166,5 +166,10 @@ const Map<String, String> serbianLocalization = {
   'serbian': 'Srpski',
   'english': 'Engleski',
   'russian': 'Ruski',
-  'priceHistory': 'Istorija Cene'
+  'priceHistory': 'Istorija Cene',
+
+  // ── Username Picker ────────────────────────────────────────────────────────
+  'pickUsername': 'Izaberite korisničko ime',
+  'usernamePickerDesc':
+      'Izaberite korisničko ime da biste završili podešavanje naloga',
 };
