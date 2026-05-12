@@ -37,6 +37,7 @@ void _handleNotificationTap(RemoteMessage message) {
 
 Future<void> _saveToken() async {
   final token = await FirebaseMessaging.instance.getToken();
+  // debugPrint('FCM Token: $token');
   if (token != null) await _saveTokenString(token);
 }
 

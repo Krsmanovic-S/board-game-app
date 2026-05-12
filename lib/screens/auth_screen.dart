@@ -200,14 +200,16 @@ class _AuthCardState extends State<_AuthCard> {
   Future<void> _submit() async {
     if (!_canSubmit) return;
     setState(() => _isLoading = true);
+    bool success = false;
     try {
       if (widget.isLogin) {
         await _login();
+        success = true;
       } else {
         await _register();
       }
     } finally {
-      if (mounted) setState(() => _isLoading = false);
+      if (mounted && !success) setState(() => _isLoading = false);
     }
   }
 
@@ -233,6 +235,7 @@ class _AuthCardState extends State<_AuthCard> {
         title: AppLocalization.loginError,
         message: message,
       );
+      rethrow;
     }
   }
 
@@ -348,6 +351,15 @@ class _AuthCardState extends State<_AuthCard> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return SizedBox(
+        height: 200,
+        child: Center(
+          child: CircularProgressIndicator(color: AppColors.primary),
+        ),
+      );
+    }
+
     return Card(
       elevation: 6,
       shadowColor: Colors.black.withValues(alpha: 0.15),
