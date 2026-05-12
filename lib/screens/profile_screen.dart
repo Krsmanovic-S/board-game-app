@@ -606,11 +606,11 @@ class TipOptionRow extends StatelessWidget {
   final String productId;
   final VoidCallback onTap;
 
-  static final _labels = {
-    'app_tip_small': AppLocalization.buyTipSmall,
-    'app_tip_medium': AppLocalization.buyTipMedium,
-    'app_tip_large': AppLocalization.buyTipLarge,
-  };
+  Map<String, String> get _labels => {
+        'app_tip_small': AppLocalization.buyTipSmall,
+        'app_tip_medium': AppLocalization.buyTipMedium,
+        'app_tip_large': AppLocalization.buyTipLarge,
+      };
 
   const TipOptionRow({required this.productId, required this.onTap, super.key});
 

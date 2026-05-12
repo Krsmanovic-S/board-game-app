@@ -121,10 +121,10 @@ const Map<String, String> serbianLocalization = {
   'noPriceHistory': 'Nema podataka za ovaj proizvod..',
   'supportDeveloperHeader': 'Sviđa vam se aplikacija?',
   'supportDeveloperButton': 'Podržite razvoj',
-  'supportApp': 'Support App',
+  'supportApp': 'Podržite Development',
   'supportDescription':
       'Aplikacija je besplatna i bez reklama. Ako vam je korisna, mala donacija pomaže daljem razvoju.',
-  'buyTipLarge': 'Kupi mi društvenu igru 🎲',
+  'buyTipLarge': 'Kupi mi igru 🎲',
   'buyTipMedium': 'Kupi mi ekspanziju 🃏',
   'buyTipSmall': 'Kupi mi kafu ☕',
 
