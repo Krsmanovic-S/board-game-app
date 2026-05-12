@@ -29,11 +29,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   SettingsController get _controller => SettingsScope.of(context);
   AppSettings get _settings => _controller.settings;
 
-  static final _languageOptions = {
-    'sr': AppLocalization.serbian,
-    'en': AppLocalization.english,
-    'ru': AppLocalization.russian,
-  };
+  Map<String, String> get _languageOptions => {
+        'sr': AppLocalization.serbian,
+        'en': AppLocalization.english,
+        'ru': AppLocalization.russian,
+      };
 
   String _languageLabel(String code) =>
       _languageOptions[code] ?? _languageOptions['sr']!;
