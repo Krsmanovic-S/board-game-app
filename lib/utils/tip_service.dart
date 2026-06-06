@@ -48,7 +48,16 @@ class TipService extends ChangeNotifier {
   }
 
   Future<void> tipById(String productId) async {
-    final product = products.firstWhere((p) => p.id == productId);
+    final product = products.cast<ProductDetails?>().firstWhere(
+          (p) => p?.id == productId,
+          orElse: () => null,
+        );
+
+    if (product == null) {
+      debugPrint("Product $productId not found or store not loaded yet.");
+      return;
+    }
+
     await tip(product);
   }
 
