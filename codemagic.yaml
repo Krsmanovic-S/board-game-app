@@ -32,10 +32,10 @@ workflows:
             --build-name=1.0.0 \
             --build-number=1
     artifacts:
-      - build/ios/ipa/*.ipa
+      - build/ios/**/tessera-simulator.zip
     publishing:
       app_store_connect:
         api_key: $APP_STORE_CONNECT_PRIVATE_KEY
         key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-        submit_to_testflight: true
+        submit_to_testflight: false
