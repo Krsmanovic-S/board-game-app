@@ -4,6 +4,7 @@ import os, json
 file_map = {
     "en": "lang/english_localization.dart",
     "sr": "lang/serbian_localization.dart",
+    "ru": "lang/russian_localization.dart",
 }
 
 def update_localization():

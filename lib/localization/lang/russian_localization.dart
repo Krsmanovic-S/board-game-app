@@ -83,6 +83,7 @@ const Map<String, String> russianLocalization = {
   'searchHint': 'Поиск игр...',
   'noSearchResults': 'Ничего не найдено.',
   'noUpdatedGames': 'Нет недавно измененных игр..',
+  'noNewGames': 'Нет недавно добавленных новых игр..',
   'allGamesTab': 'Все игры',
   'updatedGamesTab': 'Изменено',
   'price': 'Цена',
@@ -161,5 +162,6 @@ const Map<String, String> russianLocalization = {
   'serbian': 'Сербский',
   'english': 'Английский',
   'russian': 'Русский',
-  'priceHistory': 'История цены'
+  'priceHistory': 'История цены',
+  'newTab': 'Новое',
 };

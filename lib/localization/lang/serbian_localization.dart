@@ -85,6 +85,7 @@ const Map<String, String> serbianLocalization = {
   'searchHint': 'Pretraži igre...',
   'noSearchResults': 'Nema rezultata pretrage.',
   'noUpdatedGames': 'Nema nedavno izmenjenih igara..',
+  'noNewGames': 'Nema nedavno dodatih novih igara..',
   'allGamesTab': 'Sve Igre',
   'updatedGamesTab': 'Izmenjeno',
   'price': 'Cena',
@@ -172,4 +173,5 @@ const Map<String, String> serbianLocalization = {
   'pickUsername': 'Izaberite korisničko ime',
   'usernamePickerDesc':
       'Izaberite korisničko ime da biste završili podešavanje naloga',
+  'newTab': 'Novo',
 };

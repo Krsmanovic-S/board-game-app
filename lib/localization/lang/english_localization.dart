@@ -83,6 +83,7 @@ const Map<String, String> englishLocalization = {
   'searchHint': 'Search games...',
   'noSearchResults': 'No results found.',
   'noUpdatedGames': 'No recently updated games..',
+  'noNewGames': 'No recently added games..',
   'allGamesTab': 'All Games',
   'updatedGamesTab': 'Updated',
   'price': 'Price',
@@ -167,4 +168,5 @@ const Map<String, String> englishLocalization = {
   // ── Username Picker ────────────────────────────────────────────────────────
   'pickUsername': 'Choose a Username',
   'usernamePickerDesc': 'Choose a username to complete your account setup',
+  'newTab': 'New',
 };

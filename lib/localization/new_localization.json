@@ -1,8 +1,11 @@
 {
-  "en": {
-    "notAvailable": "Not Available"
-  },
-  "sr": {
-    "notAvailable": "Nije Dostupno"
-  }
+    "en": {
+        "newTab": "New"
+    },
+    "sr": {
+        "newTab": "Novo"
+    },
+    "ru": {
+        "newTab": "Новое"
+    }
 }

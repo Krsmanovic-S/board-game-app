@@ -172,21 +172,39 @@ class _BrowseScreenState extends State<BrowseScreen> {
                 top: BorderSide(color: AppColors.divider, width: 1),
               ),
             ),
-            child: Row(
-              children: [
-                _TabButton(
-                  label: AppLocalization.allGamesTab,
-                  icon: Icons.grid_view_rounded,
-                  selected: gamesCtrl.browseTab == BrowseTab.all,
-                  onTap: () => gamesCtrl.setBrowseTab(BrowseTab.all),
-                ),
-                _TabButton(
-                  label: AppLocalization.updatedGamesTab,
-                  icon: Icons.edit_outlined,
-                  selected: gamesCtrl.browseTab == BrowseTab.updated,
-                  onTap: () => gamesCtrl.setBrowseTab(BrowseTab.updated),
-                ),
-              ],
+            child: IntrinsicHeight(
+              child: Row(
+                children: [
+                  _TabButton(
+                    label: AppLocalization.updatedGamesTab,
+                    icon: Icons.edit_outlined,
+                    selected: gamesCtrl.browseTab == BrowseTab.updated,
+                    onTap: () => gamesCtrl.setBrowseTab(BrowseTab.updated),
+                  ),
+                  VerticalDivider(
+                    width: 1,
+                    thickness: 1,
+                    color: AppColors.divider,
+                  ),
+                  _TabButton(
+                    label: AppLocalization.allGamesTab,
+                    icon: Icons.grid_view_rounded,
+                    selected: gamesCtrl.browseTab == BrowseTab.all,
+                    onTap: () => gamesCtrl.setBrowseTab(BrowseTab.all),
+                  ),
+                  VerticalDivider(
+                    width: 1,
+                    thickness: 1,
+                    color: AppColors.divider,
+                  ),
+                  _TabButton(
+                    label: AppLocalization.newTab,
+                    icon: Icons.auto_awesome,
+                    selected: gamesCtrl.browseTab == BrowseTab.newGames,
+                    onTap: () => gamesCtrl.setBrowseTab(BrowseTab.newGames),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -213,7 +231,9 @@ class _BrowseScreenState extends State<BrowseScreen> {
 
     final tabGames = gamesCtrl.browseTab == BrowseTab.updated
         ? gamesCtrl.updatedGames
-        : gamesCtrl.games;
+        : gamesCtrl.browseTab == BrowseTab.newGames
+            ? gamesCtrl.newGames
+            : gamesCtrl.games;
 
     final displayGames = _isSearching && _searchController.text.isNotEmpty
         ? _searchResults
@@ -230,13 +250,22 @@ class _BrowseScreenState extends State<BrowseScreen> {
       );
     }
 
-    if (displayGames.isEmpty && gamesCtrl.browseTab == BrowseTab.updated) {
-      return Center(
-        child: Text(
-          AppLocalization.noUpdatedGames,
-          style: AppTextStyles.font16.copyWith(color: AppColors.textMuted),
-        ),
-      );
+    if (displayGames.isEmpty) {
+      if (gamesCtrl.browseTab == BrowseTab.updated) {
+        return Center(
+          child: Text(
+            AppLocalization.noUpdatedGames,
+            style: AppTextStyles.font16.copyWith(color: AppColors.textMuted),
+          ),
+        );
+      } else if (gamesCtrl.browseTab == BrowseTab.newGames) {
+        return Center(
+          child: Text(
+            AppLocalization.noNewGames,
+            style: AppTextStyles.font16.copyWith(color: AppColors.textMuted),
+          ),
+        );
+      }
     }
 
     return MasonryGridView.count(

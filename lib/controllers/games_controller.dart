@@ -3,17 +3,20 @@ import 'package:flutter/widgets.dart';
 import 'package:board_game_app/data/models/board_game.dart';
 import 'package:board_game_app/data/models/price_list_entry.dart';
 
-enum BrowseTab { all, updated }
+enum BrowseTab { all, updated, newGames }
 
 class GamesController extends ChangeNotifier {
   List<BoardGame> _games = [];
   List<BoardGame> _updatedGames = [];
+  List<BoardGame> _newGames = [];
   bool _isLoading = false;
   String? _error;
   BrowseTab _browseTab = BrowseTab.all;
 
   List<BoardGame> get games => _games;
   List<BoardGame> get updatedGames => _updatedGames;
+  List<BoardGame> get newGames => _newGames;
+
   bool get isLoading => _isLoading;
   String? get error => _error;
   BrowseTab get browseTab => _browseTab;
@@ -32,6 +35,8 @@ class GamesController extends ChangeNotifier {
   Future<void> _loadGames() async {
     _isLoading = true;
     notifyListeners();
+
+    // All Games
     try {
       final allSnap =
           await FirebaseFirestore.instance.collection('products').get();
@@ -44,9 +49,11 @@ class GamesController extends ChangeNotifier {
       return;
     }
 
+    final cutoff =
+        Timestamp.fromDate(DateTime.now().subtract(const Duration(days: 7)));
+
+    // Recently changed games
     try {
-      final cutoff =
-          Timestamp.fromDate(DateTime.now().subtract(const Duration(days: 7)));
       final updatedSnap = await FirebaseFirestore.instance
           .collection('products')
           .where('lastChangedAt', isGreaterThan: cutoff)
@@ -60,6 +67,22 @@ class GamesController extends ChangeNotifier {
         ..shuffle();
     } catch (e) {
       debugPrint('Failed to load updated games: $e');
+    }
+
+    try {
+      final newSnap = await FirebaseFirestore.instance
+          .collection('products')
+          .where('addedAt', isGreaterThan: cutoff)
+          .orderBy('addedAt', descending: true)
+          .get();
+      final gameMap = {for (final g in _games) g.id: g};
+      _newGames = newSnap.docs
+          .map((d) => gameMap[d.id])
+          .whereType<BoardGame>()
+          .toList()
+        ..shuffle();
+    } catch (e) {
+      debugPrint('Failed to load new games: $e');
     }
 
     _isLoading = false;

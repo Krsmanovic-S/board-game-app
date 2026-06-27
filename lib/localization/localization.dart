@@ -125,8 +125,10 @@ class AppLocalization {
   static String get searchHint => _strings['searchHint']!;
   static String get noSearchResults => _strings['noSearchResults']!;
   static String get noUpdatedGames => _strings['noUpdatedGames']!;
+  static String get noNewGames => _strings['noNewGames']!;
   static String get allGamesTab => _strings['allGamesTab']!;
   static String get updatedGamesTab => _strings['updatedGamesTab']!;
+  static String get newTab => _strings['newTab']!;
   static String get price => _strings['price']!;
   static String get lowestPrice => _strings['lowestPrice']!;
   static String get notAvailable => _strings['notAvailable']!;
