@@ -265,9 +265,17 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
                     child: _game!.inStockAnywhere
                         ? Column(
                             children: [
-                              Text(
-                                '${AppLocalization.buyOnButton} ${AppHelpers.getStoreLabel(_game!.lowestPriceStore)}',
-                                style: AppTextStyles.font18,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.shopping_cart_outlined,
+                                      size: Layout.v(20), color: Colors.white),
+                                  Layout.widthBox(6),
+                                  Text(
+                                    '${AppLocalization.buyOnButton} ${AppHelpers.getStoreLabel(_game!.lowestPriceStore)}',
+                                    style: AppTextStyles.font18,
+                                  ),
+                                ],
                               ),
                               Layout.heightBox(4),
                               Text(

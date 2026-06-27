@@ -433,13 +433,12 @@ class _AuthCardState extends State<_AuthCard> {
             // Google / Apple
             if (widget.isLogin) ...[
               Layout.heightBox(20),
-              if (Platform.isAndroid)
-                SignInButton(
-                  Buttons.google,
-                  padding: Layout.symmetric(vertical: 4),
-                  text: AppLocalization.continueWithGoogle,
-                  onPressed: _continueWithGoogle,
-                ),
+              SignInButton(
+                Buttons.google,
+                padding: Layout.symmetric(vertical: 4),
+                text: AppLocalization.continueWithGoogle,
+                onPressed: _continueWithGoogle,
+              ),
               if (Platform.isIOS)
                 SignInButton(
                   Buttons.apple,

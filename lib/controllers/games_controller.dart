@@ -35,7 +35,7 @@ class GamesController extends ChangeNotifier {
     try {
       final allSnap =
           await FirebaseFirestore.instance.collection('products').get();
-      _games = allSnap.docs.map(BoardGame.fromFirestore).toList();
+      _games = allSnap.docs.map(BoardGame.fromFirestore).toList()..shuffle();
       _error = null;
     } catch (e) {
       _error = e.toString();
@@ -56,7 +56,8 @@ class GamesController extends ChangeNotifier {
       _updatedGames = updatedSnap.docs
           .map((d) => gameMap[d.id])
           .whereType<BoardGame>()
-          .toList();
+          .toList()
+        ..shuffle();
     } catch (e) {
       debugPrint('Failed to load updated games: $e');
     }
