@@ -55,6 +55,8 @@ abstract class AppColors {
   static const Color mipl = Color(0xFFF58220);
   static const Color gnom = Color(0xFF1B365D);
   static const Color kraken = Color(0xFF005B5C);
+  static const Color coolplay = Color(0xFF2C3E50);
+  static const Color conflux = Color(0xFF1A1A2E);
 
   // Disabled States
   static const Color disabled = Color(0xFFE0E0E0);

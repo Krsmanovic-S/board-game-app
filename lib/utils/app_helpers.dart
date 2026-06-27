@@ -6,8 +6,10 @@ class AppHelpers {
   static const Map<String, String> _storeLabels = {
     'games4you': 'Games4You',
     'mipl': 'Mipl.rs',
-    'gnom': 'BottleGnome',
+    'gnom': 'Gnom.rs',
     'kraken': 'Kraken.rs',
+    'coolplay': 'Coolplay',
+    'conflux': 'Conflux.rs'
   };
 
   // Returns the store name based on the key.
@@ -30,6 +32,10 @@ class AppHelpers {
         return AppColors.gnom;
       case 'kraken':
         return AppColors.kraken;
+      case 'coolplay':
+        return AppColors.coolplay;
+      case 'conflux':
+        return AppColors.conflux;
     }
 
     return AppColors.surface;

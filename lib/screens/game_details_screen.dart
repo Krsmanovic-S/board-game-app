@@ -84,7 +84,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
   }
 
   Widget _buildPriceGrid() {
-    final stores = _game!.storeInfo.entries.toList();
+    final storeInfo = _game!.storeInfo;
 
     return Container(
       decoration: context.cardDecoration,
@@ -96,18 +96,18 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
             verticalInside: BorderSide(color: AppColors.divider, width: 1),
           ),
           children: [
-            TableRow(
-              children: [
-                _buildStoreCell(stores[1]),
-                _buildStoreCell(stores[3]),
-              ],
-            ),
-            TableRow(
-              children: [
-                _buildStoreCell(stores[2]),
-                _buildStoreCell(stores[0]),
-              ],
-            ),
+            TableRow(children: [
+              _buildStoreCell(MapEntry('games4you', storeInfo['games4you']!)),
+              _buildStoreCell(MapEntry('mipl', storeInfo['mipl']!)),
+            ]),
+            TableRow(children: [
+              _buildStoreCell(MapEntry('gnom', storeInfo['gnom']!)),
+              _buildStoreCell(MapEntry('kraken', storeInfo['kraken']!)),
+            ]),
+            TableRow(children: [
+              _buildStoreCell(MapEntry('coolplay', storeInfo['coolplay']!)),
+              _buildStoreCell(MapEntry('conflux', storeInfo['conflux']!)),
+            ]),
           ],
         ),
       ),
@@ -146,7 +146,7 @@ class _GameDetailsScreenState extends State<GameDetailsScreen> {
                 Layout.widthBox(4),
                 Text(
                   AppHelpers.getStoreLabel(store.key),
-                  style: AppTextStyles.font12.copyWith(
+                  style: AppTextStyles.font14.copyWith(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                   ),

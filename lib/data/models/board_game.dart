@@ -1,6 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-const _storeOrder = ['games4you', 'mipl', 'gnom', 'kraken'];
+const _storeOrder = [
+  'games4you',
+  'mipl',
+  'gnom',
+  'kraken',
+  'coolplay',
+  'conflux'
+];
 
 class StoreInfo {
   final int price;
@@ -18,12 +25,12 @@ class StoreInfo {
   });
 
   factory StoreInfo.fromMap(Map<String, dynamic> map) => StoreInfo(
-    price: (map['price'] as num?)?.toInt() ?? 0,
-    inStock: map['inStock'] as bool? ?? false,
-    image: map['image'] as String? ?? '',
-    sourceUrl: map['sourceUrl'] as String? ?? '',
-    updatedAt: map['updatedAt'] as String? ?? '',
-  );
+        price: (map['price'] as num?)?.toInt() ?? 0,
+        inStock: map['inStock'] as bool? ?? false,
+        image: map['image'] as String? ?? '',
+        sourceUrl: map['sourceUrl'] as String? ?? '',
+        updatedAt: map['updatedAt'] as String? ?? '',
+      );
 }
 
 class BoardGame {
@@ -85,7 +92,9 @@ class BoardGame {
       lowestPriceStore: data['lowestPriceStore'] as String? ?? '',
       storeInfo: storeInfo,
       inStockAnywhere: inStockAnywhere,
-      updatedAt: data['updatedAt'] is String ? data['updatedAt'] as String : data['updatedAt']?.toString(),
+      updatedAt: data['updatedAt'] is String
+          ? data['updatedAt'] as String
+          : data['updatedAt']?.toString(),
     );
   }
 }
