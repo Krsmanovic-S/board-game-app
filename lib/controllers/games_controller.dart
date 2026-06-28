@@ -1,11 +1,16 @@
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:board_game_app/data/models/board_game.dart';
 import 'package:board_game_app/data/models/price_list_entry.dart';
 
 enum BrowseTab { all, updated, newGames }
 
 class GamesController extends ChangeNotifier {
+  static const _cacheKey = 'games_cache';
+  static const _cacheTimestampKey = 'games_cache_timestamp';
+
   List<BoardGame> _games = [];
   List<BoardGame> _updatedGames = [];
   List<BoardGame> _newGames = [];
@@ -36,11 +41,29 @@ class GamesController extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    // All Games
+    // All Games — serve from cache if less than 6 hours old
     try {
-      final allSnap =
-          await FirebaseFirestore.instance.collection('products').get();
-      _games = allSnap.docs.map(BoardGame.fromFirestore).toList()..shuffle();
+      final prefs = await SharedPreferences.getInstance();
+      final cachedJson = prefs.getString(_cacheKey);
+      final cachedTimestamp = prefs.getInt(_cacheTimestampKey);
+      final now = DateTime.now().millisecondsSinceEpoch;
+      final cacheValid = cachedJson != null &&
+          cachedTimestamp != null &&
+          (now - cachedTimestamp) < const Duration(hours: 6).inMilliseconds;
+
+      if (cacheValid) {
+        final List<dynamic> decoded = jsonDecode(cachedJson);
+        _games = decoded
+            .map((e) => BoardGame.fromJson(e as Map<String, dynamic>))
+            .toList();
+      } else {
+        final allSnap =
+            await FirebaseFirestore.instance.collection('products').get();
+        _games = allSnap.docs.map(BoardGame.fromFirestore).toList()..shuffle();
+        final jsonStr = jsonEncode(_games.map((g) => g.toJson()).toList());
+        await prefs.setString(_cacheKey, jsonStr);
+        await prefs.setInt(_cacheTimestampKey, now);
+      }
       _error = null;
     } catch (e) {
       _error = e.toString();
@@ -87,6 +110,12 @@ class GamesController extends ChangeNotifier {
 
     _isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> clearCache() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_cacheKey);
+    await prefs.remove(_cacheTimestampKey);
   }
 
   Future<List<PriceHistoryEntry>> getPriceHistory(String gameId) async {

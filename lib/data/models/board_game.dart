@@ -31,6 +31,14 @@ class StoreInfo {
         sourceUrl: map['sourceUrl'] as String? ?? '',
         updatedAt: map['updatedAt'] as String? ?? '',
       );
+
+  Map<String, dynamic> toJson() => {
+        'price': price,
+        'inStock': inStock,
+        'image': image,
+        'sourceUrl': sourceUrl,
+        'updatedAt': updatedAt,
+      };
 }
 
 class BoardGame {
@@ -97,4 +105,31 @@ class BoardGame {
           : data['updatedAt']?.toString(),
     );
   }
+
+  factory BoardGame.fromJson(Map<String, dynamic> json) {
+    final rawStoreInfo = (json['storeInfo'] as Map<String, dynamic>?) ?? {};
+    final storeInfo = rawStoreInfo.map(
+      (key, val) =>
+          MapEntry(key, StoreInfo.fromMap(val as Map<String, dynamic>)),
+    );
+    return BoardGame(
+      id: json['id'] as String,
+      name: json['name'] as String? ?? '',
+      lowestPrice: (json['lowestPrice'] as num?)?.toInt() ?? 0,
+      lowestPriceStore: json['lowestPriceStore'] as String? ?? '',
+      storeInfo: storeInfo,
+      inStockAnywhere: json['inStockAnywhere'] as bool? ?? false,
+      updatedAt: json['updatedAt'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'lowestPrice': lowestPrice,
+        'lowestPriceStore': lowestPriceStore,
+        'inStockAnywhere': inStockAnywhere,
+        'updatedAt': updatedAt,
+        'storeInfo': storeInfo.map((key, val) => MapEntry(key, val.toJson())),
+      };
 }
