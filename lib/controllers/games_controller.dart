@@ -1,15 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:board_game_app/data/models/board_game.dart';
 import 'package:board_game_app/data/models/price_list_entry.dart';
 
 enum BrowseTab { all, updated, newGames }
 
 class GamesController extends ChangeNotifier {
-  static const _cacheKey = 'games_cache';
-  static const _cacheTimestampKey = 'games_cache_timestamp';
+  static const _cacheFileName = 'games_cache.json';
 
   List<BoardGame> _games = [];
   List<BoardGame> _updatedGames = [];
@@ -41,29 +41,18 @@ class GamesController extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    // All Games — serve from cache if less than 6 hours old
+    // All Games — served from the local cache file until the next scrape lands
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final cachedJson = prefs.getString(_cacheKey);
-      final cachedTimestamp = prefs.getInt(_cacheTimestampKey);
-      final now = DateTime.now().millisecondsSinceEpoch;
-      final cacheValid = cachedJson != null &&
-          cachedTimestamp != null &&
-          (now - cachedTimestamp) < const Duration(hours: 6).inMilliseconds;
-
-      if (cacheValid) {
-        final List<dynamic> decoded = jsonDecode(cachedJson);
-        _games = decoded
-            .map((e) => BoardGame.fromJson(e as Map<String, dynamic>))
-            .toList();
+      final cached = await _readCache();
+      if (cached != null) {
+        _games = cached;
       } else {
         final allSnap =
             await FirebaseFirestore.instance.collection('products').get();
-        _games = allSnap.docs.map(BoardGame.fromFirestore).toList()..shuffle();
-        final jsonStr = jsonEncode(_games.map((g) => g.toJson()).toList());
-        await prefs.setString(_cacheKey, jsonStr);
-        await prefs.setInt(_cacheTimestampKey, now);
+        _games = allSnap.docs.map(BoardGame.fromFirestore).toList();
+        await _writeCache(_games);
       }
+      _games.shuffle();
       _error = null;
     } catch (e) {
       _error = e.toString();
@@ -112,10 +101,84 @@ class GamesController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<File> _cacheFile() async {
+    final dir = await getApplicationDocumentsDirectory();
+    return File('${dir.path}/$_cacheFileName');
+  }
+
+  /// The scraper runs daily at 12:00 UTC and is done by ~13:15 UTC, so anything
+  /// cached after 13:30 UTC on the most recent run day is still current.
+  DateTime _lastScrapeCompletion() {
+    final now = DateTime.now().toUtc();
+    var boundary = DateTime.utc(now.year, now.month, now.day, 13, 30);
+    if (now.isBefore(boundary)) {
+      boundary = boundary.subtract(const Duration(days: 1));
+    }
+    return boundary;
+  }
+
+  /// Returns the cached games when the file exists and predates no scrape,
+  /// otherwise `null` (stale cache files are deleted). Never throws — any
+  /// read or parse failure falls through to a Firestore fetch.
+  Future<List<BoardGame>?> _readCache() async {
+    try {
+      final file = await _cacheFile();
+      if (!await file.exists()) return null;
+
+      final decoded = jsonDecode(await file.readAsString());
+      if (decoded is! Map<String, dynamic>) {
+        debugPrint('Games cache has unexpected shape, refetching');
+        await file.delete();
+        return null;
+      }
+
+      final cachedAt = DateTime.tryParse(decoded['cachedAt'] as String? ?? '');
+      if (cachedAt == null || !cachedAt.isAfter(_lastScrapeCompletion())) {
+        await file.delete();
+        return null;
+      }
+
+      final rawGames = decoded['games'];
+      if (rawGames is! List) {
+        debugPrint('Games cache has unexpected shape, refetching');
+        await file.delete();
+        return null;
+      }
+
+      return rawGames
+          .map((e) => BoardGame.fromJson(e as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      debugPrint('Failed to read games cache: $e');
+      await clearCache();
+      return null;
+    }
+  }
+
+  Future<void> _writeCache(List<BoardGame> games) async {
+    try {
+      final file = await _cacheFile();
+      await file.writeAsString(jsonEncode({
+        'cachedAt': DateTime.now().toUtc().toIso8601String(),
+        'games': games.map((g) => g.toJson()).toList(),
+      }));
+    } catch (e) {
+      debugPrint('Failed to write games cache: $e');
+    }
+  }
+
   Future<void> clearCache() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_cacheKey);
-    await prefs.remove(_cacheTimestampKey);
+    try {
+      final file = await _cacheFile();
+      if (await file.exists()) await file.delete();
+    } catch (e) {
+      debugPrint('Failed to clear games cache: $e');
+    }
+  }
+
+  Future<void> forceRefresh() async {
+    await clearCache();
+    await _loadGames();
   }
 
   Future<List<PriceHistoryEntry>> getPriceHistory(String gameId) async {
