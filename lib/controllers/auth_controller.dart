@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
@@ -34,7 +35,7 @@ class AuthController extends ChangeNotifier {
       _needsUsername = _appUser == null && _isOAuthUser(user);
       if (!_needsUsername) {
         try {
-          await initNotifications();
+          unawaited(initNotifications());
         } catch (e) {
           debugPrint('[AuthController] initNotifications failed: $e');
         }
@@ -123,7 +124,7 @@ class AuthController extends ChangeNotifier {
     await _loadAppUser(user.uid);
     _needsUsername = false;
     try {
-      await initNotifications();
+      unawaited(initNotifications());
     } catch (e) {
       debugPrint('[AuthController] initNotifications failed: $e');
     }

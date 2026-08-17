@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1007917954503',
     projectId: 'board-game-tracker-f20b0',
     storageBucket: 'board-game-tracker-f20b0.firebasestorage.app',
+    androidClientId: '1007917954503-h496r1j4cvroqeelsij5ajqh70bfottm.apps.googleusercontent.com',
+    iosClientId: '1007917954503-i7p3f66qml7b1adv2i0u1gjmt563gvgf.apps.googleusercontent.com',
     iosBundleId: 'com.krsmanovic.boardgametracker',
   );
 
