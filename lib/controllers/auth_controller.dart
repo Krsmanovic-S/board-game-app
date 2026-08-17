@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
@@ -28,17 +27,24 @@ class AuthController extends ChangeNotifier {
         (p) => p.providerId == 'google.com' || p.providerId == 'apple.com',
       );
 
+  /// Fire-and-forget notification setup.
+  ///
+  /// Never awaited - APNs registration can hang indefinitely on devices that
+  /// cannot register (simulators, denied permissions), and this must never
+  /// block the auth flow from completing.
+  void _startNotifications() {
+    initNotifications().catchError(
+      (e) => debugPrint('[AuthController] initNotifications failed: $e'),
+    );
+  }
+
   Future<void> _onAuthStateChanged(User? user) async {
     _firebaseUser = user;
     if (user != null) {
       await _loadAppUser(user.uid);
       _needsUsername = _appUser == null && _isOAuthUser(user);
       if (!_needsUsername) {
-        try {
-          unawaited(initNotifications());
-        } catch (e) {
-          debugPrint('[AuthController] initNotifications failed: $e');
-        }
+        _startNotifications();
       }
     } else {
       _appUser = null;
@@ -123,11 +129,7 @@ class AuthController extends ChangeNotifier {
     });
     await _loadAppUser(user.uid);
     _needsUsername = false;
-    try {
-      unawaited(initNotifications());
-    } catch (e) {
-      debugPrint('[AuthController] initNotifications failed: $e');
-    }
+    _startNotifications();
     notifyListeners();
   }
 

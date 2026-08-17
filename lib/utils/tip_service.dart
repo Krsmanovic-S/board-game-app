@@ -28,6 +28,9 @@ class TipService extends ChangeNotifier {
     _sub = _iap.purchaseStream.listen(_onPurchaseUpdate);
 
     final response = await _iap.queryProductDetails(_tipIds);
+    if (response.notFoundIDs.isNotEmpty) {
+      debugPrint('Tip products not returned by store: ${response.notFoundIDs}');
+    }
     products = response.productDetails
       ..sort((a, b) => a.rawPrice.compareTo(b.rawPrice));
 
@@ -45,20 +48,6 @@ class TipService extends ChangeNotifier {
       purchasing = false;
       notifyListeners();
     }
-  }
-
-  Future<void> tipById(String productId) async {
-    final product = products.cast<ProductDetails?>().firstWhere(
-          (p) => p?.id == productId,
-          orElse: () => null,
-        );
-
-    if (product == null) {
-      debugPrint("Product $productId not found or store not loaded yet.");
-      return;
-    }
-
-    await tip(product);
   }
 
   Future<void> _onPurchaseUpdate(List<PurchaseDetails> purchases) async {

@@ -12,6 +12,7 @@ import 'package:board_game_app/controllers/settings_controller.dart';
 import 'package:board_game_app/utils/tip_service.dart';
 import 'package:board_game_app/utils/support_email.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:board_game_app/data/models/settings.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -180,12 +181,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             Layout.heightBox(12),
-            ...['app_tip_small', 'app_tip_medium', 'app_tip_large'].map(
-              (id) => TipOptionRow(
-                productId: id,
+            ..._tipService.products.map(
+              (product) => TipOptionRow(
+                product: product,
                 onTap: () {
                   Navigator.pop(ctx);
-                  _tipService.tipById(id);
+                  _tipService.tip(product);
                 },
               ),
             ),
@@ -603,7 +604,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
 class TipOptionRow extends StatelessWidget {
-  final String productId;
+  final ProductDetails product;
   final VoidCallback onTap;
 
   Map<String, String> get _labels => {
@@ -612,13 +613,10 @@ class TipOptionRow extends StatelessWidget {
         'app_tip_large': AppLocalization.buyTipLarge,
       };
 
-  const TipOptionRow({required this.productId, required this.onTap, super.key});
+  const TipOptionRow({required this.product, required this.onTap, super.key});
 
   @override
   Widget build(BuildContext context) {
-    final tipService = TipServiceScope.of(context);
-    final product = tipService.products.firstWhere((p) => p.id == productId);
-
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -630,7 +628,7 @@ class TipOptionRow extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  _labels[productId] ?? productId,
+                  _labels[product.id] ?? product.title,
                   style: AppTextStyles.font16.copyWith(
                     color: AppColors.textPrimary,
                   ),

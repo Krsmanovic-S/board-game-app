@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:board_game_app/app/layout.dart';
@@ -29,12 +31,6 @@ void main() async {
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  try {
-    await _tipService.init();
-  } catch (e) {
-    debugPrint('TipService failed to initialize: $e');
-  }
-
   await _settingsController.load();
   AppLocalization.setLanguage(_settingsController.settings.languageCode);
 
@@ -43,6 +39,14 @@ void main() async {
   );
 
   runApp(const MyApp());
+
+  // Store setup talks to StoreKit over the network, so it must never block
+  // launch: a slow store would trip the iOS watchdog and kill the app.
+  unawaited(
+    _tipService.init().catchError(
+      (Object e) => debugPrint('TipService failed to initialize: $e'),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
